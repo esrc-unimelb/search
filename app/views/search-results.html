@@ -1,0 +1,24 @@
+<div class="well">
+<p ng-show="results" class="text-muted">
+    You searched for '{{results.term}}'.<br/><br/>
+    The query returned {{results.total}} documents.
+    <span ng-show="results.page_total">Showing page {{results.page_current}} of {{results.page_total}} pages.</span>
+</p>
+<ul>
+    <li ng-repeat="doc in results.docs">
+        <span ng-switch on="doc.site_code">
+            <span ng-switch-when="FCAC"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCNA"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCNS"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCNT"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCQD"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCSA"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCTS"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCVC"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-when="FCWA"><facp-result-display ng-model="doc"></facp-result-display></span>
+            <span ng-switch-default><generic-result-display ng-model="doc"></generic-result-display></span>
+        </span>
+        <more-like-this source="{{doc.id}}" ng-model="results.mlt[doc.id]"></more-like-this></more-like-this>
+    </li>
+</ul>
+</div>
