@@ -1,7 +1,35 @@
 <div style="padding: 1em;">
-<strong><a href="{{data.id}}">{{data.name[0]}}</a></strong>
+<span ng-switch on="data.type[0]">
+    <p ng-switch-when="Digital Object"><span class="glyphicon glyphicon-picture"></span> Digital Object</p>
+    <p ng-switch-when="Publication"><span class="glyphicon glyphicon-file"></span> Publication</p>
+    <p ng-switch-when="Archival Resource"><span class="glyphicon glyphicon-book"></span> Archival Resource</p>
+    <p ng-switch-default><span class="glyphicon glyphicon-user"></span> Entity</p>
+</span>
+
+<h4><a href="{{data.id}}">{{data.name[0]}}</a></h4>
+<small>
+    {{data.date_from | date:'yyyy'}} 
+    <span ng-show="data.date_to">- {{data.date_to | date:'yyyy'}},</span> 
+    <span ng-show="data.state"> {{data.state[0]}}</span>
+</small>
 <br/>
-<small>{{data.date_from | date:'yyyy'}} - {{data.date_to | date:'yyyy'}}</small>
-<br/>
+
+<span ng-switch on="data.type[0]">
+    <p ng-switch-when="Digital Object">
+        <a href="{{data.source_link}}">{{data.source}}</a><br/>
+        <small>{{data.rights}}</small>
+    </p>
+    <p ng-switch-when="Publication">
+        {{data.author}}, {{data.editor}}<br/>
+        {{data.imprint}}
+    </p>
+    <p ng-switch-when="Archival Resource">
+        <a href="{{data.repository_link}}">{{data.repository}}</a>
+        {{data.reference}}
+    </p>
+    <p ng-switch-default>
+        {{data.abstract | limitTo: 200}} ...
+    </p>
+</span>
 <small><em><a href="{{data.id}}">{{data.id}}</a></em></small>
 </div>

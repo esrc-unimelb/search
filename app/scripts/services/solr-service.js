@@ -5,8 +5,10 @@ angular.module('searchApp')
         function SolrService($rootScope, $http, log) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     return {
-        log_level: 'DEBUG',
+        self: this,
+        log_level: 'ERROR',
         results: {},
+        term: '',
 
         init: function(deployment, site, loglevel) {
             log.init(loglevel);
@@ -26,7 +28,8 @@ angular.module('searchApp')
          * Perform a simple phrase search on the name and text fields
          *  - doesn't do fuzzy matching or wildcard searching
          */
-        search: function(what) {
+        search: function(what, start) {
+            this.term = what;
             if (what.split(' ').length > 1) {
                 var q = 'name:"' + what + '"^10 OR text:"' + what + '"';
             } else {
@@ -34,7 +37,7 @@ angular.module('searchApp')
             }
 
             // do we have a phrase or a word?
-            q = this.solr + '?q=' + q + '&fl=*,score&mlt=on&mlt.count=3&json.wrf=JSON_CALLBACK';
+            q = this.solr + '?q=' + q + '&start=' + start + '&json.wrf=JSON_CALLBACK';
             log.debug(q);
 
             return $http.jsonp(q);
@@ -44,18 +47,31 @@ angular.module('searchApp')
             return this.results;
         },
 
-        saveData: function(term, d) {
+        saveData: function(d) {
             this.results = {
-                'term': term,
+                'term': this.term,
                 'total': d.data.response.numFound,
                 'page_current': d.data.response.start+1,
                 'page_total': parseInt(d.data.response.numFound / d.data.response.docs.length),
                 'docs': d.data.response.docs,
                 'mlt':  d.data.moreLikeThis,
-                'hlt':  d.data.highlighting
             }
-            console.log(this.results);
             $rootScope.$broadcast('search-results-updated');
-        }
+        },
+
+        previousPage: function() {
+            var start = this.results['page_current'] - 2;
+            return this.search(this.term, start);
+        },
+        nextPage: function() {
+            var start = this.results['page_current'];
+            return this.search(this.term, start);
+        },
+        getCurrentPage: function() {
+            return parseInt(this.results['page_current']);
+        },
+        getPageLast: function() {
+            return parseInt(this.results['page_total']);
+        },
     }
   }]);

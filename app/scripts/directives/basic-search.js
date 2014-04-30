@@ -20,8 +20,8 @@ angular.module('searchApp')
                   scope.search_box = '*';
               }
               SolrService.init(scope.deployment, scope.site, scope.loglevel);
-              SolrService.search(scope.search_box).then(function(d) {
-                  SolrService.saveData(scope.search_box, d);
+              SolrService.search(scope.search_box, 0).then(function(d) {
+                  SolrService.saveData(d);
               });
           }
 
