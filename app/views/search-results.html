@@ -2,7 +2,7 @@
     <p ng-show="results" class="text-muted">
         You searched for '{{results.term}}'.<br/><br/>
         The query returned {{results.total}} documents.
-        <span ng-show="results.page_total">Showing page {{results.page_current}} of {{results.page_total}} pages.</span><br/>
+        <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}} pages.</span><br/>
         <br/>
         <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
         <hr>

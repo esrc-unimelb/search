@@ -1,45 +1,44 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('paginationControls', [ 'SolrService', function (SolrService) {
+  .directive('paginationControls', [ '$rootScope', 'SolrService', function ($rootScope, SolrService) {
     return {
       templateUrl: 'views/pagination-controls.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
+
           scope.show_prev = false;
-          scope.show_next = true;
+          scope.show_next = false;
+          $rootScope.$on('search-results-updated', function() {
+              toggleControls();
+          });
 
           scope.previous = function() {
-              SolrService.previousPage().then(function(d) {
-                  SolrService.saveData(d);
-              })
+              SolrService.previousPage();
               toggleControls();
           }
 
           scope.next = function() {
-              SolrService.nextPage().then(function(d) {
-                  SolrService.saveData(d);
-              });
+              SolrService.nextPage();
               toggleControls();
           }
 
           var toggleControls = function() {
               var cp = SolrService.getCurrentPage();
-              var pt = SolrService.getPageLast();
-              if (cp > 0 && cp !== pt) {
-                  scope.show_prev = true;
-              } else {
+              var pt = SolrService.getLastPage();
+              if (cp === 0 || isNaN(cp)) {
                   scope.show_prev = false;
+              } else {
+                  scope.show_prev = true;
               }
 
-              if (cp === (pt - 1)) {
+              if (cp === (pt - 1) || isNaN(pt)) {
                   scope.show_next = false;
               } else {
                   scope.show_next = true;
               }
-
-
           }
+          toggleControls();
       }
     };
   }]);
