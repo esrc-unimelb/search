@@ -1,7 +1,7 @@
-<div class="" ng-show="results">
-    <p class="text-muted">
-        You searched for '{{results.term}}'.<br/><br/>
-        The query returned {{results.total}} documents.
+<div ng-show="results">
+    <p>
+        You searched for <strong>{{results.term}}</strong>.
+        The query returned <strong>{{results.total}}</strong> documents.
         <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span><br/>
         <small class="text-muted">
             <p>Applied filters:</p>
@@ -12,12 +12,12 @@
         <hr>
         <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
     </p>
-    <ul>
-        <li ng-repeat="doc in results.docs">
+        <div ng-repeat="doc in results.docs" class="row" style="border: 1px solid gray; border-radius:1em; padding:1em; margin-bottom:1em;">
             <generic-result-display ng-model="doc"></generic-result-display>
+            <br/>
+            <br/>
             <more-like-this source="{{doc.id}}" ng-model="results.mlt[doc.id]"></more-like-this>
-        </li>
-    </ul>
+        </div>
     <hr>
     <span class="text-muted">
         <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span>
@@ -25,5 +25,4 @@
         <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
     </span>
     <hr/>
-
 </div>

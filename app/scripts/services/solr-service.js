@@ -95,7 +95,7 @@ angular.module('searchApp')
                 'term': SolrService.term,
                 'total': d.data.response.numFound,
                 'page_current': d.data.response.start,
-                'page_total': parseInt(d.data.response.numFound / d.data.response.docs.length),
+                'page_total': parseInt((d.data.response.numFound / d.data.response.docs.length ) + 1),
                 'docs': d.data.response.docs,
                 'mlt':  d.data.moreLikeThis,
             }
