@@ -12,4 +12,10 @@
     <div ng-show="suggestion">
         <p>Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?</p>
     </div>
+    <div ng-show="controls">
+        <h5>Filter Search Results</h5>
+        <span ng-repeat="facet in facet_controls">
+            <facet-widget facet-field="{{facet}}" deployment="{{deployment}}" site="{{site}}" loglevel="{{loglevel}}"></facet-widget>
+        </span>
+    </div>
 </div>

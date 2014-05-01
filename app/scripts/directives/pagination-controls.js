@@ -32,18 +32,18 @@ angular.module('searchApp')
           }
 
           var toggleControls = function() {
-              var cp = SolrService.getCurrentPage();
-              var pt = SolrService.getLastPage();
+              var cp = parseInt(SolrService.results['page_current']);
+              var pt = parseInt(SolrService.results['page_total']);
               if (cp === 0 || isNaN(cp)) {
-                  scope.show_prev = false;
-              } else {
                   scope.show_prev = true;
+              } else {
+                  scope.show_prev = false;
               }
 
               if (cp === (pt - 1) || isNaN(pt)) {
-                  scope.show_next = false;
-              } else {
                   scope.show_next = true;
+              } else {
+                  scope.show_next = false;
               }
           }
           toggleControls();

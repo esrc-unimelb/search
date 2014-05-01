@@ -9,9 +9,14 @@ angular.module('searchApp')
           help: '@',
           deployment: '@',
           site: '@',
+          controls: '@',
           loglevel: '@'
       },
       link: function postLink(scope, element, attrs) {
+          if (scope.controls !== undefined) {
+            scope.facet_controls = scope.controls.split(',');
+          }
+          
           $rootScope.$on('search-suggestion-available', function() {
               scope.suggestion = SolrService.suggestion;
           })

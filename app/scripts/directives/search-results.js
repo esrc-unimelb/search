@@ -9,7 +9,9 @@ angular.module('searchApp')
 
           $rootScope.$on('search-results-updated', function() {
               scope.results = SolrService.results;
+              scope.filters = SolrService.getFilterObject();
           });
+
       }
     };
   }]);

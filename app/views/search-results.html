@@ -1,11 +1,10 @@
-<div class="">
-    <p ng-show="results" class="text-muted">
+<div class="" ng-show="results">
+    <p class="text-muted">
         You searched for '{{results.term}}'.<br/><br/>
         The query returned {{results.total}} documents.
-        <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}} pages.</span><br/>
-        <br/>
-        <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
+        <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span><br/>
         <hr>
+        <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
     </p>
     <ul>
         <li ng-repeat="doc in results.docs">
@@ -14,9 +13,16 @@
         </li>
     </ul>
     <hr>
-    <span ng-show="results" class="text-muted">
-        <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}} pages.</span>
+    <span class="text-muted">
+        <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span>
         <hr/>
         <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
     </span>
+    <hr/>
+    <small>
+        <p>Applied filters - these are ANDed together so if you find yourself without results, try removing some.</p>
+        <ul>
+            <li ng-repeat="filter in filters">{{filter}}</li>
+        </ul>
+    </small>
 </div>
