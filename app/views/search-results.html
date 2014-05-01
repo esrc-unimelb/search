@@ -3,6 +3,12 @@
         You searched for '{{results.term}}'.<br/><br/>
         The query returned {{results.total}} documents.
         <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span><br/>
+        <small class="text-muted">
+            <p>Applied filters:</p>
+            <ul>
+                <li ng-repeat="filter in filters">{{filter}}</li>
+            </ul>
+        </small>
         <hr>
         <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
     </p>
@@ -19,10 +25,5 @@
         <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
     </span>
     <hr/>
-    <small>
-        <p>Applied filters - these are ANDed together so if you find yourself without results, try removing some.</p>
-        <ul>
-            <li ng-repeat="filter in filters">{{filter}}</li>
-        </ul>
-    </small>
+
 </div>

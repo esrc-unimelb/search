@@ -36,9 +36,9 @@ angular.module('searchApp')
         
         // do we have a phrase or a word?
         if (what.split(' ').length > 1) {
-            var q = '(name:"' + what + '"^10 OR text:"' + what + '")';
+            var q = 'name:("' + what + '"^10 OR text:"' + what + '")';
         } else {
-            var q = '(name:' + what + '^10 OR text:' + what + ')';
+            var q = 'name:(' + what + '^10 OR text:' + what + ')';
         }
 
         q = SolrService.solr + '?q=' + q + getFilters() + '&start=' + start + '&json.wrf=JSON_CALLBACK';
@@ -49,7 +49,7 @@ angular.module('searchApp')
             // 
             // Note: when filters are in play we can't re-run search as the set might return no
             //  result and we'll end up in an infinite search loop
-            if (d.data.response.numFound === 0 && Object.keys(SolrService.facets).length !== 0) {
+            if (d.data.response.numFound === 0 && Object.keys(SolrService.facets).length === 0) {
                 // no matches - run a fuzzy search and present the spellcheck options
                 suggest(SolrService.term);
                 if (what.split(' ').length === 1 && what !== '*') {
@@ -167,7 +167,6 @@ angular.module('searchApp')
     }
 
     var SolrService = {
-        log_level: 'ERROR',
         results: {},
         facets: {},
         term: '*',
