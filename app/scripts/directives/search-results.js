@@ -8,7 +8,7 @@ angular.module('searchApp')
       link: function postLink(scope, element, attrs) {
 
           $rootScope.$on('search-results-updated', function() {
-              scope.results = SolrService.getResults();
+              scope.results = SolrService.results;
           });
       }
     };

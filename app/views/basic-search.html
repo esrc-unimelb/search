@@ -9,4 +9,7 @@
             <p class="help-block"></p>
         </div>
     </form>
+    <div ng-show="suggestion">
+        <p>Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?</p>
+    </div>
 </div>

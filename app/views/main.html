@@ -1,21 +1,31 @@
-<div class="row">
+<div class="row" id="top">
     <div class="col-sm-6 col-md-6">
         <h4>A basic search box.</h4>
         <basic-search 
             help='e.g. Name of Home, orphanage, organisation or suburb'
             deployment='testing'
             site='TEST',
-            loglevel='ERROR'
+            loglevel='DEBUG'
             >
         </basic-search>
         <p class="small">
             <ul>
-                <li>Multiple words are treated as a phrase</li>
-                <li>Fuzzy searching is NOT enabled</li>
-                <li>Search is performed against the 'name' and 'text' fields</li>
+                <li>Multiple words are treated as a phrase.</li>
+                <li>Fuzzy searching is NOT enabled; unless:</li>
+                <ul>
+                    <li>If there are no documents, a spell check is triggered and a suggestion is provided.</li>
+                    <li>If it's a single word - then a fuzzy search is also performed on the word otherwise the current
+                    result set is blanked and only the suggestion is shown (fuzzy search only works on single works - not
+                    phrases)</li>
+                    <ul>
+                        <li>The spell checker ain't great... See 'balarat' (good) and 'orpanage' (bad).</li>
+                    </ul>
+                </ul>
+                <li>Search is performed against the 'name' and 'text' fields.</li>
                 <ul>
                     <li>Matches in the 'name' field carry 10 times the weight of matches in the text field. </li>
                 </ul>
+                <li>Each result comes with 3 'More Like This' where similarity of terms is used to suggest similar documents.</li>
             </ul>
         </p>
     </div>

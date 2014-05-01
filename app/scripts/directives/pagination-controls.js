@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('paginationControls', [ '$rootScope', 'SolrService', function ($rootScope, SolrService) {
+  .directive('paginationControls', [ '$rootScope', '$location', '$anchorScroll', 'SolrService', 
+    function ($rootScope, $location, $anchorScroll, SolrService) {
     return {
       templateUrl: 'views/pagination-controls.html',
       restrict: 'E',
@@ -16,11 +17,18 @@ angular.module('searchApp')
           scope.previous = function() {
               SolrService.previousPage();
               toggleControls();
+              scrollToTop();
           }
 
           scope.next = function() {
               SolrService.nextPage();
               toggleControls();
+              scrollToTop();
+          }
+
+          var scrollToTop = function() {
+              $location.hash('top');
+              $anchorScroll();
           }
 
           var toggleControls = function() {
