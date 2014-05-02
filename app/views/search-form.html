@@ -1,4 +1,4 @@
-<div class="well">
+<div class="well" ng-show="good_to_go">
     <div class="row">
         <form role="form" class="">
             <div class="form-group">
@@ -20,4 +20,7 @@
             <facet-widget facet-field="{{facet}}" deployment="{{deployment}}" site="{{site}}" loglevel="{{loglevel}}"></facet-widget>
         </div>
     </div>
+</div>
+<div ng-hide="good_to_go">
+    <p>The search form can't be enabled as the parameter "site" is undefined.</p>
 </div>

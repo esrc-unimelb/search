@@ -1,20 +1,28 @@
 'use strict';
 
 angular.module('searchApp')
-  .factory('SolrService', [ '$rootScope', '$http', 'LoggerService', 
-        function SolrService($rootScope, $http, log) {
+  .factory('SolrService', [ '$rootScope', '$http', 'LoggerService', 'Configuration',
+        function SolrService($rootScope, $http, log, conf) {
     // AngularJS will instantiate a singleton by calling "new" on this function
    
-    function init(deployment, site, loglevel) {
-        log.init(loglevel);
-        if (deployment !== undefined && site !== undefined) {
-            SolrService.site = site;
-            if (deployment === 'production') {
-                SolrService.solr = 'http://data.esrc.unimelb.edu.au/solr/' + site + '/select';
-            } else {
-                SolrService.solr = 'http://data.esrc.info/solr/' + site + '/select';
-            }
+
+    function init(deployment, site) {
+        log.init(conf.loglevel);
+        SolrService.site = site;
+
+        if (deployment === undefined && deployment !== ('production' || 'testing')) {
+            deployment = 'production';
         }
+        if (site === undefined) {
+            log.error("Can't run! No solr_core defined!");
+            return false;
+        } else {
+            SolrService.solr = conf[deployment] + '/' + site + '/select';
+        }
+        log.debug('Solr Service: ' + SolrService.solr);
+        log.debug('Site: ' + SolrService.site);
+
+        return true;
     }
 
     /*
