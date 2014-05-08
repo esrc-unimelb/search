@@ -49,7 +49,7 @@ angular.module('searchApp')
             var q = 'name:(' + what + '^10 OR text:' + what + ')';
         }
 
-        q = SolrService.solr + '?q=' + q + getFilters() + '&start=' + start + '&json.wrf=JSON_CALLBACK';
+        q = SolrService.solr + '?q=' + q + getFilters() + '&start=' + start + '&wt=json&json.wrf=JSON_CALLBACK';
         log.debug(q);
 
         $http.jsonp(q).then(function(d) {
@@ -84,7 +84,7 @@ angular.module('searchApp')
             var q = 'name:' + what + '';
         }
 
-        q = SolrService.solr + '?q=' + q + '&rows=0&mlt=off&json.wrf=JSON_CALLBACK';
+        q = SolrService.solr + '?q=' + q + '&rows=0&mlt=off&wt=json&json.wrf=JSON_CALLBACK';
         log.debug(q);
 
         $http.jsonp(q).then(function(d) {
@@ -132,7 +132,7 @@ angular.module('searchApp')
         return search(SolrService.term, start);
     }
     function getFacet(facet) {
-        var q = SolrService.solr + '?q=*:*&rows=0&facet=true&facet.field=' + facet + '&json.wrf=JSON_CALLBACK';
+        var q = SolrService.solr + '?q=*:*&rows=0&facet=true&facet.field=' + facet + '&wt=json&json.wrf=JSON_CALLBACK';
         log.debug(q);
         return $http.jsonp(q);
     }
