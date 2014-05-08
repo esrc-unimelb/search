@@ -10,12 +10,16 @@ angular.module('searchApp')
             label: '@'
         },
         link: function postLink(scope, element, attrs) {
+            scope.isCollapsed = true;
+
             SolrService.getFacet(scope.facetField).then(function(d) {
                 var facets = d.data.facet_counts.facet_fields[scope.facetField];
                 scope.facets = [];
+                var f = [];
                 for (var i = 0; i < facets.length; i += 2) {
-                    scope.facets.push(facets[i]);
+                    f.push(facets[i]);
                 }
+                scope.facets = f.sort();
            });
         
             scope.facet = function(facet) {
