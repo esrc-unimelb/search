@@ -15,8 +15,30 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  grunt.loadNpmTasks('grunt-build-control');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
+
+    buildcontrol: {
+        options: {
+            dir: 'dist',
+            commit: true,
+            push: true,
+        },
+        testing: {
+            options: {
+                remote: 'git@bitbucket.org:esrc/search.git',
+                branch: 'testing'
+            }
+        },
+        production: {
+            options: {
+                remote: 'git@bitbucket.org:esrc/search.git',
+                branch: 'production'
+            }
+        }
+    },
 
     // Project settings
     yeoman: {
