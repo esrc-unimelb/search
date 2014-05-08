@@ -17,7 +17,7 @@ angular.module('searchApp')
           scope.previous = function() {
               SolrService.previousPage();
               toggleControls();
-              scrollToTop();
+              //scrollToTop();
           }
 
           scope.next = function() {
@@ -28,7 +28,7 @@ angular.module('searchApp')
 
           var scrollToTop = function() {
               $location.hash('top');
-              $anchorScroll();
+              //$anchorScroll();
           }
 
           var toggleControls = function() {

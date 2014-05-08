@@ -1,27 +1,64 @@
-<div class="row" id="top">
-        <div class="col-sm-5 col-md-5 col-lg-5">
-            <div class="row" class="animate-repeat">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <search-form 
-                        help='e.g. Name of Home, orphanage, organisation or suburb'
-                        deployment="testing"
-                        site="TEST"
-                        >
-                    </search-form>
-                </div>
-            </div>
-            <div class="row" class="animate-repeat">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <search-filters
-                        filter="type,function,site_code:::site,state_long:::state"
-                        >
-                    </search-filters>
-                </div>
+<div class="" id="top">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12" ng-hide="select">
+            <div class="form-group">
+                <label>Select the search you wish to use.</label>
+                <select class="form-control pull-left" ng-change="onSelect()" ng-model="select">
+                    <option></option>
+                    <option>AHPI</option>
+                    <option>APFA</option>
+                    <option>ASMP</option>
+                    <option>ASRS</option>
+                    <option>AWAL</option>
+                    <option>BFYA</option>
+                    <option>BXHM</option>
+                    <option>BXTA</option>
+                    <option>CTACPUBLIC</option>
+                    <option>DHRA</option>
+                    <option>EOAS</option>
+                    <option>EMEL</option>
+                    <option>EMEL</option>
+                    <option>FACP</option>
+                    <option>GOLD</option>
+                    <option>IAEA</option>
+                    <option>NQAR</option>
+                    <option>RERN</option>
+                    <option>SAUL</option>
+                    <option>SIPP</option>
+                    <option>TORP</option>
+                    <option>UMAB</option>
+                    <option>VCRC</option>
+                    <option>WALL</option>
+                    <option>WHSO</option>
+                    <option>XAHI_theses</option>
+                </select>
             </div>
         </div>
-        <div class="col-sm-7 col-md-7 col-lg-7">
-            <div class="row">
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12" ng-if="select">
+            <div class="form-group">
+                <label>Using: {{select}} (reload the page to select another site)</label>
+                <search-form 
+                    help='Normally this would be site / context specific help in this bit...'
+                    deployment="testing"
+                    site="{{select}}"
+                    >
+                </search-form>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="select">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <search-filters
+                    filter="type,function,state_long:::region,repository"
+                    >
+                </search-filters>
+            </div>
+            <div class="col-sm-9 col-md-9 col-lg-9">
                 <search-results></search-results>
             </div>
         </div>
+    </div>
 </div>
