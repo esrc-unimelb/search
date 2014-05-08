@@ -1,26 +1,18 @@
-<div class="well" ng-show="good_to_go">
-    <div class="row">
-        <form role="form" class="">
-            <div class="form-group">
-                <input type="text" class="form-control" ng-model="search_box" autofocus>
-                <p class="help-block">{{help}}</p>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" ng-click="search()">Search</button>
-                <p class="help-block"></p>
-            </div>
-        </form>
-    </div>
+<div class="row" ng-show="good_to_go" style="margin:0.5em;">
+    <form role="form" class="">
+        <div class="form-group">
+            <input type="text" class="form-control" ng-model="search_box" autofocus>
+            <p class="help-block">{{help}}</p>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default" ng-click="search()">Search</button>
+            <p class="help-block"></p>
+        </div>
+    </form>
     <div ng-show="suggestion">
         <p>Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?</p>
     </div>
-    <div ng-show="controls">
-        <h5>Filter Search Results</h5>
-        <div ng-repeat="facet in facet_controls" class="row" style="padding-left:1em;">
-            <facet-widget facet-field="{{facet}}" deployment="{{deployment}}" site="{{site}}" loglevel="{{loglevel}}"></facet-widget>
-        </div>
+    <div ng-hide="good_to_go">
+        <p>The search form can't be enabled as the parameter "site" is undefined.</p>
     </div>
-</div>
-<div ng-hide="good_to_go">
-    <p>The search form can't be enabled as the parameter "site" is undefined.</p>
 </div>
