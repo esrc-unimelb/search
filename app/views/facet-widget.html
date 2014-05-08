@@ -1,14 +1,13 @@
 <small>
-    <a href="" ng-click="toggle = !toggle" ng-hide="toggle">by {{facetField | uppercase}}&nbsp;<span class="glyphicon glyphicon-chevron-down"></a>
-    <a href="" ng-click="toggle = !toggle" ng-show="toggle">Hide this filter&nbsp;<span class="glyphicon glyphicon-chevron-up"></a>
+    <a href="" ng-click="toggle = !toggle" ng-hide="toggle">by {{label| uppercase}}&nbsp;<span class="glyphicon glyphicon-chevron-down"></a>
+    <a href="" ng-click="toggle = !toggle" ng-show="toggle">Hide {{label | uppercase}} filter&nbsp;<span class="glyphicon glyphicon-chevron-up"></a>
 </small>
 <div ng-show="toggle">
     <span ng-repeat="result in facets">
-        <div class="col-sm-8">
-            <a href="" ng-click="add_facet(result[0])">{{result[0]}} ({{result[1]}})</a>
-        </div>
-        <div class="col-sm-4" ng-show="result[2]">
-            <a href="" ng-click="remove_facet(result[0])">(remove)</a>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-click="facet(result)" >{{result}}
+            </label>
         </div>
     </span>
 </div>

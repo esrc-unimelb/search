@@ -137,27 +137,27 @@ angular.module('searchApp')
         return $http.jsonp(q);
     }
 
-    function addFacet(facet_field, facet) {
-        // iterate over the facets and this one if it's not already there
+    function facet(facet_field, facet) {
+        // iterate over the facets and 
+        //  - add it if it's there 
+        //  - remove it if it is
         if (SolrService.facets[facet_field] === undefined) {
             SolrService.facets[facet_field] = [ facet ];
         } else {
             if (SolrService.facets[facet_field].indexOf(facet) === -1) {
                 SolrService.facets[facet_field].push(facet);
+            } else {
+                var idxof = SolrService.facets[facet_field].indexOf(facet);
+                SolrService.facets[facet_field].splice(idxof, 1);
+                if (SolrService.facets[facet_field].length === 0) {
+                    delete SolrService.facets[facet_field];
+                }
             }
         }
 
         search(SolrService.term, 0, true);
     }
-    function removeFacet(facet_field, facet) {
-        var pos = SolrService.facets[facet_field].indexOf(facet);
-        SolrService.facets[facet_field].splice(pos, 1);
-        if (SolrService.facets[facet_field].length === 0) {
-            delete SolrService.facets[facet_field];
-        }
 
-        search(SolrService.term, 0, true);
-    }
     function getFilterObject() {
         var ands = [];
         for (var f in SolrService.facets) {
@@ -185,8 +185,7 @@ angular.module('searchApp')
         previousPage: previousPage,
         nextPage: nextPage,
         getFacet: getFacet,
-        addFacet: addFacet,
-        removeFacet: removeFacet,
+        facet: facet,
         getFilterObject: getFilterObject
     }
     return SolrService;
