@@ -12,6 +12,8 @@ angular.module('searchApp')
               scope.filters = SolrService.getFilterObject();
           });
 
+          scope.site = SolrService.site;
+
       }
     };
   }]);
