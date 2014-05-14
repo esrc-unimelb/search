@@ -40,7 +40,7 @@ angular.module('searchApp')
         }
 
         // if what has changed - reset the data object
-        if (what !== SolrService.term) {
+        if (what !== SolrService.term || start === 0) {
             SolrService.results['docs'] = [];
             SolrService.results['start'] = 0;
         }
