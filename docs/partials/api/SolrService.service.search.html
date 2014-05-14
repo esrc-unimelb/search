@@ -1,0 +1,26 @@
+<h1><code ng:non-bindable="">search</code>
+<div><span class="hint">function in module <code ng:non-bindable="">SolrService</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="solrservice-service-page solrservice-service-search-page"><p>The workhorse function.</p>
+<p>Perform a simple phrase search on the name and text fields. If no results are found,
+there are no filters in play and the term is a single word, the search is automatically re-run as 
+a fuzzy search and a spell check is requested as well.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">search(what, start, ditch_suggestion);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>what</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="solrservice-service-page solrservice-service-search-page"><ul>
+<li>The thing to search for. Multiple words get treated
+as a phrase.</li>
+</ul>
+</div></td></tr><tr><td>start</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="solrservice-service-page solrservice-service-search-page"><ul>
+<li>The result to start at.</li>
+</ul>
+</div></td></tr><tr><td>ditch_suggestion</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="solrservice-service-page solrservice-service-search-page"><ul>
+<li>Whether to delete the spelling
+suggestion.</li>
+</ul>
+</div></td></tr></tbody></table></div>
+</div>

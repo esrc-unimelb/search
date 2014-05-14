@@ -1,0 +1,18 @@
+<h1><code ng:non-bindable="">saveData</code>
+<div><span class="hint">function in module <code ng:non-bindable="">SolrService</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="solrservice-service-page solrservice-service-savedata-page"><p>Pass it a SOLR response and it manages the data object used by the interface.</p>
+<p>This method knows how to handle no result found as well as new data via infinite scroll.</p>
+<p>The message &#39;search-results-updated&#39; is broadcast via $rootScope when the data is ready
+ to go. Any widget that interacts with the data should listen for this message.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">saveData(d);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>d</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="solrservice-service-page solrservice-service-savedata-page"><ul>
+<li>The SOLR response</li>
+</ul>
+</div></td></tr></tbody></table></div>
+</div>

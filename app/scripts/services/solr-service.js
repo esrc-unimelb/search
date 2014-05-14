@@ -1,11 +1,39 @@
 'use strict';
 
+/** 
+ * @ngdoc service
+ * @name SolrService
+ * @description 
+ *  Service to broker all communication between SOLR and the UI controls
+ *
+ * @requires $rootScope
+ * @requires $http
+ * @requires LoggerService
+ * @requires Configuration
+ *
+ */
 angular.module('searchApp')
   .factory('SolrService', [ '$rootScope', '$http', 'LoggerService', 'Configuration',
         function SolrService($rootScope, $http, log, conf) {
     // AngularJS will instantiate a singleton by calling "new" on this function
    
 
+   /** 
+    * @ngdoc function 
+    * @name SolrService.service:init
+    * @description
+    *   Initialise the service. This MUST be called prior to the service being used. Probably
+    *   from an init method when a search form is loaded (this is likely the first time the 
+    *   service will be required).
+    * @param {string} deployment - The SOLR deployment to target: testing || production
+    * @param {string} site - The SOLR core to target; e.g. FACP
+    * @returns {boolean} true or false to tell you all is well or not. Use this to figure out
+    *   if the app should be disabled.
+    * @example
+    *   // initialise the service and ensure we stop if it's broken<br/>
+    *   scope.good_to_go = SolrService.init(scope.deployment, scope.site);
+    *
+    */
     function init(deployment, site) {
         log.init(conf.loglevel);
         SolrService.site = site;
@@ -25,10 +53,21 @@ angular.module('searchApp')
         return true;
     }
 
-    /*
-     * Method: search
-     * Perform a simple phrase search on the name and text fields
-     *  - doesn't do fuzzy matching or wildcard searching
+    /**
+     * @ngdoc function
+     * @name SolrService.service:search
+     * @description
+     *  The workhorse function.
+     *
+     *  Perform a simple phrase search on the name and text fields. If no results are found,
+     *  there are no filters in play and the term is a single word, the search is automatically re-run as 
+     *  a fuzzy search and a spell check is requested as well.
+     *
+     * @param {string} what - The thing to search for. Multiple words get treated
+     *  as a phrase.
+     * @param {string} start - The result to start at. 
+     * @param {boolean} ditch_suggestion - Whether to delete the spelling 
+     *  suggestion.
      */
     function search(what, start, ditch_suggestion) {
         // should we remove the suggestion
@@ -36,7 +75,8 @@ angular.module('searchApp')
         //   from basic-search. Pretty much all other times it will be false
         //   ie. suggestion will be shown
         if (ditch_suggestion) {
-            ditchSuggestion();
+            SolrService.suggestion =  undefined;
+            $rootScope.$broadcast('search-suggestion-removed');
         }
 
         // if what has changed - reset the data object
@@ -54,7 +94,14 @@ angular.module('searchApp')
             var q = 'name:(' + what + '^10 OR text:' + what + ')';
         }
 
-        q = SolrService.solr + '?q=' + q + getFilters() + '&start=' + start + '&rows=' + SolrService.rows + '&wt=json&json.wrf=JSON_CALLBACK';
+        // add in the facet querie filters - if any...
+        var fq = getFilterObject().join('&fq=');
+        if (fq !== '') {
+            fq = '&fq=' + fq;
+        }
+
+        // construct the URL
+        q = SolrService.solr + '?q=' + q + fq + '&start=' + start + '&rows=' + SolrService.rows + '&wt=json&json.wrf=JSON_CALLBACK';
         log.debug(q);
 
         $http.jsonp(q).then(function(d) {
@@ -82,6 +129,16 @@ angular.module('searchApp')
         });
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:suggest
+     * @description
+     *  Perform a spell check on the user request and return save a suggestion.
+     *
+     * @param {string} what - The user search string for which to find a spelling
+     *  suggestion.
+     *  
+     */
     function suggest(what) {
         if (what.split(' ').length > 1) {
             var q = 'name:"' + what + '"';
@@ -93,10 +150,23 @@ angular.module('searchApp')
         log.debug(q);
 
         $http.jsonp(q).then(function(d) {
-            saveSuggestion(d);
+            SolrService.suggestion =  d.data.spellcheck.suggestions[1]['suggestion'][0];
+            $rootScope.$broadcast('search-suggestion-available');
         })
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:saveData
+     * @description
+     *  Pass it a SOLR response and it manages the data object used by the interface.
+     *  
+     *  This method knows how to handle no result found as well as new data via infinite scroll.
+     *  
+     *  The message 'search-results-updated' is broadcast via $rootScope when the data is ready
+     *   to go. Any widget that interacts with the data should listen for this message.
+     * @param {object} d - The SOLR response
+     */
     function saveData(d) {
         if (d === undefined) {
             SolrService.results = {
@@ -128,28 +198,44 @@ angular.module('searchApp')
         $rootScope.$broadcast('search-results-updated');
     }
 
-    function saveSuggestion(d) {
-        try {
-            SolrService.suggestion =  d.data.spellcheck.suggestions[1]['suggestion'][0];
-            $rootScope.$broadcast('search-suggestion-available');
-        } catch(e) {
-        }
-    }
-    function ditchSuggestion(d) {
-        SolrService.suggestion =  undefined;
-        $rootScope.$broadcast('search-suggestion-removed');
-    }
-
+    /**
+     * @ngdoc function
+     * @name SolrService.service:nextPage
+     * @description
+     *  Get the next set of results.
+     */
     function nextPage() {
         var start = SolrService.results['start'] + SolrService.rows;
-        return search(SolrService.term, start);
+        search(SolrService.term, start);
     }
+
+    /**
+     * @ngdoc function
+     * @name SolrService.service:getFacet
+     * @description
+     *  Trigger a facet search returning a promise for use by the caller.
+     * @param {string} facet - The field to facet on
+     * @returns {promise} The promise from the http call
+     * @example
+     *  SolrService.getFacet(scope.facetField).then(function(d) {
+     *   //do something with the data
+     *  }
+     */
     function getFacet(facet) {
         var q = SolrService.solr + '?q=*:*&rows=0&facet=true&facet.field=' + facet + '&wt=json&json.wrf=JSON_CALLBACK';
         //log.debug(q);
         return $http.jsonp(q);
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:facet
+     * @description
+     *  Add or remove a facet from the facet query object and trigger
+     *  a search.
+     * @param {string} facet_field - The facet's field name
+     * @param {string} facet - the value
+     */
     function facet(facet_field, facet) {
         // iterate over the facets and 
         //  - add it if it's not there 
@@ -173,18 +259,17 @@ angular.module('searchApp')
         search(SolrService.term, 0, true);
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:getFilterObject
+     * @description
+     *  Return an array of filter queries
+     * @returns {array} An array of filter queries
+     */
     function getFilterObject() {
         var fq = [];
         for (var f in SolrService.facets) {
             fq.push(f + ':("' + SolrService.facets[f].join('" OR "') + '")');
-        }
-        return fq;
-    }
-    function getFilters() {
-        // add in the ANDed filters - if any...
-        var fq = getFilterObject().join('&fq=');
-        if (fq !== '') {
-            fq = '&fq=' + fq;
         }
         return fq;
     }

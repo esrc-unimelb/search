@@ -1,0 +1,26 @@
+<h1><code ng:non-bindable="">init</code>
+<div><span class="hint">function in module <code ng:non-bindable="">SolrService</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="solrservice-service-page solrservice-service-init-page"><p>Initialise the service. This MUST be called prior to the service being used. Probably
+from an init method when a search form is loaded (this is likely the first time the 
+service will be required).</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">init(deployment, site);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>deployment</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="solrservice-service-page solrservice-service-init-page"><ul>
+<li>The SOLR deployment to target: testing || production</li>
+</ul>
+</div></td></tr><tr><td>site</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="solrservice-service-page solrservice-service-init-page"><ul>
+<li>The SOLR core to target; e.g. FACP</li>
+</ul>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="solrservice-service-page solrservice-service-init-page"><p>true or false to tell you all is well or not. Use this to figure out
+if the app should be disabled.</p>
+</div></td></tr></table></div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="solrservice-service-page solrservice-service-init-page"><p>// initialise the service and ensure we stop if it&#39;s broken<br/>
+scope.good_to_go = SolrService.init(scope.deployment, scope.site);</p>
+</div></div>
+</div>
