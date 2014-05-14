@@ -1,5 +1,15 @@
 'use strict';
 
+/**
+ * @ngdoc directive
+ * @name generic-result-display
+ * @restrict E
+ * @scope
+ * @description
+ *  A UI control for displaying a search result.
+ *
+ * @param {expression} data - The result data.
+ */
 angular.module('searchApp')
   .directive('genericResultDisplay', [ '$rootScope', function ($rootScope) {
     return {

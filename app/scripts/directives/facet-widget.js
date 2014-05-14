@@ -1,5 +1,18 @@
 'use strict';
 
+/** 
+ * @ngdoc directive
+ * @name facet-widget
+ * @restrict E
+ * @scope 
+ * @description
+ *  A UI control for a SOLR facet. Displays the available content as a set
+ *  of checkboxes that can be added to the query as filters.
+ * 
+ * @param {string} facetField - The field for which to get the facet counts
+ * @param {string} label - The name to be used for the widget
+ *
+ */
 angular.module('searchApp')
   .directive('facetWidget', [ 'SolrService', function (SolrService) {
     return {
