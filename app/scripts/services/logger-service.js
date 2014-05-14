@@ -39,10 +39,11 @@ angular.module('searchApp')
 
         /** @ngdoc function
          *  @name LoggerService.service:info
-         */
+         *
          *  @description
          *      Log a message at level INFO
          *  @param {string} msg - The message to log
+         */
         info: function(msg) {
             if (this.log_level === 'INFO') {
                 this.log('INFO', msg);
@@ -51,10 +52,11 @@ angular.module('searchApp')
 
         /** @ngdoc function
          *  @name LoggerService.service:error
-         */
+         *
          *  @description
          *      Log a message at level ERROR
          *  @param {string} msg - The message to log
+         */
         error: function(msg) {
             if (this.log_level === 'ERROR') {
                 this.log('ERROR',  msg);
