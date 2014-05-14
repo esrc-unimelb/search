@@ -1,1 +1,16 @@
-<div class="row" ng-show="results" style="margin:0.5em">You searched for <strong>{{results.term}}</strong>. The query returned <strong>{{results.total}}</strong> documents. <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span><br><small class="text-muted"><p>Applied filters:</p><ul><li ng-repeat="filter in filters">{{filter}}</li></ul></small><hr><pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls><hr><div ng-repeat="doc in results.docs" class="row" style="border: 1px solid gray; border-radius:8px; padding:1em; margin:1em"><generic-result-display ng-model="doc"></generic-result-display><br><br><div class="col-sm-3 col-md-3"><small><a href="https://data.esrc.info/solr/{{site}}/select?q=id:&quot;{{doc.id}}&quot;&mlt=off&spellcheck=off&wt=json&json.wrf=JSON_CALLBACK" target="_blank">View SOLR source</a></small></div><div class="col-sm-2 col-md-2"><more-like-this source="{{doc.id}}" ng-model="results.mlt[doc.id]"></more-like-this></div></div><hr><span class="text-muted"><span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span><hr><pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls></span><hr></div>
+<div class="row" ng-if="results" style="margin:0.5em"><div class="row"><!-- header --><div class="col-sm-8 col-md-8 col-lg-8">You searched for <strong>{{results.term}}</strong>. The query returned <strong>{{results.total}}</strong> documents.</div><div class="col-sm-4 col-md-4 col-lg-4"><button class="btn btn-sm btn-default" ng-click="list_view()" ng-class="summary_active"><span class="glyphicon glyphicon-th-list"></span> Summary View</button> <button class="btn btn-sm btn-default" ng-click="detail_view()" ng-class="details_active"><span class="glyphicon glyphicon-th"></span> Details View</button></div><!-- end header --></div><div class="row"><!-- filters and controls --><div class="col-sm-12 col-md-12 col-lg-12"><small class="text-muted"><p>Applied filters:</p><ul><li ng-repeat="filter in filters">{{filter}}</li></ul></small></div><!-- end filters and controls --></div><div class="row" infinite-scroll="load_next_page()" infinite-scroll-disabled="scroll_disabled"><!-- results panel --><div ng-repeat="doc in results.docs" class="row result-border"><generic-result-display ng-model="doc"></generic-result-display><div class="col-sm-3 col-md-3"><small><a href="https://data.esrc.info/solr/{{site}}/select?q=id:&quot;{{doc.id}}&quot;&mlt=off&spellcheck=off&wt=json&json.wrf=JSON_CALLBACK" target="_blank">View SOLR source</a></small></div><!--
+            <div class="col-sm-2 col-md-2">
+                <more-like-this source="{{doc.id}}" ng-model="results.mlt[doc.id]"></more-like-this>
+            </div>
+            --></div><!-- ensd results panel --></div><!--
+    <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span><br/>
+    <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
+    <hr/>
+    <hr>
+    <span class="text-muted">
+        <span ng-show="results.page_total">Showing page {{results.page_current + 1}} of {{results.page_total}}.</span>
+        <hr/>
+        <pagination-controls pc="{{results.page_current}}" pt="{{results.page_total}}"></pagination-controls>
+    </span>
+    <hr/>
+    --></div>
