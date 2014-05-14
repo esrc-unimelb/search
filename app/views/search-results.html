@@ -1,4 +1,4 @@
-<div class="row" ng-show="results" style="margin:0.5em;">
+<div class="row" ng-if="results" style="margin:0.5em;">
     <div class="row">
         <!-- header -->
         <div class="col-sm-8 col-md-8 col-lg-8">
@@ -31,9 +31,9 @@
         <!-- end filters and controls -->
     </div>
 
-    <div class="row">
+    <div class="row" infinite-scroll="load_next_page()" infinite-scroll-disabled="scroll_disabled">
         <!-- results panel -->
-        <div ng-repeat="doc in results.docs" class="row" style="border: 1px solid gray; border-radius:8px; padding:1em; margin:1em;">
+        <div ng-repeat="doc in results.docs" class="row result-border">
             <generic-result-display ng-model="doc"></generic-result-display>
             <div class="col-sm-3 col-md-3">
                 <small>

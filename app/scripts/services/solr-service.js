@@ -39,6 +39,11 @@ angular.module('searchApp')
             ditchSuggestion();
         }
 
+        // if what has changed - reset the data object
+        if (what !== SolrService.term) {
+            SolrService.results['docs'] = [];
+            SolrService.results['start'] = 0;
+        }
         // store the term for use in other places
         SolrService.term = what;
         
@@ -49,11 +54,11 @@ angular.module('searchApp')
             var q = 'name:(' + what + '^10 OR text:' + what + ')';
         }
 
-        q = SolrService.solr + '?q=' + q + getFilters() + '&start=' + start + '&wt=json&json.wrf=JSON_CALLBACK';
+        q = SolrService.solr + '?q=' + q + getFilters() + '&start=' + start + '&rows=' + SolrService.rows + '&wt=json&json.wrf=JSON_CALLBACK';
         log.debug(q);
 
         $http.jsonp(q).then(function(d) {
-            // if we don't get a hit and there are not filters in play, try suggest and fuzzy seearch
+            // if we don't get a hit and there aren't any filters in play, try suggest and fuzzy seearch
             // 
             // Note: when filters are in play we can't re-run search as the set might return no
             //  result and we'll end up in an infinite search loop
@@ -97,15 +102,27 @@ angular.module('searchApp')
             SolrService.results = {
                 'term': SolrService.term,
                 'total': 0,
+                'docs': []
             };
         } else {
+            var docs;
+            if (SolrService.results['docs'] === undefined) {
+                docs = d.data.response.docs;
+            } else {
+                docs = SolrService.results['docs'];
+                for (var i=0; i < d.data.response.docs.length; i++) {
+                    docs.push(d.data.response.docs[i]);
+                }
+            }
+            for (var i=0; i < docs.length; i++) {
+                docs[i]['sequence_no'] = i;
+            }
             SolrService.results = {
                 'term': SolrService.term,
                 'total': d.data.response.numFound,
-                'page_current': d.data.response.start,
-                'page_total': parseInt((d.data.response.numFound / d.data.response.docs.length ) + 1),
-                'docs': d.data.response.docs,
-                'mlt':  d.data.moreLikeThis,
+                'start': parseInt(d.data.responseHeader.params.start),
+                'docs': docs, 
+                //'mlt':  d.data.moreLikeThis,
             }
         }
         $rootScope.$broadcast('search-results-updated');
@@ -123,23 +140,19 @@ angular.module('searchApp')
         $rootScope.$broadcast('search-suggestion-removed');
     }
 
-    function previousPage() {
-        var start = SolrService.results['page_current'] - 1;
-        return search(SolrService.term, start);
-    }
     function nextPage() {
-        var start = SolrService.results['page_current'] + 1;
+        var start = SolrService.results['start'] + SolrService.rows;
         return search(SolrService.term, start);
     }
     function getFacet(facet) {
         var q = SolrService.solr + '?q=*:*&rows=0&facet=true&facet.field=' + facet + '&wt=json&json.wrf=JSON_CALLBACK';
-        log.debug(q);
+        //log.debug(q);
         return $http.jsonp(q);
     }
 
     function facet(facet_field, facet) {
         // iterate over the facets and 
-        //  - add it if it's there 
+        //  - add it if it's not there 
         //  - remove it if it is
         if (SolrService.facets[facet_field] === undefined) {
             SolrService.facets[facet_field] = [ facet ];
@@ -155,34 +168,36 @@ angular.module('searchApp')
             }
         }
 
+        SolrService.results['docs'] = [];
+        SolrService.results['start'] = 0;
         search(SolrService.term, 0, true);
     }
 
     function getFilterObject() {
-        var ands = [];
+        var fq = [];
         for (var f in SolrService.facets) {
-            ands.push(f + ':("' + SolrService.facets[f].join('" OR "') + '")');
+            fq.push(f + ':("' + SolrService.facets[f].join('" OR "') + '")');
         }
-        return ands;
+        return fq;
     }
     function getFilters() {
         // add in the ANDed filters - if any...
-        var ands = getFilterObject().join(' AND ');
-        if (ands !== '') {
-            ands = ' AND ' + ands;
+        var fq = getFilterObject().join('&fq=');
+        if (fq !== '') {
+            fq = '&fq=' + fq;
         }
-        return ands;
+        return fq;
     }
 
     var SolrService = {
         results: {},
         facets: {},
         term: '*',
+        rows: 10,
 
         init: init,
         search: search,
         saveData: saveData,
-        previousPage: previousPage,
         nextPage: nextPage,
         getFacet: getFacet,
         facet: facet,
