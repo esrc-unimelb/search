@@ -1,22 +1,21 @@
 <div class="col-sm-12 col-md-12 col-lg-12">
-    <div ng-switch on="data.type[0]">
+    <div ng-switch on="data.main_type">
         {{data.sequence_no + 1}}.&nbsp;
         <span ng-switch-when="Digital Object"><span class="glyphicon glyphicon-picture"></span> Digital Object</span>
         <span ng-switch-when="Publication"><span class="glyphicon glyphicon-book"></span> Publication</span>
         <span ng-switch-when="Archival Resource"><span class="glyphicon glyphicon-file"></span> Archival Resource</span>
-        <span ng-switch-default><span class="glyphicon glyphicon-certificate"></span> {{data.type[0]}}</span>
+        <span ng-switch-default><span class="glyphicon glyphicon-certificate"></span> {{data.type}}</span>
     </div>
-</div>
-
-<div class="col-sm-12 col-md-12 col-lg-12 lead">
-    <a href="{{data.id}}">{{data.name[0]}}</a>,
-    {{data.date_from | date:'yyyy'}}
-    <span ng-show="data.date_to">- {{data.date_to | date:'yyyy'}}</span>
+    <span class="lead">
+        <a href="{{data.id}}">{{data.name[0]}}</a>,
+        {{data.date_from | date:'yyyy'}}
+        <span ng-show="data.date_to">- {{data.date_to | date:'yyyy'}}</span>
+    </span>
 </div>
 
 <div class="col-sm-12 col-md-12 col-lg-12" collapse="hide_details">
     <hr>
-    <div ng-switch on="data.type[0]">
+    <div ng-switch on="data.main_type">
         <span  ng-switch-when="Digital Object">
             <div class="col-sm-4">
                 <a href="{{data.id}}"><img src="{{data.thumbnail}}"></a>
