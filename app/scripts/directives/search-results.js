@@ -9,6 +9,7 @@ angular.module('searchApp')
           scope.details_active = "active";
           scope.summary_active = "";
           scope.scroll_disabled = true;
+          scope.show_filters = false; 
 
           $rootScope.$on('search-results-updated', function() {
               scope.results = SolrService.results;
@@ -26,12 +27,14 @@ angular.module('searchApp')
 
           scope.site = SolrService.site;
 
+          // show detail_view
           scope.detail_view = function() {
               $rootScope.$broadcast('show-search-results-details');
               scope.details_active = "active";
               scope.summary_active = "";
           }
-          scope.list_view = function() {
+          // show summary view
+          scope.summary_view = function() {
               $rootScope.$broadcast('hide-search-results-details');
               scope.summary_active = "active";
               scope.details_active = "";
@@ -40,6 +43,11 @@ angular.module('searchApp')
           scope.load_next_page = function() {
               scope.scroll_disabled = true;
               SolrService.nextPage();
+          }
+
+          scope.clear_all_filters = function() {
+            SolrService.clearAllFilters();
+
           }
 
       }

@@ -7,7 +7,7 @@
         <span ng-switch-default><span class="glyphicon glyphicon-certificate"></span> {{data.type}}</span>
     </div>
     <span class="lead">
-        <a href="{{data.id}}">{{data.name[0]}}</a>,
+        <a href="{{data.id}}">{{data.name[0]}}<span ng-if="data.binomial_name">, {{data.binomial_name}}</span></a>;
         {{data.date_from | date:'yyyy'}}
         <span ng-show="data.date_to">- {{data.date_to | date:'yyyy'}}</span>
     </span>
@@ -15,6 +15,7 @@
 
 <div class="col-sm-12 col-md-12 col-lg-12" collapse="hide_details">
     <hr>
+    <span ng-if="data.altname">Also known as: {{data.altname.join()}}</span>
     <div ng-switch on="data.main_type">
         <span  ng-switch-when="Digital Object">
             <div class="col-sm-4">

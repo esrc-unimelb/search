@@ -274,6 +274,17 @@ angular.module('searchApp')
         return fq;
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrServic.service:clearAllFilters
+     * @description
+     *   Removes all filters
+     */
+    function clearAllFilters() {
+        SolrService.facets = [];
+        search(SolrService.term, 0, true);
+    }
+
     var SolrService = {
         results: {},
         facets: {},
@@ -286,7 +297,8 @@ angular.module('searchApp')
         nextPage: nextPage,
         getFacet: getFacet,
         facet: facet,
-        getFilterObject: getFilterObject
+        getFilterObject: getFilterObject,
+        clearAllFilters: clearAllFilters
     }
     return SolrService;
   }]);
