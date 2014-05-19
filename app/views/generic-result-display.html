@@ -18,8 +18,10 @@
 </div>
 
 <div class="col-sm-12 col-md-12 col-lg-12" collapse="hide_details">
-    <span ng-if="data.altname"><strong>Also known as:</strong> {{data.altname.join(', ')}}</span>
-    <br/>
+    <span ng-if="data.altname">
+        <strong>Also known as:</strong> {{data.altname.join('; ')}}
+        <br/>
+    </span>
     <br/>
     <div ng-switch on="data.main_type">
         <span  ng-switch-when="Digital Object">
@@ -40,8 +42,14 @@
             {{data.reference}}
         </span>
         <span ng-switch-default>
-            <span ng-if="data.abstract">{{data.abstract | limitTo: 300}}...</span>
-            <span ng-if="!data.abstract">{{data.text[0] | limitTo: 300}}...</span>
+            <span ng-if="data.abstract">
+                {{data.abstract | limitTo: 400}}
+                <span ng-if="data.abstract.length > 400">...</span>
+            </span>
+            <span ng-if="!data.abstract && data.text">
+                {{data.text[0] | limitTo: 400}}
+                <span ng-if="data.text.length > 400">...</span>
+            </span>
         </span>
     </div>
     <small><em><a href="{{data.id}}">{{data.id}}</a></em></small>
