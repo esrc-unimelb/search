@@ -35,7 +35,7 @@
         <!-- end filters and controls -->
     </div>
 
-    <div class="row" infinite-scroll="load_next_page()" infinite-scroll-disabled="scroll_disabled">
+    <div class="row" infinite-scroll="load_next_page()" infinite-scroll-disabled="scroll_disabled" infinite-scroll-distance="3">
         <!-- results panel -->
         <div ng-repeat="doc in results.docs" class="row result-border">
             <generic-result-display ng-model="doc"></generic-result-display>

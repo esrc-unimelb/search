@@ -89,9 +89,9 @@ angular.module('searchApp')
         
         // do we have a phrase or a word?
         if (what.split(' ').length > 1) {
-            var q = 'name:("' + what + '"^10 OR text:"' + what + '")';
+            var q = 'name:("' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
         } else {
-            var q = 'name:(' + what + '^10 OR text:' + what + ')';
+            var q = 'name:(' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
         }
 
         // add in the facet querie filters - if any...

@@ -7,3 +7,20 @@
     padding:0.5em; 
     margin:0.5em;
 }
+
+/* Applied to the title of the entity in the result display */
+.title-styling {
+}
+
+/* Applied to the date of the entity in the result display */
+.title-date-styling {
+}
+
+
+/* If you need to override link colouring 
+a:link    { color: ; }
+a:visited { color: ; }
+a:focus   { color: ; }
+a:hover   { color: ; }
+a:active  { color: ; }
+*/
