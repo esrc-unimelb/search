@@ -20,19 +20,19 @@ module.exports = function (grunt) {
 
     ngdocs: {
         all: ['app/scripts/*/*.js'],
-    },
+      },
 
-    buildcontrol: {
+      buildcontrol: {
         options: {
             dir: 'dist',
             commit: true,
             push: true,
-        },
+          },
         testing: {
             options: {
                 remote: 'git@bitbucket.org:esrc/search.git',
                 branch: 'testing'
-            }
+              }
         },
         production: {
             options: {

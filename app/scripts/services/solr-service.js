@@ -18,7 +18,7 @@ angular.module('searchApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
    
 
-   /** 
+    /** 
     * @ngdoc function 
     * @name SolrService.service:init
     * @description
@@ -39,7 +39,7 @@ angular.module('searchApp')
         SolrService.site = site;
 
         if (deployment === undefined && deployment !== ('production' || 'testing')) {
-            deployment = 'production';
+           deployment = 'production';
         }
         if (site === undefined) {
             log.error("Can't run! No solr_core defined!");
@@ -81,20 +81,21 @@ angular.module('searchApp')
 
         // if what has changed - reset the data object
         if (what !== SolrService.term || start === 0) {
-            SolrService.results['docs'] = [];
-            SolrService.results['start'] = 0;
+            SolrService.results.docs = [];
+            SolrService.results.start = 0;
         }
         // store the term for use in other places
         SolrService.term = what;
         
+        var q;
         // do we have a phrase or a word?
         if (what.split(' ').length > 1) {
-            var q = 'name:("' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
+            q = 'name:("' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
         } else {
-            var q = 'name:(' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
+            q = 'name:(' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
         }
 
-        // add in the facet querie filters - if any...
+        // add in the facet query filters - if any...
         var fq = getFilterObject().join('&fq=');
         if (fq !== '') {
             fq = '&fq=' + fq;
@@ -113,7 +114,7 @@ angular.module('searchApp')
                 // no matches - run a fuzzy search and present the spellcheck options
                 suggest(SolrService.term);
                 if (what.split(' ').length === 1 && what !== '*') {
-                    if (what.substr(-1,1) !== "~") {
+                    if (what.substr(-1,1) !== '~') {
                         search(what + '~', 0, false);
                     } else {
                         search (what, 0, false);
@@ -140,19 +141,20 @@ angular.module('searchApp')
      *  
      */
     function suggest(what) {
+        var q;
         if (what.split(' ').length > 1) {
-            var q = 'name:"' + what + '"';
+            q = 'name:"' + what + '"';
         } else {
-            var q = 'name:' + what + '';
+            q = 'name:' + what + '';
         }
 
         q = SolrService.solr + '?q=' + q + '&rows=0&mlt=off&wt=json&json.wrf=JSON_CALLBACK';
         log.debug(q);
 
         $http.jsonp(q).then(function(d) {
-            SolrService.suggestion =  d.data.spellcheck.suggestions[1]['suggestion'][0];
+            SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
             $rootScope.$broadcast('search-suggestion-available');
-        })
+        });
     }
 
     /**
@@ -175,17 +177,17 @@ angular.module('searchApp')
                 'docs': []
             };
         } else {
-            var docs;
-            if (SolrService.results['docs'] === undefined) {
+            var docs, i;
+            if (SolrService.results.docs === undefined) {
                 docs = d.data.response.docs;
             } else {
-                docs = SolrService.results['docs'];
-                for (var i=0; i < d.data.response.docs.length; i++) {
+                docs = SolrService.results.docs;
+                for (i=0; i < d.data.response.docs.length; i++) {
                     docs.push(d.data.response.docs[i]);
                 }
             }
-            for (var i=0; i < docs.length; i++) {
-                docs[i]['sequence_no'] = i;
+            for (i=0; i < docs.length; i++) {
+                docs[i].sequence_no = i;
             }
             SolrService.results = {
                 'term': SolrService.term,
