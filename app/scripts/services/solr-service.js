@@ -42,7 +42,7 @@ angular.module('searchApp')
            deployment = 'production';
         }
         if (site === undefined) {
-            log.error("Can't run! No solr_core defined!");
+            log.error('Can\'t run! No solr_core defined!');
             return false;
         } else {
             SolrService.solr = conf[deployment] + '/' + site + '/select';
@@ -71,7 +71,6 @@ angular.module('searchApp')
         if (fq === undefined) { fq = ''; }
 
         // set the sort order: wildcard sort ascending, everything else: by score
-        var sort;
         if (what === '*') {
             sort = 'name asc';
         } else {
@@ -90,7 +89,7 @@ angular.module('searchApp')
                 'sort': sort
 
             },
-        }
+        };
         SolrService.q = q;
         return SolrService.q;
     }
@@ -108,15 +107,15 @@ angular.module('searchApp')
      * @param {string} what - The thing to search for. Multiple words get treated
      *  as a phrase.
      * @param {string} start - The result to start at. 
-     * @param {boolean} ditch_suggestion - Whether to delete the spelling 
+     * @param {boolean} ditchSuggestion - Whether to delete the spelling 
      *  suggestion.
      */
-    function search(what, start, ditch_suggestion) {
+    function search(what, start, ditchSuggestion) {
         // should we remove the suggestion
         //   the only time this should be true is when the method is called
         //   from basic-search. Pretty much all other times it will be false
         //   ie. suggestion will be shown
-        if (ditch_suggestion) {
+        if (ditchSuggestion) {
             SolrService.suggestion =  undefined;
             $rootScope.$broadcast('search-suggestion-removed');
         }
@@ -140,7 +139,7 @@ angular.module('searchApp')
             // Note: when filters are in play we can't re-run search as the set might return no
             //  result and we'll end up in an infinite search loop
 
-            if (d.data.response.numFound === 0 && Object.keys(SolrService.facets).length === 0) {
+            if (d.data.response.numFound === 0 && Object.keys(SolrService.filters).length === 0) {
                 // no matches - do a spell check and run a fuzzy search 
                 //  ONLY_IF it's a single word search term
                 if (what.split(' ').length === 1) {
@@ -181,7 +180,7 @@ angular.module('searchApp')
                 'wt': 'json',
                 'json.wrf': 'JSON_CALLBACK'
             }
-        }
+        };
 
         log.debug('Suggest: ');
         log.debug(q);
@@ -222,18 +221,21 @@ angular.module('searchApp')
                 }
             }
             for (i=0; i < docs.length; i++) {
-                docs[i].sequence_no = i;
+                docs[i].sequenceNo = i;
             }
             SolrService.results = {
                 'term': SolrService.term,
                 'total': d.data.response.numFound,
                 'start': parseInt(d.data.responseHeader.params.start),
-                'docs': docs, 
-            }
+                'docs': docs
+            };
         }
         
         // update all facet counts
         updateAllFacetCounts();
+
+        // ensure the details are showing or hiding as required.
+        toggleDetails(undefined);
 
         // notify the result widget that it's time to update
         $rootScope.$broadcast('search-results-updated');
@@ -246,7 +248,7 @@ angular.module('searchApp')
      *  Get the next set of results.
      */
     function nextPage() {
-        var start = SolrService.results['start'] + SolrService.rows;
+        var start = SolrService.results.start + SolrService.rows;
         search(SolrService.term, start);
     }
 
@@ -271,7 +273,7 @@ angular.module('searchApp')
                 }
                 SolrService.facets[k] = f;
                 $rootScope.$broadcast(k+'-facets-updated');
-            })
+            });
         });
     }
 
@@ -286,7 +288,7 @@ angular.module('searchApp')
         // now trigger an update of all facet counts
         angular.forEach(SolrService.facets, function(v, k) {
             SolrService.updateFacetCount(k);
-        })
+        });
     }
 
     /**
@@ -295,32 +297,32 @@ angular.module('searchApp')
      * @description
      *  Add or remove a facet from the filter query object and trigger
      *  a search.
-     * @param {string} facet_field - The facet's field name
+     * @param {string} facetField - The facet's field name
      * @param {string} facet - the value
      */
-    function filterQuery(facet_field, facet) {
+    function filterQuery(facetField, facet) {
         // iterate over the facets and 
         //  - add it if it's not there 
         //  - remove it if it is
         
         // initially - the object will be empty
-        if (SolrService.filters[facet_field] === undefined) {
-            SolrService.filters[facet_field] = [ facet ];
+        if (SolrService.filters[facetField] === undefined) {
+            SolrService.filters[facetField] = [ facet ];
         } else {
             // not on subsequent runs / events
-            if (SolrService.filters[facet_field].indexOf(facet) === -1) {
-                SolrService.filters[facet_field].push(facet);
+            if (SolrService.filters[facetField].indexOf(facet) === -1) {
+                SolrService.filters[facetField].push(facet);
             } else {
-                var idxof = SolrService.filters[facet_field].indexOf(facet);
-                SolrService.filters[facet_field].splice(idxof, 1);
-                if (SolrService.filters[facet_field].length === 0) {
-                    delete SolrService.filters[facet_field];
+                var idxof = SolrService.filters[facetField].indexOf(facet);
+                SolrService.filters[facetField].splice(idxof, 1);
+                if (SolrService.filters[facetField].length === 0) {
+                    delete SolrService.filters[facetField];
                 }
             }
         }
 
-        SolrService.results['docs'] = [];
-        SolrService.results['start'] = 0;
+        SolrService.results.docs = [];
+        SolrService.results.start = 0;
         search(SolrService.term, 0, true);
     }
 
@@ -341,7 +343,7 @@ angular.module('searchApp')
 
     /**
      * @ngdoc function
-     * @name SolrServic.service:clearAllFilters
+     * @name SolrService.service:clearAllFilters
      * @description
      *   Removes all filters
      */
@@ -355,13 +357,30 @@ angular.module('searchApp')
         $rootScope.$broadcast('reset-all-filters');
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:toggleDetails
+     * @description
+     *   Toggle's detail view
+     */
+    function toggleDetails(show) {
+        if (show !== undefined) {
+            SolrService.showDetails = show;
+        }
+        if (SolrService.showDetails === true) {
+            $rootScope.$broadcast('show-search-results-details');
+        } else {
+            $rootScope.$broadcast('hide-search-results-details');
+        }
+    }
+
     var SolrService = {
         results: {},
         facets: {},
         filters: {},
         term: '*',
         rows: 10,
-        i: 0,
+        showDetails: true,
 
         init: init,
         search: search,
@@ -370,7 +389,8 @@ angular.module('searchApp')
         updateFacetCount: updateFacetCount,
         filterQuery: filterQuery,
         getFilterObject: getFilterObject,
-        clearAllFilters: clearAllFilters
-    }
+        clearAllFilters: clearAllFilters,
+        toggleDetails: toggleDetails
+    };
     return SolrService;
   }]);

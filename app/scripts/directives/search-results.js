@@ -6,49 +6,41 @@ angular.module('searchApp')
       templateUrl: 'views/search-results.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
-          scope.details_active = "active";
-          scope.summary_active = "";
-          scope.scroll_disabled = true;
-          scope.show_filters = false; 
+          scope.scrollDisabled = true;
+          scope.showFilters = false;
+          scope.site = SolrService.site;
 
           $rootScope.$on('search-results-updated', function() {
               scope.results = SolrService.results;
               scope.filters = SolrService.getFilterObject();
               if (scope.results.docs.length !== parseInt(scope.results.total)) {
-                scope.scroll_disabled = false;
-              }
-
-              if (scope.details_active === 'active') {
-                $rootScope.$broadcast('show-search-results-details');
-              } else if (scope.summary_active === 'active') {
-                $rootScope.$broadcast('hide-search-results-details');
+                scope.scrollDisabled = false;
               }
           });
 
-          scope.site = SolrService.site;
+          $rootScope.$on('show-search-results-details', function() {
+              scope.summaryActive = '';
+              scope.detailsActive = 'active';
+          });
+          $rootScope.$on('hide-search-results-details', function() {
+              scope.summaryActive = 'active';
+              scope.detailsActive = '';
+          });
 
-          // show detail_view
-          scope.detail_view = function() {
-              $rootScope.$broadcast('show-search-results-details');
-              scope.details_active = "active";
-              scope.summary_active = "";
-          }
-          // show summary view
-          scope.summary_view = function() {
-              $rootScope.$broadcast('hide-search-results-details');
-              scope.summary_active = "active";
-              scope.details_active = "";
-          }
+          // toggle detailView
+          scope.toggleDetails = function(show) {
+              SolrService.toggleDetails(show);
+          };
 
-          scope.load_next_page = function() {
-              scope.scroll_disabled = true;
+          scope.loadNextPage = function() {
+              scope.scrollDisabled = true;
               SolrService.nextPage();
-          }
+          };
 
-          scope.clear_all_filters = function() {
+          scope.clearAllFilters = function() {
             SolrService.clearAllFilters();
 
-          }
+          };
 
       }
     };

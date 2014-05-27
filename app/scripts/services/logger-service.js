@@ -10,7 +10,7 @@ angular.module('searchApp')
   .service('LoggerService', function LoggerService() {
     // AngularJS will instantiate a singleton by calling "new" on this function
     return {
-        log_level: 'ERROR',
+        logLevel: 'ERROR',
 
         /** @ngdoc function
          *  @name LoggerService.service:init
@@ -18,7 +18,7 @@ angular.module('searchApp')
          *      Initialise the level. Default is ERROR.
          */
         init: function(level) {
-            this.log_level = level;
+            this.logLevel = level;
         },
 
         log: function(level, msg) {
@@ -32,7 +32,7 @@ angular.module('searchApp')
          *  @param {string} msg - The message to log
          */
         debug: function(msg) {
-            if (this.log_level === 'DEBUG') {
+            if (this.logLevel === 'DEBUG') {
                 this.log('DEBUG', msg);
             }
         },
@@ -45,7 +45,7 @@ angular.module('searchApp')
          *  @param {string} msg - The message to log
          */
         info: function(msg) {
-            if (this.log_level === 'INFO') {
+            if (this.logLevel === 'INFO') {
                 this.log('INFO', msg);
             }
         },
@@ -58,10 +58,10 @@ angular.module('searchApp')
          *  @param {string} msg - The message to log
          */
         error: function(msg) {
-            if (this.log_level === 'ERROR') {
+            if (this.logLevel === 'ERROR') {
                 this.log('ERROR',  msg);
             }
         },
-    }
+    };
 
   });

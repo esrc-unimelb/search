@@ -1,6 +1,6 @@
 <div class="col-sm-12 col-md-12 col-lg-12">
     <div ng-switch on="data.main_type">
-        {{data.sequence_no + 1}}.&nbsp;
+        {{data.sequenceNo + 1}}.&nbsp;
         <span ng-switch-when="Digital Object"><span class="glyphicon glyphicon-picture"></span> Digital Object</span>
         <span ng-switch-when="Publication"><span class="glyphicon glyphicon-book"></span> Publication</span>
         <span ng-switch-when="Archival Resource"><span class="glyphicon glyphicon-file"></span> Archival Resource</span>
@@ -17,7 +17,7 @@
     </span>
 </div>
 
-<div class="col-sm-12 col-md-12 col-lg-12" collapse="hide_details">
+<div class="col-sm-12 col-md-12 col-lg-12" collapse="hideDetails">
     <span ng-if="data.altname">
         <strong>Also known as:</strong> {{data.altname.join('; ')}}
         <br/>

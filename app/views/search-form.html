@@ -1,9 +1,9 @@
-<div class="row" ng-show="good_to_go" style="margin:0.5em;">
+<div class="row" ng-show="goodToGo" style="margin:0.5em;">
     <div class="row">
         <form role="form" class="">
             <div class="col-md-10 col-sm-10">
                 <div class="form-group">
-                    <input type="text" class="form-control" ng-model="search_box" autofocus>
+                    <input type="text" class="form-control" ng-model="searchBox" autofocus>
                     <p class="help-block">{{help}}</p>
                 </div>
             </div>
@@ -20,7 +20,7 @@
             <div ng-show="suggestion">
                 <p>Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?</p>
             </div>
-            <div ng-hide="good_to_go">
+            <div ng-hide="goodToGo">
                 <p>The search form can't be enabled as the parameter "site" is undefined.</p>
             </div>
         </div>

@@ -12,30 +12,30 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
           // initialise the service and ensure we stop if it's broken
-          scope.good_to_go = SolrService.init(scope.deployment, scope.site);
+          scope.goodToGo = SolrService.init(scope.deployment, scope.site);
 
           $rootScope.$on('search-suggestion-available', function() {
               scope.suggestion = SolrService.suggestion;
-          })
+          });
           $rootScope.$on('search-suggestion-removed', function() {
               scope.suggestion = SolrService.suggestion;
-          })
+          });
 
           scope.search = function() {
-              if (scope.search_box === undefined || scope.search_box === '') {
-                  scope.search_box = '*';
+              if (scope.searchBox === undefined || scope.searchBox === '') {
+                  scope.searchBox = '*';
               }
               // args:
-              // - what: scope.search_box (the search term
+              // - what: scope.searchBox (the search term
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
-              SolrService.search(scope.search_box, 0, true);
-          }
+              SolrService.search(scope.searchBox, 0, true);
+          };
 
           scope.setSuggestion = function(suggestion) {
-              scope.search_box = suggestion;
+              scope.searchBox = suggestion;
               scope.search();
-          }
+          };
       },
     };
   }]);

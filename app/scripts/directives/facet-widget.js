@@ -54,14 +54,14 @@ angular.module('searchApp')
                     scope.facets[i][2] = false;
                     scope.selected = [];
                 }
-            })
+            });
 
             SolrService.updateFacetCount(scope.facetField);
 
-            scope.show_all = function() {
+            scope.showAll = function() {
                 scope.facets = SolrService.facets[scope.facetField];
                 scope.moreResults = false;
-            }
+            };
         
             scope.facet = function(facet) {
                 if (scope.selected.indexOf(facet) === -1) {
@@ -75,7 +75,7 @@ angular.module('searchApp')
                         scope.facets[i][2] = true;
                     }
                 }
-            }
+            };
 
       }
     };

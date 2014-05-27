@@ -19,13 +19,13 @@ angular.module('searchApp')
           data: '=ngModel'
       },
       link: function postLink(scope, element, attrs) {
-          scope.hide_details = false;
+          scope.hideDetails = false;
           $rootScope.$on('show-search-results-details', function() {
-              scope.hide_details = false;
-          })
+              scope.hideDetails = false;
+          });
           $rootScope.$on('hide-search-results-details', function() {
-              scope.hide_details = true;
-          })
+              scope.hideDetails = true;
+          });
       }
     };
   }]);
