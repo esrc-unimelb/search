@@ -1,6 +1,6 @@
 'use strict';
 
-/** 
+/**
  * @ngdoc service
  * @name SolrService
  * @description 
@@ -53,6 +53,48 @@ angular.module('searchApp')
         return true;
     }
 
+
+    function getQuery(start) {
+        var q, sort;
+
+        var what = SolrService.term;
+
+        // are we doing a wildcard search? or a single term search fuzzy search?
+        if ( what === '*' || what.substr(-1,1) === '~') {
+            q = '(name:' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
+        } else {
+            q = '(name:"' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
+        }
+
+        // add in the facet query filters - if any...
+        var fq = getFilterObject().join(' AND ');
+        if (fq === undefined) { fq = ''; }
+
+        // set the sort order: wildcard sort ascending, everything else: by score
+        var sort;
+        if (what === '*') {
+            sort = 'name asc';
+        } else {
+            sort = '';
+        }
+
+        q = {
+            'url': SolrService.solr,
+            'params': {
+                'q': q,
+                'start': start,
+                'rows': SolrService.rows,
+                'wt': 'json',
+                'json.wrf': 'JSON_CALLBACK',
+                'fq': fq,
+                'sort': sort
+
+            },
+        }
+        SolrService.q = q;
+        return SolrService.q;
+    }
+
     /**
      * @ngdoc function
      * @name SolrService.service:search
@@ -84,43 +126,32 @@ angular.module('searchApp')
             SolrService.results.docs = [];
             SolrService.results.start = 0;
         }
+
         // store the term for use in other places
         SolrService.term = what;
-        
-        var q;
-        // do we have a phrase or a word?
-        if (what.split(' ').length > 1) {
-            q = 'name:("' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
-        } else {
-            q = 'name:(' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
-        }
 
-        // add in the facet query filters - if any...
-        var fq = getFilterObject().join('&fq=');
-        if (fq !== '') {
-            fq = '&fq=' + fq;
-        }
-
-        // construct the URL
-        q = SolrService.solr + '?q=' + q + fq + '&start=' + start + '&rows=' + SolrService.rows + '&wt=json&json.wrf=JSON_CALLBACK';
+        // get the query object
+        var q = getQuery(start);
         log.debug(q);
 
-        $http.jsonp(q).then(function(d) {
+        $http.jsonp(SolrService.solr, q).then(function(d) {
             // if we don't get a hit and there aren't any filters in play, try suggest and fuzzy seearch
             // 
             // Note: when filters are in play we can't re-run search as the set might return no
             //  result and we'll end up in an infinite search loop
+
             if (d.data.response.numFound === 0 && Object.keys(SolrService.facets).length === 0) {
-                // no matches - run a fuzzy search and present the spellcheck options
-                suggest(SolrService.term);
-                if (what.split(' ').length === 1 && what !== '*') {
-                    if (what.substr(-1,1) !== '~') {
-                        search(what + '~', 0, false);
-                    } else {
-                        search (what, 0, false);
+                // no matches - do a spell check and run a fuzzy search 
+                //  ONLY_IF it's a single word search term
+                if (what.split(' ').length === 1) {
+                    suggest(SolrService.term);
+                    if (what !== '*') {
+                        if (what.substr(-1,1) !== '~') {
+                            search(what + '~', 0, false);
+                        }
                     }
                 } else {
-                    // not a term but a phrase; wipe the results; just leave the suggestion
+                    // a phrase; wipe the results - can't do anything sensible
                     saveData(undefined);
                 }
             } else {
@@ -142,16 +173,20 @@ angular.module('searchApp')
      */
     function suggest(what) {
         var q;
-        if (what.split(' ').length > 1) {
-            q = 'name:"' + what + '"';
-        } else {
-            q = 'name:' + what + '';
+        q = {
+            'url': SolrService.solr,
+            'params': {
+                'q': 'name:' + what,
+                'rows': 0,
+                'wt': 'json',
+                'json.wrf': 'JSON_CALLBACK'
+            }
         }
 
-        q = SolrService.solr + '?q=' + q + '&rows=0&mlt=off&wt=json&json.wrf=JSON_CALLBACK';
+        log.debug('Suggest: ');
         log.debug(q);
 
-        $http.jsonp(q).then(function(d) {
+        $http.jsonp(SolrService.solr, q).then(function(d) {
             SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
             $rootScope.$broadcast('search-suggestion-available');
         });
@@ -194,9 +229,13 @@ angular.module('searchApp')
                 'total': d.data.response.numFound,
                 'start': parseInt(d.data.responseHeader.params.start),
                 'docs': docs, 
-                //'mlt':  d.data.moreLikeThis,
             }
         }
+        
+        // update all facet counts
+        updateAllFacetCounts();
+
+        // notify the result widget that it's time to update
         $rootScope.$broadcast('search-results-updated');
     }
 
@@ -213,45 +252,69 @@ angular.module('searchApp')
 
     /**
      * @ngdoc function
-     * @name SolrService.service:getFacet
+     * @name SolrService.service:updateFacetCount
      * @description
      *  Trigger a facet search returning a promise for use by the caller.
      * @param {string} facet - The field to facet on
-     * @returns {promise} The promise from the http call
-     * @example
-     *  SolrService.getFacet(scope.facetField).then(function(d) {
-     *   //do something with the data
-     *  }
      */
-    function getFacet(facet) {
-        var q = SolrService.solr + '?q=*:*&rows=0&facet=true&facet.field=' + facet + '&wt=json&json.wrf=JSON_CALLBACK';
-        //log.debug(q);
-        return $http.jsonp(q);
+    function updateFacetCount(facet) {
+        var q = getQuery(0);
+        q.params.facet = true;
+        q.params['facet.field'] = facet;
+        q.params.rows = 0;
+        log.debug(q);
+        $http.jsonp(SolrService.solr, q).then(function(d) {
+            angular.forEach(d.data.facet_counts.facet_fields, function(v, k) {
+                var f = [];
+                for (var i = 0; i < v.length; i += 2) {
+                    f.push([ v[i], v[i+1], false ]);
+                }
+                SolrService.facets[k] = f;
+                $rootScope.$broadcast(k+'-facets-updated');
+            })
+        });
+    }
+
+    /*
+     * @ngdoc function
+     * @name SolrService.service:updateAllFacetCounts
+     * @description
+     *  Iterate over the facets and update them all relative to the 
+     *  current context.
+     */
+    function updateAllFacetCounts() {
+        // now trigger an update of all facet counts
+        angular.forEach(SolrService.facets, function(v, k) {
+            SolrService.updateFacetCount(k);
+        })
     }
 
     /**
      * @ngdoc function
-     * @name SolrService.service:facet
+     * @name SolrService.service:filterQuery
      * @description
-     *  Add or remove a facet from the facet query object and trigger
+     *  Add or remove a facet from the filter query object and trigger
      *  a search.
      * @param {string} facet_field - The facet's field name
      * @param {string} facet - the value
      */
-    function facet(facet_field, facet) {
+    function filterQuery(facet_field, facet) {
         // iterate over the facets and 
         //  - add it if it's not there 
         //  - remove it if it is
-        if (SolrService.facets[facet_field] === undefined) {
-            SolrService.facets[facet_field] = [ facet ];
+        
+        // initially - the object will be empty
+        if (SolrService.filters[facet_field] === undefined) {
+            SolrService.filters[facet_field] = [ facet ];
         } else {
-            if (SolrService.facets[facet_field].indexOf(facet) === -1) {
-                SolrService.facets[facet_field].push(facet);
+            // not on subsequent runs / events
+            if (SolrService.filters[facet_field].indexOf(facet) === -1) {
+                SolrService.filters[facet_field].push(facet);
             } else {
-                var idxof = SolrService.facets[facet_field].indexOf(facet);
-                SolrService.facets[facet_field].splice(idxof, 1);
-                if (SolrService.facets[facet_field].length === 0) {
-                    delete SolrService.facets[facet_field];
+                var idxof = SolrService.filters[facet_field].indexOf(facet);
+                SolrService.filters[facet_field].splice(idxof, 1);
+                if (SolrService.filters[facet_field].length === 0) {
+                    delete SolrService.filters[facet_field];
                 }
             }
         }
@@ -270,8 +333,8 @@ angular.module('searchApp')
      */
     function getFilterObject() {
         var fq = [];
-        for (var f in SolrService.facets) {
-            fq.push(f + ':("' + SolrService.facets[f].join('" OR "') + '")');
+        for (var f in SolrService.filters) {
+            fq.push(f + ':("' + SolrService.filters[f].join('" OR "') + '")');
         }
         return fq;
     }
@@ -283,22 +346,29 @@ angular.module('searchApp')
      *   Removes all filters
      */
     function clearAllFilters() {
-        SolrService.facets = [];
+        SolrService.filters = [];
+        
+        // update the search
         search(SolrService.term, 0, true);
+
+        // tell all the filters to reset
+        $rootScope.$broadcast('reset-all-filters');
     }
 
     var SolrService = {
         results: {},
         facets: {},
+        filters: {},
         term: '*',
         rows: 10,
+        i: 0,
 
         init: init,
         search: search,
         saveData: saveData,
         nextPage: nextPage,
-        getFacet: getFacet,
-        facet: facet,
+        updateFacetCount: updateFacetCount,
+        filterQuery: filterQuery,
         getFilterObject: getFilterObject,
         clearAllFilters: clearAllFilters
     }
