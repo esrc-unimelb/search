@@ -11,7 +11,7 @@
  * @param {expression} data - The result data.
  */
 angular.module('searchApp')
-  .directive('genericResultDisplay', [ '$rootScope', function ($rootScope) {
+  .directive('genericResultDisplay', [ '$rootScope', 'SolrService', function ($rootScope, SolrService) {
     return {
       templateUrl: 'views/generic-result-display.html',
       restrict: 'E',
@@ -19,7 +19,8 @@ angular.module('searchApp')
           data: '=ngModel'
       },
       link: function postLink(scope, element, attrs) {
-          scope.hideDetails = false;
+          scope.hideDetails = SolrService.hideDetails;
+
           $rootScope.$on('show-search-results-details', function() {
               scope.hideDetails = false;
           });

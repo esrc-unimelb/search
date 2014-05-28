@@ -6,10 +6,12 @@ angular.module('searchApp')
       templateUrl: 'views/search-results.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
-          scope.height = $window.innerHeight - 200;
+          scope.height = $window.innerHeight - 250;
           scope.scrollDisabled = true;
           scope.showFilters = false;
           scope.site = SolrService.site;
+          scope.summaryAcrive = '';
+          scope.detailsActive = 'active';
 
           $rootScope.$on('search-results-updated', function() {
               scope.results = SolrService.results;

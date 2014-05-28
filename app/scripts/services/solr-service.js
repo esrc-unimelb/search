@@ -240,9 +240,6 @@ angular.module('searchApp')
         // update all facet counts
         updateAllFacetCounts();
 
-        // ensure the details are showing or hiding as required.
-        toggleDetails(undefined);
-
         // notify the result widget that it's time to update
         $rootScope.$broadcast('search-results-updated');
     }
@@ -370,13 +367,14 @@ angular.module('searchApp')
      *   Toggle's detail view
      */
     function toggleDetails(show) {
+        console.log('toggle: ', show);
         if (show !== undefined) {
-            SolrService.showDetails = show;
+            SolrService.hideDetails = show;
         }
-        if (SolrService.showDetails === true) {
-            $rootScope.$broadcast('show-search-results-details');
-        } else {
+        if (SolrService.hideDetails === true) {
             $rootScope.$broadcast('hide-search-results-details');
+        } else {
+            $rootScope.$broadcast('show-search-results-details');
         }
     }
 
@@ -399,7 +397,7 @@ angular.module('searchApp')
         rows: 10,
         sort: undefined,
         resultSort: undefined,
-        showDetails: true,
+        hideDetails: false,
 
         init: init,
         search: search,

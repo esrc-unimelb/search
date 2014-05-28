@@ -5,8 +5,7 @@ angular.module('searchApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'ui.bootstrap',
-  'infinite-scroll'
+  'ui.bootstrap'
 ])
   .config(function ($routeProvider) {
     $routeProvider
