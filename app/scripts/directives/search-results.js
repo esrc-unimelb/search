@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchResults', [ '$rootScope', 'SolrService', function ($rootScope, SolrService) {
+  .directive('searchResults', [ '$rootScope', '$window', 'SolrService', function ($rootScope, $window, SolrService) {
     return {
       templateUrl: 'views/search-results.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
+          scope.height = $window.innerHeight - 200;
           scope.scrollDisabled = true;
           scope.showFilters = false;
           scope.site = SolrService.site;
