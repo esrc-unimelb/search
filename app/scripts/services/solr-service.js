@@ -71,11 +71,17 @@ angular.module('searchApp')
         if (fq === undefined) { fq = ''; }
 
         // set the sort order: wildcard sort ascending, everything else: by score
-        if (what === '*') {
-            sort = 'name asc';
+        if (SolrService.sort === undefined) {
+            if (what === '*') {
+                sort = 'name asc';
+            } else {
+                sort = 'score desc';
+            }
         } else {
-            sort = '';
+            sort = SolrService.sort;
         }
+        SolrService.resultSort = sort;
+        console.log('Sort by: ', sort);
 
         q = {
             'url': SolrService.solr,
@@ -374,12 +380,25 @@ angular.module('searchApp')
         }
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:reSort
+     * @description
+     *  Re-sort the result set - this triggers a re-search with
+     *  the updated sort order.
+     */
+    function reSort() {
+        search(SolrService.term, 0)
+    }
+
     var SolrService = {
         results: {},
         facets: {},
         filters: {},
         term: '*',
         rows: 10,
+        sort: undefined,
+        resultSort: undefined,
         showDetails: true,
 
         init: init,
@@ -390,7 +409,8 @@ angular.module('searchApp')
         filterQuery: filterQuery,
         getFilterObject: getFilterObject,
         clearAllFilters: clearAllFilters,
-        toggleDetails: toggleDetails
+        toggleDetails: toggleDetails,
+        reSort: reSort
     };
     return SolrService;
   }]);

@@ -29,7 +29,7 @@ angular.module('searchApp')
               // - what: scope.searchBox (the search term
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
-              SolrService.search(scope.searchBox, 0, true);
+              SolrService.search(scope.searchBox, 0, undefined, true);
           };
 
           scope.setSuggestion = function(suggestion) {
