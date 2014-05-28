@@ -55,7 +55,7 @@
             </div>
             -->
         </div>
-        <button type="button" class="btn btn-sm btn-default" ng-click="loadNextPage()">
+        <button type="button" class="btn btn-sm btn-default" ng-click="loadNextPage()" ng-if="results.docs.length < results.total">
             load more results
         </button>
         <!-- end results panel -->

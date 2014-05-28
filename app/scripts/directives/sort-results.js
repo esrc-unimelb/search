@@ -6,6 +6,7 @@ angular.module('searchApp')
       templateUrl: 'views/sort-results.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
+          scope.sortBy = SolrService.resultSort;
 
           $rootScope.$on('search-results-updated', function() {
             scope.sortBy = SolrService.resultSort;

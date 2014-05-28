@@ -6,13 +6,15 @@ angular.module('searchApp')
       templateUrl: 'views/search-results.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
+
+          /* Initialise the widget / defaults */
           scope.height = $window.innerHeight - 250;
-          scope.scrollDisabled = true;
           scope.showFilters = false;
           scope.site = SolrService.site;
-          scope.summaryAcrive = '';
+          scope.summaryActive = '';
           scope.detailsActive = 'active';
 
+          /* handle data updates */
           $rootScope.$on('search-results-updated', function() {
               scope.results = SolrService.results;
               scope.filters = SolrService.getFilterObject();
@@ -21,6 +23,7 @@ angular.module('searchApp')
               }
           });
 
+          /* handle summary / detail view toggle */
           $rootScope.$on('show-search-results-details', function() {
               scope.summaryActive = '';
               scope.detailsActive = 'active';
@@ -30,19 +33,17 @@ angular.module('searchApp')
               scope.detailsActive = '';
           });
 
-          // toggle detailView
+          /* button methods */
           scope.toggleDetails = function(show) {
               SolrService.toggleDetails(show);
           };
 
           scope.loadNextPage = function() {
-              scope.scrollDisabled = true;
               SolrService.nextPage();
           };
 
           scope.clearAllFilters = function() {
             SolrService.clearAllFilters();
-
           };
 
       }
