@@ -1,4 +1,5 @@
 <div class="row" ng-if="results" style="margin:0.5em;">
+    <div class="row"><date-range-graph></date-range-graph></div>
     <div class="row">
         <!-- header -->
         <div class="col-sm-12 col-md-12 col-lg-12">
@@ -40,7 +41,7 @@
         <!-- end filters and controls -->
     </div>
 
-    <div class="row clearfix" style="height: {{height}}px; overflow: auto; margin: 0.5em;">
+    <div class="row clearfix" style="height: {{height}}px; overflow: auto; margin-top: 0.5em;">
         <!-- results panel -->
         <div ng-repeat="doc in results.docs" class="row result-border">
             <generic-result-display ng-model="doc"></generic-result-display>
