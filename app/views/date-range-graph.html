@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+     <h4 class="text-center">Date facets (by decade) for records with a start date recorded.</h4>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+     <h4 class="text-center">Date facets (by decade) for records with an end date recorded.</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <nvd3-line-chart data="startDateFacets" showXAxis="true" interactive="true"
+            tooltips="true"></nvd3-line-chart>
+            <!-- tooltipcontent="toolTipContentFunction()" x="selection()" -->
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <nvd3-line-chart data="endDateFacets" showXAxis="true" interactive="true"
+            tooltips="true"></nvd3-line-chart>
+            <!-- tooltipcontent="toolTipContentFunction()" x="selection()" -->
+    </div>
+</div>
