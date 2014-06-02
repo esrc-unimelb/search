@@ -14,10 +14,11 @@ angular.module('searchApp')
               for (var i=0; i < a.length; i++) {
                   var s = parseInt(a[i][0]);
                   var e = parseInt(a[i][0]) + 10;
+                  var d = parseInt(a[i][0]) + 9;
                   var d = {
                       'start': s,
                       'end': e,
-                      'label': s + ' - ' + e,
+                      'label': s + ' - ' + d,
                   }
                   if (a[i][1] !== 0 && ! scope.facets[a[i][0]]) {
                       scope.facets[a[i][0]] = d;
@@ -32,7 +33,7 @@ angular.module('searchApp')
                   var d = {
                       'start': s,
                       'end': e,
-                      'label': s + ' - ' + e,
+                      'label': s + ' - ' + d,
                   }
                   if (a[i][1] !== 0 && ! scope.facets[a[i][0]]) {
                       scope.facets[a[i][0]] = d;
