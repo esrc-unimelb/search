@@ -23,7 +23,6 @@ angular.module('searchApp')
             label: '@'
         },
         link: function postLink(scope, element, attrs) {
-            scope.isCollapsed = true;
             scope.displayLimit = 8;
             scope.selected = [];
 
