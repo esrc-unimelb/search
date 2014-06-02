@@ -68,12 +68,14 @@ angular.module('searchApp')
 
         // add in the facet query filters - if any...
         var fq = getFilterObject().join(' AND ');
-        if (fq === undefined) { fq = ''; }
+        if (fq === undefined) {
+            fq = '';
+        }
 
         // set the sort order: wildcard sort ascending, everything else: by score
         if (SolrService.sort === undefined) {
             if (what === '*') {
-                sort = 'name asc';
+                sort = 'name_sort asc';
             } else {
                 sort = 'score desc';
             }
@@ -81,7 +83,6 @@ angular.module('searchApp')
             sort = SolrService.sort;
         }
         SolrService.resultSort = sort;
-        console.log('Sort by: ', sort);
 
         q = {
             'url': SolrService.solr,
@@ -331,6 +332,34 @@ angular.module('searchApp')
 
     /**
      * @ngdoc function
+     * @name SolrService.service:filterDateQuery
+     * @description
+     *  Add or remove a date facet from the filter query object and trigger
+     *  a search.
+     * @param {string} facet
+     */
+    function filterDateQuery(facet) {
+        var facetLowerBound, facetUpperBound, df;
+        facetLowerBound = facet;
+        facetUpperBound = parseInt(facet) + 9;
+
+        if (! SolrService.dateFilters[facetLowerBound]) {
+            df = {
+                'from': facetLowerBound + '-01-01T00:00:00Z',
+                'to': facetUpperBound + '-12-31T23:59:59Z',
+            };
+            SolrService.dateFilters[facetLowerBound] = df;
+        } else {
+            delete SolrService.dateFilters[facetLowerBound];
+        }
+
+        SolrService.results.docs = [];
+        SolrService.results.start = 0;
+        search(SolrService.term, 0, true);
+    }
+
+    /**
+     * @ngdoc function
      * @name SolrService.service:getFilterObject
      * @description
      *  Return an array of filter queries
@@ -338,8 +367,24 @@ angular.module('searchApp')
      */
     function getFilterObject() {
         var fq = [];
-        for (var f in SolrService.filters) {
+        var f;
+        for (f in SolrService.filters) {
             fq.push(f + ':("' + SolrService.filters[f].join('" OR "') + '")');
+        }
+
+        var dfq = [];
+        for (f in SolrService.dateFilters) {
+            var v = SolrService.dateFilters[f];
+            var query = '(date_from:[' + v.from + ' TO ' + v.to + ']';
+            query += ' OR ';
+            query += 'date_to:[' + v.from + ' TO ' + v.to + '])';
+            dfq.push(query);
+        }
+
+        if (fq.length > 0 && dfq.length > 0) {
+            fq = fq.concat([dfq.join(' OR ')]);
+        } else if (dfq.length > 0) {
+            fq = [dfq.join(' OR ')];
         }
         return fq;
     }
@@ -351,7 +396,8 @@ angular.module('searchApp')
      *   Removes all filters
      */
     function clearAllFilters() {
-        SolrService.filters = [];
+        SolrService.filters = {};
+        SolrService.dateFilters = {};
         
         // update the search
         search(SolrService.term, 0, true);
@@ -367,7 +413,6 @@ angular.module('searchApp')
      *   Toggle's detail view
      */
     function toggleDetails(show) {
-        console.log('toggle: ', show);
         if (show !== undefined) {
             SolrService.hideDetails = show;
         }
@@ -386,13 +431,89 @@ angular.module('searchApp')
      *  the updated sort order.
      */
     function reSort() {
-        search(SolrService.term, 0)
+        search(SolrService.term, 0);
     }
+
+    /**
+     * @ngdoc function
+     * @name SolrService.service:dateOuterBounds
+     * @description
+     *  Will determine the outer date bounds of the current context
+     *   and store them within the object
+     */
+    function dateOuterBounds() {
+        var a, b;
+        a = getQuery(0);
+        a.params.rows = 1;
+        a.params.sort = 'exist_from asc';
+        $http.jsonp(SolrService.solr, a).then(function(d) {
+            SolrService.dateStartBoundary = d.data.response.docs[0].exist_from;
+            $rootScope.$broadcast('date-boundary-start-found');
+        });
+
+        b = getQuery(0);
+        b.params.rows = 1;
+        b.params.sort = 'exist_from desc';
+        $http.jsonp(SolrService.solr, b).then(function(d) {
+            SolrService.dateEndBoundary = d.data.response.docs[0].exist_from;
+            $rootScope.$broadcast('date-boundary-end-found');
+        });
+    }
+
+    function compileDateFacets() {
+        var a, b;
+        a = getQuery(0);
+        a.params.rows = 0;
+        a.params.facet = true;
+        a.params['facet.range'] = 'date_from';
+        a.params['facet.range.gap'] = '+10YEARS';
+
+        // round the start date down to the decade boundary
+        var d;
+        d = SolrService.dateStartBoundary.split('-')[0];
+        d = d - d.substr(3,1);
+
+        a.params['facet.range.start'] = d + '-01-01T00:00:00Z';
+        a.params['facet.range.end'] = SolrService.dateEndBoundary;
+
+        $http.jsonp(SolrService.solr, a).then(function(d) {
+            var counts = d.data.facet_counts.facet_ranges.date_from.counts;
+
+            var i, df;
+            df = [];
+            for (i=0; i < counts.length; i+=2) {
+                df.push([counts[i].split('-')[0], counts[i+1]]);
+            }
+            SolrService.startDateFacets = [ { 'key': '', 'values': df } ];
+            $rootScope.$broadcast('start-date-facet-data-ready');
+        });
+
+        b = getQuery();
+        b.params.rows = 0;
+        b.params.facet = true;
+        b.params['facet.range'] = 'date_to';
+        b.params['facet.range.gap'] = '+10YEARS';
+        b.params['facet.range.start'] = d + '-01-01T00:00:00Z';
+        b.params['facet.range.end'] = SolrService.dateEndBoundary;
+        $http.jsonp(SolrService.solr, b).then(function(d) {
+            var counts = d.data.facet_counts.facet_ranges.date_to.counts;
+
+            var i, df;
+            df = [];
+            for (i=0; i < counts.length; i+=2) {
+                df.push([counts[i].split('-')[0], counts[i+1]]);
+            }
+            SolrService.endDateFacets = [ { 'key': '', 'values': df } ];
+            $rootScope.$broadcast('end-date-facet-data-ready');
+        });
+    }
+
 
     var SolrService = {
         results: {},
         facets: {},
         filters: {},
+        dateFilters: {},
         term: '*',
         rows: 10,
         sort: undefined,
@@ -406,9 +527,12 @@ angular.module('searchApp')
         updateFacetCount: updateFacetCount,
         filterQuery: filterQuery,
         getFilterObject: getFilterObject,
+        filterDateQuery: filterDateQuery,
         clearAllFilters: clearAllFilters,
         toggleDetails: toggleDetails,
-        reSort: reSort
+        reSort: reSort,
+        dateOuterBounds: dateOuterBounds,
+        compileDateFacets: compileDateFacets,
     };
     return SolrService;
   }]);
