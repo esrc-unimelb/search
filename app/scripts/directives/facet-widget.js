@@ -20,9 +20,14 @@ angular.module('searchApp')
         restrict: 'E',
         scope: {
             facetField: '@',
-            label: '@'
+            label: '@',
+            join: '@'
         },
         link: function postLink(scope, element, attrs) {
+            if (scope.join === undefined) { 
+                scope.join = 'OR';
+            }
+            SolrService.filterUnion[scope.facetField] = scope.join;
             scope.displayLimit = 8;
             scope.selected = [];
 

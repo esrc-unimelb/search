@@ -8,47 +8,60 @@ angular.module('searchApp')
       link: function postLink(scope, element, attrs) {
 
           scope.facets = {};
+          scope.selected = [];
+
+          $rootScope.$on('reset-date-facets', function() {
+              scope.facets = {};
+          });
 
           $rootScope.$on('start-date-facet-data-ready', function() {
               var a = SolrService.startDateFacets[0].values;
-              for (var i=0; i < a.length; i++) {
-                  var s = parseInt(a[i][0]);
-                  var e = parseInt(a[i][0]) + 10;
-                  var d = parseInt(a[i][0]) + 9;
-                  var d = {
-                      'start': s,
-                      'end': e,
-                      'label': s + ' - ' + d,
-                  }
-                  if (a[i][1] !== 0 && ! scope.facets[a[i][0]]) {
-                      scope.facets[a[i][0]] = d;
-                  }
-              }
+              updateFacets(a);
+              updateSelections();
           });
           $rootScope.$on('end-date-facet-data-ready', function() {
               var a = SolrService.endDateFacets[0].values;
-              for (var i=0; i < a.length; i++) {
-                  var s = parseInt(a[i][0]);
-                  var e = parseInt(a[i][0]) + 10;
-                  var d = {
-                      'start': s,
-                      'end': e,
-                      'label': s + ' - ' + d,
-                  }
-                  if (a[i][1] !== 0 && ! scope.facets[a[i][0]]) {
-                      scope.facets[a[i][0]] = d;
-                  }
-              }
+              updateFacets(a);
+              updateSelections();
           });
 
           $rootScope.$on('reset-all-filters', function() {
-              for (var f in scope.facets) {
-                  scope.facets[f].checked = false;
-              }
+              scope.selected = [];
+              updateSelections();
           });
+
+          var updateFacets = function(data) {
+              for (var i=0; i < data.length; i++) {
+                  var s = parseInt(data[i][0]);
+                  var e = parseInt(data[i][0]) + 10;
+                  var v = parseInt(data[i][0]) + 9;
+                  var d = {
+                      'start': s,
+                      'end': e,
+                      'label': s + ' - ' + v,
+                  }
+                  if (data[i][1] !== 0 && ! scope.facets[data[i][0]]) {
+                      scope.facets[data[i][0]] = d;
+                  }
+              }
+          }
+          var updateSelections = function() {
+              for (var f in scope.facets) {
+                  if (scope.selected.indexOf(parseInt(f)) !== -1) {
+                      scope.facets[f].checked = true;
+                  } else {
+                      scope.facets[f].checked = false;
+                  }
+              }
+          };
 
           scope.facet = function(facet) {
               SolrService.filterDateQuery(facet);
+              if (scope.selected.indexOf(facet) === -1) {
+                  scope.selected.push(facet);
+              } else {
+                  scope.selected.splice(scope.selected.indexOf(facet), 1);
+              }
           }
 
 

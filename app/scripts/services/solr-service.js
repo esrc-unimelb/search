@@ -53,7 +53,6 @@ angular.module('searchApp')
         return true;
     }
 
-
     function getQuery(start) {
         var q, sort;
 
@@ -370,15 +369,16 @@ angular.module('searchApp')
         var fq = [];
         var f;
         for (f in SolrService.filters) {
-            fq.push(f + ':("' + SolrService.filters[f].join('" OR "') + '")');
+            var j = SolrService.filterUnion[f];
+            fq.push(f + ':("' + SolrService.filters[f].join('" ' + j + ' "') + '")');
         }
 
         var dfq = [];
         for (f in SolrService.dateFilters) {
             var v = SolrService.dateFilters[f];
-            var query = '(date_to:[' + v.from + ' TO ' + SolrService.dateEndBoundary + ']';
+            var query = '(exist_to:[' + v.from + ' TO ' + SolrService.dateEndBoundary + ']';
             query += ' AND ';
-            query += 'date_from:[' + SolrService.dateStartBoundary + ' TO ' + v.to + '])';
+            query += 'exist_from:[' + SolrService.dateStartBoundary + ' TO ' + v.to + '])';
             dfq.push(query);
         }
 
@@ -454,9 +454,9 @@ angular.module('searchApp')
 
         b = getQuery(0);
         b.params.rows = 1;
-        b.params.sort = 'exist_from desc';
+        b.params.sort = 'exist_to desc';
         $http.jsonp(SolrService.solr, b).then(function(d) {
-            SolrService.dateEndBoundary = d.data.response.docs[0].exist_from;
+            SolrService.dateEndBoundary = d.data.response.docs[0].exist_to;
             $rootScope.$broadcast('date-boundary-end-found');
         });
     }
@@ -516,6 +516,7 @@ angular.module('searchApp')
         results: {},
         facets: {},
         filters: {},
+        filterUnion: {},
         dateFilters: {},
         term: '*',
         rows: 10,

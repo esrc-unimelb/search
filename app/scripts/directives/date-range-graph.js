@@ -10,40 +10,37 @@ angular.module('searchApp')
           scope.startDateBoundary = undefined;
           scope.endDateBoundary = undefined;
 
-          $rootScope.$on('start-date-boundary-start-found', function() {
-              if (SolrService.startDateEndBoundary !== undefined) {
-                  SolrService.compileStartDateFacets();
+          $rootScope.$on('date-boundary-start-found', function() {
+              if (SolrService.dateEndBoundary !== undefined) {
+                  SolrService.compileDateFacets();
               }
 
           });
-          $rootScope.$on('start-date-boundary-end-found', function() {
-              if (SolrService.startDateStartBoundary !== undefined) {
-                    SolrService.compileStartDateFacets();
+          $rootScope.$on('date-boundary-end-found', function() {
+              if (SolrService.dateStartBoundary !== undefined) {
+                    SolrService.compileDateFacets();
               }
           });
 
-
-          $rootScope.$on('end-date-boundary-start-found', function() {
-              if (SolrService.endDateEndBoundary !== undefined) {
-                  SolrService.compileEndDateFacets();
-              }
-
-          });
-          $rootScope.$on('end-date-boundary-end-found', function() {
-              if (SolrService.endDateStartBoundary !== undefined) {
-                    SolrService.compileEndDateFacets();
-              }
-          });
 
           $rootScope.$on('start-date-facet-data-ready', function() {
-              scope.startDateFacets = SolrService.startDateFacets;
-
+              if (SolrService.endDateFacets !== undefined) {
+                  compileFacetCounts();
+              }
           });
           $rootScope.$on('end-date-facet-data-ready', function() {
-              scope.endDateFacets = SolrService.endDateFacets;
-
+              if (SolrService.startDateFacets !== undefined) {
+                  compileFacetCounts();
+              }
           });
 
+          var compileFacetCounts = function() {
+              scope.dateFacets = SolrService.startDateFacets;
+          //    var a = SolrService.endDateFacets[0].values;
+          //    for (var i=0; i < a.length; i++) {
+          //        scope.dateFacets[0].values[i][1] += a[i][1];
+          //    }
+          }
 
           scope.selection = function(x) {
               console.log(x);
