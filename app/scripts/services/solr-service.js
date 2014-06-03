@@ -114,7 +114,7 @@ angular.module('searchApp')
      * @param {string} what - The thing to search for. Multiple words get treated
      *  as a phrase.
      * @param {string} start - The result to start at. 
-     * @param {boolean} ditchSuggestion - Whether to delete the spelling 
+     * @param {boolean} ditchuggestion - Whether to delete the spelling 
      *  suggestion.
      */
     function search(what, start, ditchSuggestion) {
@@ -240,6 +240,7 @@ angular.module('searchApp')
         
         // update all facet counts
         updateAllFacetCounts();
+        compileDateFacets();
 
         // notify the result widget that it's time to update
         $rootScope.$broadcast('search-results-updated');
@@ -375,9 +376,9 @@ angular.module('searchApp')
         var dfq = [];
         for (f in SolrService.dateFilters) {
             var v = SolrService.dateFilters[f];
-            var query = '(date_from:[' + v.from + ' TO ' + v.to + ']';
-            query += ' OR ';
-            query += 'date_to:[' + v.from + ' TO ' + v.to + '])';
+            var query = '(date_to:[' + v.from + ' TO ' + SolrService.dateEndBoundary + ']';
+            query += ' AND ';
+            query += 'date_from:[' + SolrService.dateStartBoundary + ' TO ' + v.to + '])';
             dfq.push(query);
         }
 
@@ -461,6 +462,8 @@ angular.module('searchApp')
     }
 
     function compileDateFacets() {
+        $rootScope.$broadcast('reset-date-facets');
+
         var a, b;
         a = getQuery(0);
         a.params.rows = 0;
