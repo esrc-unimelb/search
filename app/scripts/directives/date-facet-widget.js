@@ -62,6 +62,9 @@ angular.module('searchApp')
               }
           }
 
+          // ensure the dataset date outer boundary is known
+          SolrService.dateOuterBounds();
+
 
       }
     };
