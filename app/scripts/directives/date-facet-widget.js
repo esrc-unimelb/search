@@ -25,6 +25,18 @@ angular.module('searchApp')
               updateSelections();
           });
 
+          $rootScope.$on('date-boundary-start-found', function() {
+              if (SolrService.dateEndBoundary !== undefined) {
+                  SolrService.compileDateFacets();
+              }
+
+          });
+          $rootScope.$on('date-boundary-end-found', function() {
+              if (SolrService.dateStartBoundary !== undefined) {
+                    SolrService.compileDateFacets();
+              }
+          });
+
           $rootScope.$on('reset-all-filters', function() {
               scope.selected = [];
               updateSelections();
@@ -64,7 +76,6 @@ angular.module('searchApp')
 
           // ensure the dataset date outer boundary is known
           SolrService.dateOuterBounds();
-
 
       }
     };
