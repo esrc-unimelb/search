@@ -40,9 +40,7 @@ angular.module('searchApp')
                       'end': e,
                       'label': s + ' - ' + v,
                   }
-                  if (data[i][1] !== 0 && ! scope.facets[data[i][0]]) {
-                      scope.facets[data[i][0]] = d;
-                  }
+                  scope.facets[data[i][0]] = d;
               }
           }
           var updateSelections = function() {
