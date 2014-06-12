@@ -13,8 +13,8 @@
  *
  */
 angular.module('searchApp')
-  .factory('SolrService', [ '$rootScope', '$http', 'LoggerService', 'Configuration',
-        function SolrService($rootScope, $http, log, conf) {
+  .factory('SolrService', [ '$rootScope', '$http', '$routeParams', 'LoggerService', 'Configuration',
+        function SolrService($rootScope, $http, $routeParams, log, conf) {
     // AngularJS will instantiate a singleton by calling "new" on this function
    
 
@@ -51,6 +51,18 @@ angular.module('searchApp')
         log.debug('Site: ' + SolrService.site);
         SolrService.dateOuterBounds();
 
+        angular.forEach($routeParams, function(v,k) {
+            if (conf.allowedRouteParams.indexOf(k) !== -1 && k !== 'q') {
+                if (typeof(v) === 'object') {
+                    for (var i=0; i < v.length ; i++) {
+                        SolrService.filterQuery(k, v[i], true);
+                    }
+                } else {
+                    SolrService.filterQuery(k, v, true);
+                }
+                SolrService.updateFacetCount(k);
+            }
+        });
         return true;
     }
 
@@ -304,8 +316,9 @@ angular.module('searchApp')
      *  a search.
      * @param {string} facetField - The facet's field name
      * @param {string} facet - the value
+     * @param {string} dontSearch - optional value to disable the search part
      */
-    function filterQuery(facetField, facet) {
+    function filterQuery(facetField, facet, dontSearch) {
         // iterate over the facets and 
         //  - add it if it's not there 
         //  - remove it if it is
@@ -326,9 +339,11 @@ angular.module('searchApp')
             }
         }
 
-        SolrService.results.docs = [];
-        SolrService.results.start = 0;
-        search(SolrService.term, 0, true);
+        if (dontSearch !== true) {
+            SolrService.results.docs = [];
+            SolrService.results.start = 0;
+            search(SolrService.term, 0, true);
+        }
     }
 
     /**

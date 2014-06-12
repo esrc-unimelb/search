@@ -11,6 +11,7 @@
  * 
  * @param {string} facetField - The field for which to get the facet counts
  * @param {string} label - The name to be used for the widget
+ * @param {string} join - The operator for joining multiple selections (default: OR)
  *
  */
 angular.module('searchApp')
@@ -30,6 +31,12 @@ angular.module('searchApp')
             SolrService.filterUnion[scope.facetField] = scope.join;
             scope.displayLimit = 8;
             scope.selected = [];
+            if (SolrService.filters[scope.facetField] !== undefined) {
+                for (var i=0; i < SolrService.filters[scope.facetField].length; i++) {
+                    scope.selected.push(SolrService.filters[scope.facetField][i]);
+                }
+                if (scope.selected.length > 0) { scope.isCollapsed = true; }
+            }
 
             $rootScope.$on(scope.facetField+'-facets-updated', function() {
                 var f = SolrService.facets[scope.facetField];
@@ -60,7 +67,9 @@ angular.module('searchApp')
                 }
             });
 
-            SolrService.updateFacetCount(scope.facetField);
+            if (scope.selected.length === 0) {
+                SolrService.updateFacetCount(scope.facetField);
+            }
 
             scope.showAll = function() {
                 scope.facets = SolrService.facets[scope.facetField];
@@ -80,7 +89,6 @@ angular.module('searchApp')
                     }
                 }
             };
-
       }
     };
   }]);
