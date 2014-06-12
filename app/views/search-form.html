@@ -1,4 +1,4 @@
-<div class="row" ng-show="goodToGo" style="margin:0.5em;">
+<div class="row" ng-show="ready" style="margin:0.5em;">
     <div class="row">
         <form role="form" class="">
             <div class="col-md-10 col-sm-10">
@@ -20,7 +20,7 @@
             <div ng-show="suggestion">
                 <p>Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?</p>
             </div>
-            <div ng-hide="goodToGo">
+            <div ng-hide="ready">
                 <p>The search form can't be enabled as the parameter "site" is undefined.</p>
             </div>
         </div>
