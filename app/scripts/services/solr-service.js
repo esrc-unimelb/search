@@ -50,6 +50,7 @@ angular.module('searchApp')
         log.debug('Solr Service: ' + SolrService.solr);
         log.debug('Site: ' + SolrService.site);
 
+        SolrService.dateOuterBounds();
         return true;
     }
 

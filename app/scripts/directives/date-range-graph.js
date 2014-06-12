@@ -6,7 +6,7 @@ angular.module('searchApp')
       templateUrl: 'views/date-range-graph.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
-          SolrService.dateOuterBounds();
+          //SolrService.dateOuterBounds();
           scope.startDateBoundary = undefined;
           scope.endDateBoundary = undefined;
 
