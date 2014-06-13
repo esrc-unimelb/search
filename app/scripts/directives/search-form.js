@@ -41,7 +41,7 @@ angular.module('searchApp')
           // let's get this party started!!
           scope.ready = SolrService.init(scope.deployment, scope.site);
 
-          if (Object.keys($routeParam).length > 0) {
+          if (Object.keys($routeParams).length > 0) {
               $timeout(function() { scope.search(); }, 1000);
           } else {
               $timeout(function() { scope.search(); }, 100);
