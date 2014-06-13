@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchForm', [ '$rootScope', '$routeParams', 'SolrService', function ($rootScope, $routeParams, SolrService) {
+  .directive('searchForm', [ '$rootScope', '$routeParams', '$timeout', 'SolrService', function ($rootScope, $routeParams, $timeout, SolrService) {
     return {
       templateUrl: 'views/search-form.html',
       restrict: 'E',
@@ -41,9 +41,11 @@ angular.module('searchApp')
           // let's get this party started!!
           scope.ready = SolrService.init(scope.deployment, scope.site);
 
-          scope.$watch('ready', function() {
-              scope.search();
-          });
+          if (Object.keys($routeParam).length > 0) {
+              $timeout(function() { scope.search(); }, 1000);
+          } else {
+              $timeout(function() { scope.search(); }, 100);
+          }
       },
     };
   }]);
