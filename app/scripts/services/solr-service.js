@@ -37,6 +37,10 @@ angular.module('searchApp')
     function init(deployment, site) {
         log.init(conf.loglevel);
         SolrService.site = site;
+        SolrService.filters = {};
+        SolrService.dateFilters = {};
+        SolrService.results = {};
+        SolrService.facets = {};
 
         if (deployment === undefined && deployment !== ('production' || 'testing')) {
            deployment = 'production';
@@ -47,6 +51,7 @@ angular.module('searchApp')
         } else {
             SolrService.solr = conf[deployment] + '/' + site + '/select';
         }
+        SolrService.deployment = deployment;
         log.debug('Solr Service: ' + SolrService.solr);
         log.debug('Site: ' + SolrService.site);
         SolrService.dateOuterBounds();

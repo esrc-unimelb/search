@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .controller('MainCtrl', [ '$scope', '$window', '$routeParams', '$timeout', 'SolrService', 
-     function ($scope, $window, $routeParams, $timeout, SolrService) {
+  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$routeParams', '$timeout', 'SolrService', 
+     function ($rootScope, $scope, $window, $routeParams, $timeout, SolrService) {
       $scope.select = 'FACP';
 
       $scope.width = $window.innerWidth;
@@ -14,4 +14,8 @@ angular.module('searchApp')
           $scope.ready = true;
       }
 
+      $rootScope.$on('$locationChangeStart', function(e, n, c) {
+          $scope.ready = false;
+          SolrService.init(SolrService.deployment, SolrService.site);
+      });
   }]);

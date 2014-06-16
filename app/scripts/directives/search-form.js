@@ -25,6 +25,14 @@ angular.module('searchApp')
               scope.suggestion = SolrService.suggestion;
           });
 
+          $rootScope.$on('$locationChangeStart', function(e, n, c) {
+              if ($routeParams.q !== undefined) {
+                  scope.searchBox = $routeParams.q;
+              } else {
+                  scope.searchBox = '*';
+              }
+          });
+
           scope.search = function() {
               // args:
               // - what: scope.searchBox (the search term

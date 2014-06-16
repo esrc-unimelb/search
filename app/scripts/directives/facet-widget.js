@@ -25,24 +25,32 @@ angular.module('searchApp')
             join: '@'
         },
         link: function postLink(scope, element, attrs) {
+            // on init - populate the widget
+            SolrService.updateFacetCount(scope.facetField);
+
+            // set the union operator for multiple selections
             if (scope.join === undefined) { 
                 scope.join = 'OR';
             }
             SolrService.filterUnion[scope.facetField] = scope.join;
-            scope.displayLimit = 8;
-            scope.selected = [];
-            if (SolrService.filters[scope.facetField] !== undefined) {
-                for (var i=0; i < SolrService.filters[scope.facetField].length; i++) {
-                    scope.selected.push(SolrService.filters[scope.facetField][i]);
-                }
-                if (scope.selected.length > 0) { scope.isCollapsed = true; }
-            }
 
+            // set a display limit
+            scope.displayLimit = 8;
+
+            // when we get an update event for this widget from the solr
+            //  service - rejig the widget as required
             $rootScope.$on(scope.facetField+'-facets-updated', function() {
+                var selected = SolrService.filters[scope.facetField];
+                if (selected === undefined) { 
+                    selected = []; 
+                } else { 
+                    scope.isCollapsed = true; 
+                }
+
                 var f = SolrService.facets[scope.facetField];
                 var i;
                 for (i=0; i < f.length; i++) {
-                    if (scope.selected.indexOf(f[i][0]) !== -1) {
+                    if (selected.indexOf(f[i][0]) !== -1) {
                         f[i][2] = true;
                     }
                 }
@@ -60,6 +68,7 @@ angular.module('searchApp')
                 }
             });
 
+            // wipe clean if told to do so
             $rootScope.$on('reset-all-filters', function() {
                 for (var i=0; i < scope.facets.length; i++) {
                     scope.facets[i][2] = false;
@@ -67,27 +76,13 @@ angular.module('searchApp')
                 }
             });
 
-            if (scope.selected.length === 0) {
-                SolrService.updateFacetCount(scope.facetField);
-            }
-
             scope.showAll = function() {
                 scope.facets = SolrService.facets[scope.facetField];
                 scope.moreResults = false;
             };
         
             scope.facet = function(facet) {
-                if (scope.selected.indexOf(facet) === -1) {
-                    scope.selected.push(facet);
-                } else {
-                    scope.selected.splice(scope.selected.indexOf(facet), 1);
-                }
                 SolrService.filterQuery(scope.facetField, facet);
-                for (var i = 0; i < scope.facets.length; i++) {
-                    if (scope.facets[i][0] === facet) {
-                        scope.facets[i][2] = true;
-                    }
-                }
             };
       }
     };
