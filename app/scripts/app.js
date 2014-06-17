@@ -6,7 +6,7 @@ angular.module('searchApp', [
   'ngSanitize',
   'ngRoute',
   'nvd3ChartDirectives',
-  'mgcrea.ngStrap.affix'
+  'mgcrea.ngStrap'
 ])
   .config(function ($routeProvider) {
     $routeProvider
