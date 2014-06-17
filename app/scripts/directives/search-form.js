@@ -26,11 +26,7 @@ angular.module('searchApp')
           });
 
           $rootScope.$on('$locationChangeStart', function(e, n, c) {
-              if ($routeParams.q !== undefined) {
-                  scope.searchBox = $routeParams.q;
-              } else {
-                  scope.searchBox = '*';
-              }
+              scope.ready = SolrService.init(scope.deployment, scope.site);
           });
 
           scope.search = function() {
@@ -49,11 +45,9 @@ angular.module('searchApp')
           // let's get this party started!!
           scope.ready = SolrService.init(scope.deployment, scope.site);
 
-          if (Object.keys($routeParams).length > 0) {
-              $timeout(function() { scope.search(); }, 1000);
-          } else {
-              $timeout(function() { scope.search(); }, 100);
-          }
+          var timeout = Object.keys($routeParams).length * 200 + 100;
+          $timeout(function() { scope.search(); }, timeout);
+          //$timeout(function() { $rootScope.$broadcast('app-ready'); }, 3000);
       },
     };
   }]);
