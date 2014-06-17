@@ -2,7 +2,7 @@
     <a href="" ng-click="isCollapsed = !isCollapsed" ng-hide="isCollapsed">by DATE&nbsp;<span class="glyphicon glyphicon-chevron-down"></a>
     <a href="" ng-click="isCollapsed = !isCollapsed" ng-show="isCollapsed">Hide DATE filter&nbsp;<span class="glyphicon glyphicon-chevron-up"></a>
 </small>
-<div ng-hide="!isCollapsed">
+<div ng-hide="!isCollapsed" class="facet">
     <span ng-repeat="result in facets">
         <div class="checkbox">
             <label>
