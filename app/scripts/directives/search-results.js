@@ -23,6 +23,14 @@ angular.module('searchApp')
               }
           });
 
+          // handle suggestions
+          $rootScope.$on('search-suggestion-available', function() {
+              scope.suggestion = SolrService.suggestion;
+          });
+          $rootScope.$on('search-suggestion-removed', function() {
+              scope.suggestion = SolrService.suggestion;
+          });
+
           /* handle summary / detail view toggle */
           $rootScope.$on('show-search-results-details', function() {
               scope.summaryActive = '';
@@ -32,6 +40,10 @@ angular.module('searchApp')
               scope.summaryActive = 'active';
               scope.detailsActive = '';
           });
+
+          scope.setSuggestion = function(suggestion) {
+              SolrService.search(suggestion, 0, true);
+          };
 
           scope.loadNextPage = function() {
               SolrService.nextPage();

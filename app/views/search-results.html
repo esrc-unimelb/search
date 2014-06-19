@@ -3,7 +3,8 @@
         <!-- header -->
         <div class="col-sm-12 col-md-12 col-lg-12">
             You searched for <strong>{{results.term}}</strong>.
-            The query returned <strong>{{results.total}}</strong> documents.
+            We found <strong>{{results.total}}</strong> documents.
+            Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?
         </div>
     </div>
     <div class="row well" ng-show="showFilters && filters" style="margin:0.5em;">

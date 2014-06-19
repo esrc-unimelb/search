@@ -18,28 +18,19 @@ angular.module('searchApp')
               scope.searchBox = '*';
           }
 
-          $rootScope.$on('search-suggestion-available', function() {
-              scope.suggestion = SolrService.suggestion;
-          });
-          $rootScope.$on('search-suggestion-removed', function() {
-              scope.suggestion = SolrService.suggestion;
-          });
-
           $rootScope.$on('$locationChangeStart', function(e, n, c) {
               scope.ready = SolrService.init(scope.deployment, scope.site);
           });
 
           scope.search = function() {
+              if (scope.searchBox === '') {
+                  scope.searchBox = '*';
+              }
               // args:
               // - what: scope.searchBox (the search term
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
               SolrService.search(scope.searchBox, 0, true);
-          };
-
-          scope.setSuggestion = function(suggestion) {
-              scope.searchBox = suggestion;
-              scope.search();
           };
 
           // let's get this party started!!

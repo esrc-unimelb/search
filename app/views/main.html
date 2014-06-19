@@ -63,13 +63,13 @@
                 <span ng-hide="detailsActive">
                     <button class="btn btn-default btn-sm" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th-list"></span>
-                        Switch to Summary View
+                        Summary View
                     </button>
                 </span>
                 <span ng-show="detailsActive">
                     <button class="btn btn-default btn-sm" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th"></span>
-                        Switch to Details View
+                        Show Details 
                     </button>
                 </span>
             </ul>
@@ -78,7 +78,7 @@
    </div>
 
    <!-- side bar: fixed to right -->
-   <div style="position:absolute; top: {{top}}px; width: 30%; height: {{height - top}}px; overflow-y: scroll; ">
+   <div ng-if="select" style="position:absolute; top: {{top}}px; width: 30%; height: {{height - top}}px; overflow-y: scroll; ">
         <div class="">
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
