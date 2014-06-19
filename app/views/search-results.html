@@ -6,26 +6,6 @@
             The query returned <strong>{{results.total}}</strong> documents.
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <sort-results></sort-results>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <button class="btn btn-sm btn-default" ng-click="toggleDetails(true)" ng-class="summaryActive">
-                <span class="glyphicon glyphicon-th-list"></span>
-                Summary View
-            </button>
-            <button class="btn btn-sm btn-default" ng-click="toggleDetails(false)" ng-class="detailsActive">
-                <span class="glyphicon glyphicon-th"></span>
-                Details View
-            </button>
-            <button class="btn btn-sm btn-default" ng-click="showFilters = !showFilters" ng-show="filters">
-                View Filters
-            </button>
-        </div>
-        <!-- end header -->
-    </div>
-
     <div class="row well" ng-show="showFilters && filters" style="margin:0.5em;">
         <!-- filters and controls -->
         <div class="col-sm-2 col-md-2 col-lg-2">

@@ -434,10 +434,8 @@ angular.module('searchApp')
      * @description
      *   Toggle's detail view
      */
-    function toggleDetails(show) {
-        if (show !== undefined) {
-            SolrService.hideDetails = show;
-        }
+    function toggleDetails() {
+        SolrService.hideDetails = !SolrService.hideDetails;
         if (SolrService.hideDetails === true) {
             $rootScope.$broadcast('hide-search-results-details');
         } else {

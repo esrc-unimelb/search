@@ -33,11 +33,6 @@ angular.module('searchApp')
               scope.detailsActive = '';
           });
 
-          /* button methods */
-          scope.toggleDetails = function(show) {
-              SolrService.toggleDetails(show);
-          };
-
           scope.loadNextPage = function() {
               SolrService.nextPage();
           };
