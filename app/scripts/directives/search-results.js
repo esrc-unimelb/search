@@ -8,7 +8,6 @@ angular.module('searchApp')
       link: function postLink(scope, element, attrs) {
 
           /* Initialise the widget / defaults */
-          scope.height = $window.innerHeight - 220;
           scope.showFilters = false;
           scope.site = SolrService.site;
           scope.summaryActive = '';
