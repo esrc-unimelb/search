@@ -4,14 +4,17 @@ angular.module('searchApp')
   .controller('MainCtrl', [ '$rootScope', '$scope', '$window', 'SolrService', function ($rootScope, $scope, $window, SolrService) {
       //$scope.select = 'FACP';
 
-      $scope.width = $window.innerWidth;
-      $scope.height = $window.innerHeight;
+      $scope.w = $window.innerWidth;
+      $scope.h = $window.innerHeight;
 
-      if ($scope.width < 500) {
-          $scope.top = 250;
+      if ($scope.w < 500) {
+          $scope.t = 250;
       } else {
-          $scope.top = 110;
+          $scope.t = 110;
       }
+
+      $scope.lpw = Math.floor(($scope.w - 20) * 0.3) - 1;
+      $scope.rpw = $scope.w - $scope.lpw - 1;
 
       /* handle summary / detail view toggle */
       $rootScope.$on('show-search-results-details', function() {

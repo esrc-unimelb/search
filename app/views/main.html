@@ -1,53 +1,51 @@
 <div class="row">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12" ng-hide="select">
-            <div class="form-group">
-                <label>Select the search instance you wish to use.</label>
-                <select class="form-control pull-left" ng-change="onSelect()" ng-model="select">
-                    <option></option>
-                    <option>AHPI</option>
-                    <option>APFA</option>
-                    <option>ASMP</option>
-                    <option>ASRS</option>
-                    <option>AWAL</option>
-                    <option>BFYA</option>
-                    <option>BXHM</option>
-                    <option>BXTA</option>
-                    <option>CTACPUBLIC</option>
-                    <option>DHRA</option>
-                    <option>EOAS</option>
-                    <option>EMEL</option>
-                    <option>ESRC</option>
-                    <option>FACP</option>
-                    <option>GOLD</option>
-                    <option>IAEA</option>
-                    <option>NQAR</option>
-                    <option>RERN</option>
-                    <option>SAUL</option>
-                    <option>SIPP</option>
-                    <option>TORP</option>
-                    <option>UMAB</option>
-                    <option>VCRC</option>
-                    <option>WALL</option>
-                    <option>WHSO</option>
-                    <option>XAHI_theses</option>
-                </select>
-            </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-hide="select">
+        <div class="form-group">
+            <label>Select the search instance you wish to use.</label>
+            <select class="form-control pull-left" ng-change="onSelect()" ng-model="select">
+                <option></option>
+                <option>AHPI</option>
+                <option>APFA</option>
+                <option>ASMP</option>
+                <option>ASRS</option>
+                <option>AWAL</option>
+                <option>BFYA</option>
+                <option>BXHM</option>
+                <option>BXTA</option>
+                <option>CTACPUBLIC</option>
+                <option>DHRA</option>
+                <option>EOAS</option>
+                <option>EMEL</option>
+                <option>ESRC</option>
+                <option>FACP</option>
+                <option>GOLD</option>
+                <option>IAEA</option>
+                <option>NQAR</option>
+                <option>RERN</option>
+                <option>SAUL</option>
+                <option>SIPP</option>
+                <option>TORP</option>
+                <option>UMAB</option>
+                <option>VCRC</option>
+                <option>WALL</option>
+                <option>WHSO</option>
+                <option>XAHI_theses</option>
+            </select>
         </div>
     </div>
 
     <!-- background white div between the scrolling results pane and the header controls -->
-    <div ng-if="select" style="position: fixed; height: {{top}}px; width: 100%; z-index: 1000; top: 0; left: 0; background-color: white;"></div>
+    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; background-color: white;"></div>
     
     <!-- header controls -->
-    <div ng-if="select" style="position: fixed; height: {{top}}px; z-index:10000;">
+    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; z-index:10000; padding-left: 15px; background-color: white;">
         <div class="row">
-            <div class="col-sm-12 col-md-12 col-mg-12">
+            <div class="col-sm-12 col-md-12 col-lg-12">
                 <label>Using: {{select}} (reload the page to select another site)</label>
             </div>
         </div>
         <div class="row" style="border-bottom: solid; border-width: 1px; border-color: gray;">
-            <div class="col-sm-6 col-md-6 col-lg-6" style="">
+            <div class="col-sm-5 col-md-5 col-lg-5">
                     <search-form 
                         help='Normally this would be site / context specific help in this bit...'
                         deployment="testing"
@@ -55,7 +53,7 @@
                         >
                     </search-form>
             </div>
-            <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="col-sm-5 col-md-5 col-lg-5">
                <sort-results></sort-results> 
                <p class="help-block text-center">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
             </div>
@@ -72,54 +70,27 @@
                         Show Details 
                     </button>
                 </span>
-            </ul>
             </div>
         </div>
-   </div>
+    </div>
 
-   <!-- side bar: fixed to right -->
-   <div ng-if="select" style="position:absolute; top: {{top}}px; width: 30%; height: {{height - top}}px; overflow-y: scroll; ">
-        <div class="">
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <date-range-graph></date-range-graph>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <date-facet-widget></date-facet-widget>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <facet-widget facet-field="type" label="Entity Type"></facet-widget>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <facet-widget facet-field="state_long" label="Region"></facet-widget>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <facet-widget facet-field="site_code" label="Site"></facet-widget>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                    <facet-widget facet-field="repository" label="Repository"></facet-widget>
-                </div>
+    <!-- side bar: fixed to right -->
+    <div ng-if="select" style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px; ">
+        <div class="row">
+            <div class="col-sm-12">
+                <date-range-graph></date-range-graph><br/>
+                <date-facet-widget></date-facet-widget><br/>
+                <facet-widget facet-field="type" label="Entity Type"></facet-widget><br/>
+                <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget><br/>
+                <facet-widget facet-field="state_long" label="Region"></facet-widget><br/>
+                <facet-widget facet-field="site_code" label="Site"></facet-widget><br/>
+                <facet-widget facet-field="repository" label="Repository"></facet-widget><br/>
             </div>
         </div>
-   </div>
-   <div style="position:absolute; top: {{top}}px; width: 70%; height: {{height - top}}px; overflow-y: scroll; left: 30%; padding: 10px;">
+    </div>
+    <div style="position:absolute; top: {{t}}px; left: {{lpw}}px; width: {{rpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px;">
         <div class="row" ng-if="select">
-            <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="col-sm-12">
                 <search-results></search-results>
             </div>
         </div>
