@@ -1,12 +1,15 @@
 <div class="row" ng-if="results" style="margin:0.5em;">
     <div class="row">
         <!-- header -->
-        <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="col-sm-10 col-md-10 col-lg-10">
             You searched for <strong>{{results.term}}</strong>.
             We found <strong>{{results.total}}</strong> documents.
             <span ng-if="suggestion">
                 Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?
             </span>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <button class="btn btn-default btn-sm">Show Filters</button>
         </div>
     </div>
     <div class="row well" ng-show="showFilters && filters" style="margin:0.5em;">

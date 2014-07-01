@@ -3,7 +3,7 @@
 angular.module('searchApp')
   .controller('MainCtrl', [ '$rootScope', '$scope', '$window', 'SolrService', 
     function ($rootScope, $scope, $window, SolrService) {
-      //$scope.select = 'FACP';
+      $scope.select = 'ESRC';
 
       $scope.w = $window.innerWidth;
       $scope.h = $window.innerHeight;
