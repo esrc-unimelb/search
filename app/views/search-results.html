@@ -9,9 +9,10 @@
             </span>
         </div>
         <div class="col-sm-2 col-md-2 col-lg-2">
-            <button class="btn btn-default btn-sm">Show Filters</button>
+            <button class="btn btn-default btn-sm" ng-click="showFilters = !showFilters" ng-show="filters">View Filters</button>
         </div>
     </div>
+
     <div class="row well" ng-show="showFilters && filters" style="margin:0.5em;">
         <!-- filters and controls -->
         <div class="col-sm-2 col-md-2 col-lg-2">
