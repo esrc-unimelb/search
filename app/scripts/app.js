@@ -5,8 +5,9 @@ angular.module('searchApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'ui.bootstrap',
-  'nvd3ChartDirectives'
+  'nvd3ChartDirectives',
+  'mgcrea.ngStrap',
+  'ngAnimate'
 ])
   .config(function ($routeProvider) {
     $routeProvider

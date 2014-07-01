@@ -21,11 +21,11 @@ angular.module('searchApp')
       link: function postLink(scope, element, attrs) {
           scope.hideDetails = SolrService.hideDetails;
 
-          $rootScope.$on('show-search-results-details', function() {
-              scope.hideDetails = false;
-          });
           $rootScope.$on('hide-search-results-details', function() {
               scope.hideDetails = true;
+          });
+          $rootScope.$on('show-search-results-details', function() {
+              scope.hideDetails = false;
           });
       }
     };

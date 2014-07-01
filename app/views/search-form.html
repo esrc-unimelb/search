@@ -1,28 +1,15 @@
-<div class="row" ng-show="ready" style="margin:0.5em;">
+<div ng-show="ready">
     <div class="row">
-        <form role="form" class="">
-            <div class="col-md-10 col-sm-10">
-                <div class="form-group">
+        <form role="form">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="input-group">
                     <input type="text" class="form-control" ng-model="searchBox" autofocus>
-                    <p class="help-block">{{help}} <em>(Search not working? Try <a href='/basic-search'>basic search</a>.)</em></p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="search()">Search</button>
+                    </span>
                 </div>
-            </div>
-            <div class="col-md-2 col-sm-2">
-                <div class="form-group">
-                    <button class="btn btn-default" ng-click="search()">Search</button>
-                    <p class="help-block"></p>
-                </div>
+                <p class="help-block">{{help}}</p>
             </div>
         </form>
-    </div>
-    <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <div ng-show="suggestion">
-                <p>Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?</p>
-            </div>
-            <div ng-hide="ready">
-                <p>The search form can't be enabled as the parameter "site" is undefined.</p>
-            </div>
-        </div>
     </div>
 </div>

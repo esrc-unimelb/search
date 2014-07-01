@@ -77,3 +77,7 @@ body {
     border-bottom: 0;
   }
 }
+
+.facet.ng-hide-remove {
+    animation: fadeIn 0.5s;
+}
