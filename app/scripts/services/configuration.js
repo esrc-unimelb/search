@@ -9,7 +9,7 @@
 angular.module('searchApp')
   .constant('Configuration', {
       production:           'https://data.esrc.unimelb.edu.au/solr',
-      testing:              'https://data.esrc.info/solr',
+      testing:              'http://data.huni.net.au/solr',
       loglevel:             'DEBUG',
       allowedRouteParams:   [ 'q','type', 'function' ]
   });

@@ -3,14 +3,14 @@
 angular.module('searchApp')
   .controller('MainCtrl', [ '$rootScope', '$scope', '$window', 'SolrService', 
     function ($rootScope, $scope, $window, SolrService) {
-      //$scope.select = 'ESRC';
+      $scope.select = true;
 
       $scope.w = $window.innerWidth;
       $scope.h = $window.innerHeight;
       //console.log($scope.w, $scope.h);
 
       if ($scope.w < 1024) {
-          window.location.replace('/basic-search');
+          //window.location.replace('/basic-search');
       } else {
           $scope.t = 110;
       }

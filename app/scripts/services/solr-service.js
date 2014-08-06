@@ -49,7 +49,7 @@ angular.module('searchApp')
             log.error('Can\'t run! No solr_core defined!');
             return false;
         } else {
-            SolrService.solr = conf[deployment] + '/' + site + '/select';
+            SolrService.solr = conf[deployment] + '/select';
         }
         SolrService.deployment = deployment;
         log.debug('Solr Service: ' + SolrService.solr);
@@ -78,9 +78,9 @@ angular.module('searchApp')
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            q = '(name:' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
+            q = '(individualName:' + what + '^10 OR familyName:' + what + '^10 OR biography:' + what + ' OR description:' + what + ')';
         } else {
-            q = '(name:"' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
+            q = '(individualName:"' + what + '"^20 OR familyName:"' + what + '"^10 OR biography:"' + what + '"^10 OR description:"' + what + '")';
         }
 
         // add in the facet query filters - if any...
@@ -92,9 +92,9 @@ angular.module('searchApp')
         // set the sort order: wildcard sort ascending, everything else: by score
         if (SolrService.sort === undefined) {
             if (what === '*') {
-                sort = 'name_sort asc';
+                sort = 'name asc';
             } else {
-                sort = 'score desc';
+                sort = 'name desc';
             }
         } else {
             sort = SolrService.sort;
@@ -397,9 +397,9 @@ angular.module('searchApp')
         var dfq = [];
         for (f in SolrService.dateFilters) {
             var v = SolrService.dateFilters[f];
-            var query = '(exist_to:[' + v.from + ' TO ' + SolrService.dateEndBoundary + ']';
+            var query = '(startDate:[' + v.from + ' TO ' + SolrService.dateEndBoundary + ']';
             query += ' AND ';
-            query += 'exist_from:[' + SolrService.dateStartBoundary + ' TO ' + v.to + '])';
+            query += 'endDate:[' + SolrService.dateStartBoundary + ' TO ' + v.to + '])';
             dfq.push(query);
         }
 
@@ -465,15 +465,15 @@ angular.module('searchApp')
         var a, b;
         a = getQuery(0);
         a.params.rows = 1;
-        a.params.sort = 'exist_from asc';
+        a.params.sort = 'startDate asc';
         $http.jsonp(SolrService.solr, a).then(function(d) {
-            SolrService.dateStartBoundary = d.data.response.docs[0].exist_from;
+            SolrService.dateStartBoundary = d.data.response.docs[0].startDate;
 
             b = getQuery(0);
             b.params.rows = 1;
-            b.params.sort = 'exist_to desc';
+            b.params.sort = 'endDate desc';
             $http.jsonp(SolrService.solr, b).then(function(d) {
-                SolrService.dateEndBoundary = d.data.response.docs[0].exist_to;
+                SolrService.dateEndBoundary = d.data.response.docs[0].endDate;
                 SolrService.compileDateFacets();
             });
         });
@@ -486,7 +486,7 @@ angular.module('searchApp')
         a = getQuery(0);
         a.params.rows = 0;
         a.params.facet = true;
-        a.params['facet.range'] = 'date_from';
+        a.params['facet.range'] = 'startDate';
         a.params['facet.range.gap'] = '+10YEARS';
 
         // round the start date down to the decade boundary
@@ -499,7 +499,7 @@ angular.module('searchApp')
             a.params['facet.range.end'] = SolrService.dateEndBoundary;
 
             $http.jsonp(SolrService.solr, a).then(function(d) {
-                var counts = d.data.facet_counts.facet_ranges.date_from.counts;
+                var counts = d.data.facet_counts.facet_ranges.startDate.counts;
 
                 var i, df;
                 df = [];
@@ -514,13 +514,13 @@ angular.module('searchApp')
         b = getQuery();
         b.params.rows = 0;
         b.params.facet = true;
-        b.params['facet.range'] = 'date_to';
+        b.params['facet.range'] = 'endDate';
         b.params['facet.range.gap'] = '+10YEARS';
         b.params['facet.range.start'] = d + '-01-01T00:00:00Z';
         if (SolrService.dateEndBoundary !== undefined) {
             b.params['facet.range.end'] = SolrService.dateEndBoundary;
             $http.jsonp(SolrService.solr, b).then(function(d) {
-                var counts = d.data.facet_counts.facet_ranges.date_to.counts;
+                var counts = d.data.facet_counts.facet_ranges.endDate.counts;
 
                 var i, df;
                 df = [];
