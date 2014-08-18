@@ -1,51 +1,50 @@
 <div class="row">
 
-    <div class="row">
-        <span style="background-color: #003268; position: fixed; top: 0px; width: 100%; padding: 5px 0px; margin: 0 auto;">
+    <div style="position: fixed; top: 0px; width: 100%; padding: 0px 0px; margin: 0 auto;">
+        <div class="row" style="background-color: #003268; height: 30px; padding: 5px 5px;">
             <div class="col-sm-9 col-md-9 col-lg-9">
-                <a href="http://www.esrc.unimelb.edu.au" style="" >eScholarship Research Centre Home</a>
+                <a href="http://www.esrc.unimelb.edu.au" style="color:white; font-weight: 100;">eScholarship Research Centre</a>
             </div>
             <div class="col-sm-3 col-md-3 col-lg-3">
-                <a href="http://www.unimelb.edu.au" style="">The University of Melbourne</a>
+                <a href="http://www.unimelb.edu.au" class="pull-right" style="color:white; font-weight: 100;">The University of Melbourne</a>
             </div>
-        </span>
-        <span style="background-color: #efefea; position: fixed; top: 30px; height: 55px; width: 100%; padding: 5px 0px;">
+        </div>
+        <div class="row" style="background-color: #efefea; height: 50px;">
             <div class="col-sm-4 col-md-4 col-lg-4">
             </div>
             <div class="col-sm-8 col-md-8 col-lg-8">
                 <h1 style="font-size: 37px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; color: #658095; line-height: 1.1;">
-                    <a href="" style="color: #3d4343;">search our data</a>
+                    <a href="" style="color: #3d4343;">Search our data</a>
                 </h1>
             </div>
-        </span>
-        <span style="background-color: #364550; position: fixed; top: 85px; width: 100%; padding: 1px 0px; margin: 0 auto;">
-        </span>
+        </div>
+        <div class="row" style="background-color: #364550; height: 2px;" >
+        </div>
     </div>
 
     <!-- header controls -->
-    <div ng-if="select" style="position: fixed; top: 100px; left 0px; width: 100%; z-index:10000; padding-left: 15px; background-color: white; padding-top: 10px;">
+    <div ng-if="select" style="position: fixed; top: 80px; left 0px; width: 100%; z-index:10000; padding-left: 15px; background-color: #3d4343; padding-top: 10px;">
         <div class="row" style="border-bottom: solid; border-width: 1px; border-color: gray;">
             <div class="col-sm-4 col-md-4 col-lg-4">
                <sort-results></sort-results> 
-               <p class="help-block text-center">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
             </div>
-            <div class="col-sm-5 col-md-5 col-lg-5">
-                    <search-form 
-                        help=''
-                        deployment="testing"
-                        site="{{select}}"
-                        >
-                    </search-form>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <search-form 
+                    help=''
+                    deployment="testing"
+                    site="{{select}}"
+                    >
+                </search-form>
             </div>
-            <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="col-sm-2 col-md-2 col-lg-2">
                 <span ng-hide="detailsActive">
-                    <button class="btn btn-default btn-sm" ng-click="toggleDetails()">
+                    <button class="btn btn-default" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th-list"></span>
                         Summary View
                     </button>
                 </span>
                 <span ng-show="detailsActive">
-                    <button class="btn btn-default btn-sm" ng-click="toggleDetails()">
+                    <button class="btn btn-default" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th"></span>
                         Show Details 
                     </button>
@@ -58,6 +57,7 @@
     <div ng-if="select" style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px; ">
         <div class="row">
             <div class="col-sm-12">
+                <p class="help-block">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
                 <!-- <date-range-graph></date-range-graph><br/> -->
                 <date-facet-widget></date-facet-widget><br/>
                 <facet-widget facet-field="type" label="Entity Type"></facet-widget><br/>
