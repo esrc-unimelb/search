@@ -1,63 +1,43 @@
 <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12" ng-hide="select">
-        <div class="form-group">
-            <label>Select the search instance you wish to use.</label>
-            <select class="form-control pull-left" ng-change="onSelect()" ng-model="select">
-                <option></option>
-                <option>AHPI</option>
-                <option>APFA</option>
-                <option>ASMP</option>
-                <option>ASRS</option>
-                <option>AWAL</option>
-                <option>BFYA</option>
-                <option>BXHM</option>
-                <option>BXTA</option>
-                <option>CTACPUBLIC</option>
-                <option>DHRA</option>
-                <option>EOAS</option>
-                <option>EMEL</option>
-                <option>ESRC</option>
-                <option>FACP</option>
-                <option>GOLD</option>
-                <option>IAEA</option>
-                <option>NQAR</option>
-                <option>RERN</option>
-                <option>SAUL</option>
-                <option>SIPP</option>
-                <option>TORP</option>
-                <option>UMAB</option>
-                <option>VCRC</option>
-                <option>WALL</option>
-                <option>WHSO</option>
-                <option>XAHI_theses</option>
-            </select>
-        </div>
+
+    <div class="row">
+        <span style="background-color: #003268; position: fixed; top: 0px; width: 100%; padding: 5px 0px; margin: 0 auto;">
+            <div class="col-sm-9 col-md-9 col-lg-9">
+                <a href="http://www.esrc.unimelb.edu.au" style="" >eScholarship Research Centre Home</a>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <a href="http://www.unimelb.edu.au" style="">The University of Melbourne</a>
+            </div>
+        </span>
+        <span style="background-color: #efefea; position: fixed; top: 30px; height: 55px; width: 100%; padding: 5px 0px;">
+            <div class="col-sm-4 col-md-4 col-lg-4">
+            </div>
+            <div class="col-sm-8 col-md-8 col-lg-8">
+                <h1 style="font-size: 37px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; color: #658095; line-height: 1.1;">
+                    <a href="" style="color: #3d4343;">search our data</a>
+                </h1>
+            </div>
+        </span>
+        <span style="background-color: #364550; position: fixed; top: 85px; width: 100%; padding: 1px 0px; margin: 0 auto;">
+        </span>
     </div>
 
-    <!-- background white div between the scrolling results pane and the header controls -->
-    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; background-color: white;"></div>
-    
     <!-- header controls -->
-    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; z-index:10000; padding-left: 15px; background-color: white;">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <label>Using: {{select}} (reload the page to select another site)</label>
-            </div>
-        </div>
+    <div ng-if="select" style="position: fixed; top: 100px; left 0px; width: 100%; z-index:10000; padding-left: 15px; background-color: white; padding-top: 10px;">
         <div class="row" style="border-bottom: solid; border-width: 1px; border-color: gray;">
+            <div class="col-sm-4 col-md-4 col-lg-4">
+               <sort-results></sort-results> 
+               <p class="help-block text-center">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
+            </div>
             <div class="col-sm-5 col-md-5 col-lg-5">
                     <search-form 
-                        help='Normally this would be site / context specific help in this bit...'
+                        help=''
                         deployment="testing"
                         site="{{select}}"
                         >
                     </search-form>
             </div>
-            <div class="col-sm-5 col-md-5 col-lg-5">
-               <sort-results></sort-results> 
-               <p class="help-block text-center">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
+            <div class="col-sm-3 col-md-3 col-lg-3">
                 <span ng-hide="detailsActive">
                     <button class="btn btn-default btn-sm" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th-list"></span>
@@ -78,7 +58,7 @@
     <div ng-if="select" style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px; ">
         <div class="row">
             <div class="col-sm-12">
-                <date-range-graph></date-range-graph><br/>
+                <!-- <date-range-graph></date-range-graph><br/> -->
                 <date-facet-widget></date-facet-widget><br/>
                 <facet-widget facet-field="type" label="Entity Type"></facet-widget><br/>
                 <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget><br/>
