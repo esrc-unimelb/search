@@ -12,11 +12,11 @@ angular.module('searchApp')
       if ($scope.w < 1024) {
           window.location.replace('/basic-search');
       } else {
-          $scope.t = 190;
+          $scope.t = 150;
       }
 
       // left (lpw) and right (rpw) panel widths
-      $scope.lpw = Math.floor(($scope.w - 20) * 0.3) - 1;
+      $scope.lpw = Math.floor(($scope.w - 20) * 0.25) - 1;
       $scope.rpw = $scope.w - $scope.lpw - 1;
 
       /* handle summary / detail view toggle */
