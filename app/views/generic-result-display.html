@@ -7,7 +7,7 @@
         <span ng-switch-default><span class="glyphicon glyphicon-certificate"></span> {{data.type}}</span>
     </div>
     <span class="title-styling lead">
-        <a href="{{data.id}}">{{data.name}}</a><span ng-if="data.binomial_name">,</span>
+        <a href="{{data.url}}">{{data.name}}</a><span ng-if="data.binomial_name">,</span>
     </span>
     <span ng-if="data.binomial_name">{{data.binomial_name}}</span>
     <span class="title-date-styling">
@@ -26,7 +26,7 @@
     <div ng-switch on="data.main_type">
         <span  ng-switch-when="Digital Object">
             <div class="col-sm-4">
-                <a href="{{data.id}}"><img src="{{data.thumbnail}}"></a>
+                <a href="{{data.url}}"><img src="{{data.thumbnail}}"></a>
             </div>
             <div class="col-sm-8">
                 <a href="{{data.source_link}}">{{data.source}}</a><br/>
@@ -52,5 +52,7 @@
             </span>
         </span>
     </div>
-    <small><em><a href="{{data.id}}">{{data.id}}</a></em></small>
+    <br/>
+    <small><strong>Record Source: </strong><a href="{{data.url}}">{{data.url}}</a></small>
+    <provenance-view data="data" display-provenance="{{displayProvenance}}"></provenance-view>
 </div>

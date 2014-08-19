@@ -29,7 +29,7 @@
     <div class="row clearfix" style="margin-top: 0.5em;">
         <!-- results panel -->
         <div ng-repeat="doc in results.docs" class="row result-border">
-            <generic-result-display ng-model="doc"></generic-result-display>
+            <generic-result-display ng-model="doc" display-provenance="{{displayProvenance}}"></generic-result-display>
         </div>
         <button type="button" class="btn btn-sm btn-default" ng-click="loadNextPage()" ng-if="results.docs.length < results.total">
             load more results

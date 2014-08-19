@@ -16,7 +16,8 @@ angular.module('searchApp')
       templateUrl: 'views/generic-result-display.html',
       restrict: 'E',
       scope: {
-          data: '=ngModel'
+          'data': '=ngModel',
+          'displayProvenance': '@'
       },
       link: function postLink(scope, element, attrs) {
           scope.hideDetails = SolrService.hideDetails;
@@ -27,6 +28,13 @@ angular.module('searchApp')
           $rootScope.$on('show-search-results-details', function() {
               scope.hideDetails = false;
           });
+
+          // determine the source url to use for the record
+          if (scope.data.display_url !== undefined) {
+              scope.data.url = scope.data.display_url;
+          } else {
+              scope.data.url = scope.data.id;
+          }
       }
     };
   }]);
