@@ -5,6 +5,9 @@ angular.module('searchApp')
     return {
       templateUrl: 'views/search-results.html',
       restrict: 'E',
+      scope: {
+          'displayProvenance': '@'
+      },
       link: function postLink(scope, element, attrs) {
 
           /* Initialise the widget / defaults */
