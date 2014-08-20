@@ -14,10 +14,12 @@ angular.module('searchApp')
       } else {
           $scope.t = 165;
       }
+      // panel padding
+      $scope.padding = 10;
 
       // left (lpw) and right (rpw) panel widths
-      $scope.lpw = Math.floor(($scope.w - 20) * 0.25) - 1;
-      $scope.rpw = $scope.w - $scope.lpw - 1;
+      $scope.lpw = Math.floor(($scope.w - 20) * 0.25) - $scope.padding;
+      $scope.rpw = $scope.w - $scope.lpw - $scope.padding;
 
       /* handle summary / detail view toggle */
       $rootScope.$on('show-search-results-details', function() {

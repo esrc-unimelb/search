@@ -58,8 +58,8 @@
         </div>
     </div>
 
-    <!-- side bar: fixed to right -->
-    <div ng-if="select" style="background-color: #efefea; position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 10px; ">
+    <!-- side bar: fixed to left -->
+    <div ng-if="select" style="background-color: #efefea; position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: {{padding}}px;">
         <div class="row">
             <div class="col-sm-12">
                 <!-- <p class="help-block">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>-->
@@ -73,7 +73,8 @@
             </div>
         </div>
     </div>
-    <div style="position:absolute; top: {{t}}px; left: {{lpw}}px; width: {{rpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 10px;">
+    <!-- side bar: fixed to right -->
+    <div style="position:absolute; top: {{t}}px; left: {{lpw}}px; width: {{rpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px {{padding}}px; margin: 0px {{padding}}px;">
         <div class="row" ng-if="select">
             <div class="col-sm-12">
                 <search-results display-provenance="true"></search-results>
