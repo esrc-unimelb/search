@@ -17,12 +17,11 @@
 }
 
 
-/* If you need to override link colouring 
-a:link    { color: ; }
-a:visited { color: ; }
-a:focus   { color: ; }
-a:hover   { color: ; }
-a:active  { color: ; }
-*/
+/* If you need to override link colouring  */
+a:link    { color: #24658A; }
+a:visited { color: #24658A; }
+a:focus   { color: #24658A; }
+a:hover   { color: #24658A; }
+a:active  { color: #24658A; }
 
 
