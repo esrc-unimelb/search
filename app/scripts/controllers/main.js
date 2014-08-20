@@ -5,6 +5,8 @@ angular.module('searchApp')
     function ($rootScope, $scope, $window, $routeParams, SolrService) {
       if ($routeParams.site !== undefined) {
           $scope.select = $routeParams.site;
+      } else {
+          $scope.select = 'ESRC';
       }
       $scope.w = $window.innerWidth;
       $scope.h = $window.innerHeight;
@@ -30,7 +32,11 @@ angular.module('searchApp')
           $scope.detailsActive = true;
       });
       $rootScope.$on('site-name-retrieved', function() {
-          $scope.site_name = SolrService.site_name;
+          if (SolrService.site === 'ESRC') {
+              $scope.site_name = undefined;
+          } else {
+              $scope.site_name = SolrService.site_name;
+          }
       })
 
       /* button methods */

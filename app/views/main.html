@@ -18,9 +18,9 @@
                     <a href="http://www.esrc.unimelb.edu.au" style="color: #24658A;">eScholarship Research Centre</a>, 
                     <a href="http://www.lib.unimelb.edu.au" target="_blank" style="color: #24658A;" >The University of Melbourne Library</a>
                 </h4>
-                <h1 style="font-size: 37px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; color: #658095; line-height: 1.1;">
-                    <span style="color: #3d4343;">Search our data</span>
-                </h1>
+                <h3 style="font-size: 30px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; color: #658095; line-height: 1.1;">
+                    <span style="color: #3d4343;">Search our data<span ng-if="site_name">: {{site_name}}</span></span>
+                </h3>
             </div>
         </div>
         <div class="row" style="background-color: #364550; height: 2px;" >
@@ -68,7 +68,7 @@
                 <facet-widget facet-field="type" label="Entity Type"></facet-widget><br/>
                 <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget><br/>
                 <!-- <facet-widget facet-field="state_long" label="Region"></facet-widget><br/> -->
-                <facet-widget facet-field="site_name" label="Data Source"></facet-widget><br/>
+                <span ng-if="!site_name"><facet-widget facet-field="site_name" label="Data Source"></facet-widget><br/></span>
                 <facet-widget facet-field="repository" label="Repository"></facet-widget><br/>
             </div>
         </div>
