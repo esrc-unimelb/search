@@ -28,7 +28,7 @@
     </div>
 
     <!-- header controls -->
-    <div ng-if="select" style="position: fixed; top: 110px; left 0px; width: 100%; z-index:10000; padding-left: 5px; background-color: #3d4343; padding-top: 10px;">
+    <div ng-if="select" style="position: fixed; top: 110px; left 0px; width: 100%; z-index:10000; padding: 10px 10px 0px 10px; background-color: #3d4343; ">
         <div class="row" style="border-bottom: solid; border-width: 1px; border-color: gray;">
             <div class="col-sm-3 col-md-3 col-lg-3">
                <sort-results></sort-results> 
@@ -43,13 +43,13 @@
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <span ng-hide="detailsActive">
-                    <button class="btn btn-default" ng-click="toggleDetails()">
+                    <button class="btn btn-default pull-right" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th-list"></span>
                         Summary View
                     </button>
                 </span>
                 <span ng-show="detailsActive">
-                    <button class="btn btn-default" ng-click="toggleDetails()">
+                    <button class="btn btn-default pull-right" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th"></span>
                         Show Details 
                     </button>
