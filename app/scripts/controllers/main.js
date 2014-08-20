@@ -29,7 +29,11 @@ angular.module('searchApp')
           $scope.detailsActive = true;
       });
       $rootScope.$on('site-name-retrieved', function() {
-          $scope.site_name = SolrService.site_name;
+          if (SolrService.site === 'ESRC') {
+              $scope.site_name = '';
+          } else {
+              $scope.site_name = SolrService.site_name;
+          }
       })
 
       /* button methods */
