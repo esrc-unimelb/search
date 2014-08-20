@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('searchApp')
-  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', 'SolrService', 
-    function ($rootScope, $scope, $window, SolrService) {
-      //$scope.select = 'ESRC';
+  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$routeParams', 'SolrService',
+    function ($rootScope, $scope, $window, $routeParams, SolrService) {
+      if ($routeParams.site !== undefined) {
+          $scope.select = $routeParams.site;
+      }
 
       $scope.w = $window.innerWidth;
       $scope.h = $window.innerHeight;
@@ -26,6 +28,9 @@ angular.module('searchApp')
       $rootScope.$on('hide-search-results-details', function() {
           $scope.detailsActive = true;
       });
+      $rootScope.$on('site-name-retrieved', function() {
+          $scope.site_name = SolrService.site_name;
+      })
 
       /* button methods */
       $scope.toggleDetails = function() {

@@ -56,6 +56,7 @@ angular.module('searchApp')
         log.debug('Site: ' + SolrService.site);
         SolrService.dateOuterBounds();
 
+        // set the various facets defined in the URI
         angular.forEach($routeParams, function(v,k) {
             if (conf.allowedRouteParams.indexOf(k) !== -1 && k !== 'q') {
                 if (typeof(v) === 'object') {
@@ -68,6 +69,23 @@ angular.module('searchApp')
                 SolrService.updateFacetCount(k);
             }
         });
+
+        if (SolrService.site !== 'ESRC') {
+            var q = {
+                'url': SolrService.solr,
+                'params': {
+                    'q': '*:*',
+                    'rows': 1,
+                    'wt': 'json',
+                    'json.wrf': 'JSON_CALLBACK',
+                }
+            }
+            $http.jsonp(SolrService.solr, q).then(function(d) {
+                SolrService.site_name = d.data.response.docs[0].site_name;
+                log.debug('Searching site: ' + SolrService.site_name);
+                $rootScope.$broadcast('site-name-retrieved');
+            });
+        }
         return true;
     }
 
