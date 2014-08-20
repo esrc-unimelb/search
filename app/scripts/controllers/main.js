@@ -15,7 +15,7 @@ angular.module('searchApp')
           $scope.t = 165;
       }
       // panel padding
-      $scope.padding = 10;
+      $scope.padding = 15;
 
       // left (lpw) and right (rpw) panel widths
       $scope.lpw = Math.floor(($scope.w - 20) * 0.25) - $scope.padding;
