@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchForm', [ '$rootScope', '$routeParams', '$timeout', 'SolrService', function ($rootScope, $routeParams, $timeout, SolrService) {
+  .directive('searchForm', [ '$rootScope', '$routeParams', '$timeout', '$location', 'SolrService',
+    function ($rootScope, $routeParams, $timeout, $location, SolrService) {
     return {
       templateUrl: 'views/search-form.html',
       restrict: 'E',
@@ -13,7 +14,13 @@ angular.module('searchApp')
       link: function postLink(scope, element, attrs) {
 
           if ($routeParams.q !== undefined) {
-              scope.searchBox = $routeParams.q;
+              if (angular.isArray($routeParams.q)) {
+                  var s = $location.search();
+                  scope.searchBox = $routeParams.q[0];
+                  $location.search('q', s.q[0]);
+              } else {
+                scope.searchBox = $routeParams.q;
+              }
           } else {
               scope.searchBox = '*';
           }
