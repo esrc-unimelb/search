@@ -82,6 +82,7 @@ angular.module('searchApp')
             }
             $http.jsonp(SolrService.solr, q).then(function(d) {
                 SolrService.site_name = d.data.response.docs[0].site_name;
+                SolrService.site_url = d.data.response.docs[0].site_url;
                 log.debug('Searching site: ' + SolrService.site_name);
                 $rootScope.$broadcast('site-name-retrieved');
             });
