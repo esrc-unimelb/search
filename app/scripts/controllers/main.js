@@ -34,8 +34,10 @@ angular.module('searchApp')
       $rootScope.$on('site-name-retrieved', function() {
           if (SolrService.site === 'ESRC') {
               $scope.site_name = undefined;
+              $scope.site_url = undefined;
           } else {
               $scope.site_name = SolrService.site_name;
+              $scope.site_url = SolrService.site_url;
           }
       })
 
