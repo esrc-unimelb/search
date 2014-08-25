@@ -1,32 +1,40 @@
 <div class="row">
     <div style="position: fixed; top: 0px; width: 100%; padding: 0px 0px; margin: 0 auto;">
         <div class="row" style="background-color: #003268; height: 30px; padding: 5px 5px;">
-            <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="col-sm-9 col-md-9 col-lg-9">
+                <a ng-if="returnToSiteLink" href="{{site_url}}" style="color:white; font-weight: 300;">Return to site</a>
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1">
-                <a href="http://www.esrc.unimelb.edu.au/search-help/" style="color:white; font-weight: 300;">Help</a>
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1">
                 <a href="http://www.esrc.unimelb.edu.au/search-about/" style="color:white; font-weight: 300;">About</a>
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1">
-                <a ng-if="site_name" href="{{site_url}}" style="color:white; font-weight: 300;">Return to site</a>
+                <a href="http://www.esrc.unimelb.edu.au/search-help/" style="color:white; font-weight: 300;">Help</a>
             </div>
         </div>
         <div class="row" style="background-color: #efefea; height: 80px;">
-            <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                </div>
+                <div class="col-md-9 col-lg-9">
+                    <h4 style="font-size: 16px; font-weight: 300; text-rendering: optimizelegibility; color: #24658A;">
+                        <a href="http://www.esrc.unimelb.edu.au" style="color: #24658A;">eScholarship Research Centre</a>, 
+                        <a href="http://www.lib.unimelb.edu.au" target="_blank" style="color: #24658A;" >The University of Melbourne Library</a>
+                    </h4>
+                </div>
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9">
-                <h4 style="font-size: 16px; font-weight: 300; text-rendering: optimizelegibility; color: #24658A;">
-                    <a href="http://www.esrc.unimelb.edu.au" style="color: #24658A;">eScholarship Research Centre</a>, 
-                    <a href="http://www.lib.unimelb.edu.au" target="_blank" style="color: #24658A;" >The University of Melbourne Library</a>
-                </h4>
-                <h3 style="font-size: 30px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; color: #658095; line-height: 1.1;">
-                    <span style="color: #3d4343;">Search our data<span ng-if="site_name">: {{site_name}}</span></span>
-                </h3>
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                </div>
+                <div class="col-md-9 col-lg-9">
+                    <span ng-show="site_name">
+                        <h3 style="font-size: 25px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; color: #658095; line-height: 1.1;">
+                            <span style="color: #3d4343;">{{site_name}}</span>
+                        </h3>
+                    </span>
+                </div>
             </div>
-        </div>
-        <div class="row" style="background-color: #364550; height: 2px;" >
         </div>
     </div>
 

@@ -86,6 +86,8 @@ angular.module('searchApp')
                 log.debug('Searching site: ' + SolrService.site_name);
                 $rootScope.$broadcast('site-name-retrieved');
             });
+        } else {
+            $rootScope.$broadcast('site-name-retrieved');
         }
         return true;
     }

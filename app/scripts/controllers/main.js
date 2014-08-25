@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$routeParams', 'SolrService',
-    function ($rootScope, $scope, $window, $routeParams, SolrService) {
+  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$routeParams', '$location', 'SolrService',
+    function ($rootScope, $scope, $window, $routeParams, $location, SolrService) {
       if ($routeParams.site !== undefined) {
           $scope.select = $routeParams.site;
       } else {
@@ -33,11 +33,13 @@ angular.module('searchApp')
       });
       $rootScope.$on('site-name-retrieved', function() {
           if (SolrService.site === 'ESRC') {
-              $scope.site_name = undefined;
-              $scope.site_url = undefined;
+              $scope.site_name = 'Search our data';
+              $scope.site_url = $location.absUrl();
+              $scope.returnToSiteLink = false;
           } else {
-              $scope.site_name = SolrService.site_name;
+              $scope.site_name = 'Search: ' + SolrService.site_name;
               $scope.site_url = SolrService.site_url;
+              $scope.returnToSiteLink = true;
           }
       })
 
