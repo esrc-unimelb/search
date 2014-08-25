@@ -15,7 +15,7 @@ angular.module('searchApp')
       if ($scope.w < 1024) {
           window.location.replace('/basic-search');
       } else {
-          $scope.t = 165;
+          $scope.t = 175;
       }
       // panel padding
       $scope.padding = 15;
