@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('displayDobject', function () {
+  .directive('displayArcresource', function () {
     return {
-      templateUrl: 'views/display-dobject.html',
+      templateUrl: 'views/display-arcresource.html',
       restrict: 'E',
       scope: {
           data: '=ngModel'
