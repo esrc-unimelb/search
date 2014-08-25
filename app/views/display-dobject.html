@@ -1,1 +1,11 @@
-<p>This is the display-dobject view.</p>
+<div class="row">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="{{data.thumbnail}}" title="{{data.name}}">
+            <img src="{{data.thumbnail}}">
+        </a>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8">
+        <a href="{{data.source_link}}">{{data.source}}</a><br/>
+        <small>{{data.rights}}</small>
+    </div>
+</div>

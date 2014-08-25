@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('displayDobject', function () {
+  .directive('displayEntity', function () {
     return {
-      templateUrl: 'views/display-dobject.html',
+      templateUrl: 'views/display-entity.html',
       restrict: 'E',
       scope: {
           data: '=ngModel'
