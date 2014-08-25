@@ -10,9 +10,9 @@ angular.module('searchApp')
           help: '@',
           deployment: '@',
           site: '@',
+          defaultSearch: '@'
       },
       link: function postLink(scope, element, attrs) {
-
           if ($routeParams.q !== undefined) {
               if (angular.isArray($routeParams.q)) {
                   var s = $location.search();
@@ -39,6 +39,21 @@ angular.module('searchApp')
               // - ditchSuggestion: true
               SolrService.search(scope.searchBox, 0, true);
           };
+
+          scope.setSearchType = function(type) {
+              SolrService.searchType = type;
+              scope.search();
+          }
+
+          if (scope.defaultSearch === 'keyword') {
+              scope.keywordSearch = true;
+              scope.setSearchType('keyword');
+          } else {
+              scope.phraseSearch = true;
+              scope.setSearchType('phrase');
+          }
+
+
 
           // let's get this party started!!
           scope.ready = SolrService.init(scope.deployment, scope.site);

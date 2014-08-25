@@ -37,12 +37,13 @@
                <sort-results></sort-results> 
             </div>
             <div class="col-sm-7 col-md-7 col-lg-7">
-                <search-form 
-                    help=''
-                    deployment="testing"
-                    site="{{select}}"
-                    >
-                </search-form>
+                    <search-form 
+                        help='Normally this would be site / context specific help in this bit...'
+                        deployment="testing"
+                        site="{{select}}",
+                        default-search="keyword"
+                        >
+                    </search-form>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <span ng-hide="detailsActive">

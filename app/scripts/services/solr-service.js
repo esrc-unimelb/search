@@ -99,7 +99,11 @@ angular.module('searchApp')
         if ( what === '*' || what.substr(-1,1) === '~') {
             q = '(name:' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
         } else {
-            q = '(name:"' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
+            if (SolrService.searchType === 'keyword') {
+                q = '(name:' + what + '^100 OR altname:' + what + '^50 OR locality:' + what + '^10 OR text:' + what + ')';
+            } else {
+                q = '(name:"' + what + '"^100 OR altname:' + what + '^50 OR locality:"' + what + '"^10 OR text:"' + what + '")';
+            }
         }
 
         // add in the facet query filters - if any...
@@ -559,6 +563,7 @@ angular.module('searchApp')
         filters: {},
         filterUnion: {},
         dateFilters: {},
+        searchType: 'phrase',
         term: '*',
         rows: 10,
         sort: undefined,
