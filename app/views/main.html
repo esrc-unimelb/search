@@ -39,7 +39,7 @@
     <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; background-color: white;"></div>
     
     <!-- header controls -->
-    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; z-index:10000; padding-left: 15px; background-color: white;">
+    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; z-index:10000; padding-left: 15px; ">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <br/>
@@ -54,7 +54,8 @@
                     <search-form 
                         help='Normally this would be site / context specific help in this bit...'
                         deployment="testing"
-                        site="{{select}}"
+                        site="{{select}}",
+                        default-search="keyword"
                         >
                     </search-form>
             </div>

@@ -8,7 +8,19 @@
                         <button class="btn btn-default" ng-click="search()">Search</button>
                     </span>
                 </div>
-                <p class="help-block">{{help}}</p>
+                <div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label class="radio-inline">
+                            <input type="radio" name="searchType" ng-model="searchType" ng-checked="phraseSearch" ng-click="setSearchType('phrase')"/>
+                            Perform a phrase search
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="searchType" ng-model="searchType" ng-checked="keywordSearch" ng-click="setSearchType('keyword')" />
+                            Perform a keyword search
+                        </label>
+                    </div>
+                </div>
+                <!-- <p class="help-block">{{help}}</p> -->
             </div>
         </form>
     </div>
