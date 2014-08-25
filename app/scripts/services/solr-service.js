@@ -97,9 +97,9 @@ angular.module('searchApp')
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            q = '(name:' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
+            q = '(name:' + what + '^100 OR altname:' + what + '^50 OR locality:' + what + '^10 OR text:' + what + ')';
         } else {
-            q = '(name:"' + what + '"^20 OR altname:"' + what + '"^10 OR locality:"' + what + '"^10 OR text:"' + what + '")';
+            q = '(name:"' + what + '"^100 OR altname:' + what + '^50 OR locality:"' + what + '"^10 OR text:"' + what + '")';
         }
 
         // add in the facet query filters - if any...
