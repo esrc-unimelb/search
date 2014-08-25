@@ -21,11 +21,6 @@
 
 <div class="row" ng-hide="hideDetails">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <span ng-if="data.altname">
-            <strong>Also known as:</strong> {{data.altname.join('; ')}}
-            <br/>
-        </span>
-        <br/>
         <div ng-switch on="data.main_type">
             <span  ng-switch-when="Digital Object">
                 <display-dobject ng-model="data"></display-dobject>
@@ -45,6 +40,7 @@
 
 <div class="row" ng-hide="hideDetails">
     <div class="col-sm-12 col-md-12 col-lg-12">
+        <hr/>
         <strong>Record Source:&nbsp;</strong><a href="{{data.url}}">{{data.url}}</a>
         <provenance-view data="data" display-provenance="{{displayProvenance}}"></provenance-view>
     </div>
