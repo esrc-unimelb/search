@@ -100,9 +100,10 @@ angular.module('searchApp')
             q = '(name:' + what + '^100 OR altname:' + what + '^50 OR locality:' + what + '^10 OR text:' + what + ')';
         } else {
             if (SolrService.searchType === 'keyword') {
-                q = '(name:' + what + '^100 OR altname:' + what + '^50 OR locality:' + what + '^10 OR text:' + what + ')';
+                what = what.replace(' ', ' AND ');
+                q = 'name:(' + what + ')^100 OR altname:(' + what + ')^50 OR locality:(' + what + ')^10 OR text:(' + what + ')';
             } else {
-                q = '(name:"' + what + '"^100 OR altname:' + what + '^50 OR locality:"' + what + '"^10 OR text:"' + what + '")';
+                q = 'name:"' + what + '"^100 OR altname:"' + what + '"^50 OR locality:"' + what + '"^10 OR text:"' + what + '"';
             }
         }
 
