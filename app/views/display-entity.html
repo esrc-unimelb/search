@@ -11,7 +11,7 @@
         </span>
         <span ng-if="!data.abstract && data.text">
             {{data.text[0] | limitTo: 400}}
-            <span ng-if="data.text.length > 400">...</span>
+            <span ng-if="data.text[0].length > 400">...</span>
         </span>
     </div>
 </div>
