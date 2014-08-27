@@ -11,8 +11,9 @@ angular.module('searchApp')
       $scope.h = $window.innerHeight;
       //console.log($scope.w, $scope.h);
 
-      if ($scope.w < 1024) {
-          window.location.replace('/basic-search');
+      if ($scope.w < 900) {
+          //window.location.replace('/basic-search');
+          $scope.t = 110;
       } else {
           $scope.t = 110;
       }
