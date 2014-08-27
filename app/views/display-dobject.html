@@ -1,15 +1,37 @@
+<div style="position: fixed; top: 0px; left: 0px; height: {{h}}px; width: {{w}}px; z-index: 20000; background-color: white; opacity: 1;" ng-if="showImage">
+</div>
+<div style="position: fixed; top: 2%; left: 96%; z-index: 30000;" ng-if="showImage">
+    <span class="glyphicon glyphicon-remove" ng-click="ditchPreview()"></span>
+</div>
+<div style="position: fixed; top: 0px; left: 0px; height: {{h - 40}}px; width: {{w - 40}}px; z-index: 25000; margin: 20px;" ng-if="showImage" >
+    <div style="height: 90%">
+        <img class="img-responsive img-thumbnail" 
+             src="{{data.fullsize}}" 
+             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); max-height: 90%; max-width: 90%; height: auto; width: auto;" 
+             /> 
+    </div>
+    <div style="position: absolute; top: 91%; left: 5%; width: 90%; z-index: 25000;">
+        <hr/>
+        <h4><a href="{{data.id}}">{{data.name}}</a>&nbsp;(escape to exit)</h4>
+    </div>
+</div>
 <div class="row">
     <br/>
     <div class="col-sm-1 col-md-1 col-lg-1">
     </div>
     <div class="col-sm-4 col-md-4 col-lg-4">
-        <a href="{{data.thumbnail}}" title="{{data.name}}">
-            <img src="{{data.thumbnail}}">
-        </a>
+        <img src="{{data.thumbnail}}" class="img-responsive img-thumbnail" ng-click="loadImage()"/>
     </div>
     <div class="col-sm-7 col-md-7 col-lg-7">
         <br/>
         <a href="{{data.source_link}}">{{data.source}}</a><br/>
         <small>{{data.rights}}</small>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-1 col-md-1 col-lg-1">
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 text-center">
+        <small>(click image for preview)</small>
     </div>
 </div>
