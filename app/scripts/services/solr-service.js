@@ -79,6 +79,9 @@ angular.module('searchApp')
         // init the date widget
         SolrService.dateOuterBounds();
 
+        // load the site data
+        loadSiteData()
+
         // if there's no cq in location - delete cq in storage if exists, init as normal
         // if there is
         //  - is there a cq stored in localstorage?
