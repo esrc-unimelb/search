@@ -15,6 +15,10 @@ angular.module('searchApp', [
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/view/:imageid', {
+        templateUrl: 'views/image-view.html',
+        controller: 'ImageViewCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

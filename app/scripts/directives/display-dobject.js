@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('displayDobject', [ '$window', '$document', function ($window, $document) {
+  .directive('displayDobject', [ '$window', '$location', 'ImageService', function ($window, $location, ImageService) {
     return {
       templateUrl: 'views/display-dobject.html',
       restrict: 'E',
@@ -10,17 +10,8 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
 
-          // bind to the keyup event on the document and ditch the
-          //  preview on escape
-          $document.bind('keyup', function(event) {
-              if (scope.showImage) {
-                  scope.$apply(function() {
-                      if (event.keyCode === 27) {
-                          scope.ditchPreview();
-                      }
-                  });
-              }
-          });
+          // pop the image data into the service in case we need it
+          scope.key = ImageService.push(scope.data);
 
           // ensure none of the large image panels come up
           scope.showImage = false;
