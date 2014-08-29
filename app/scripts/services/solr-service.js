@@ -77,8 +77,7 @@ angular.module('searchApp')
            deployment = 'production';
         }
         if (site === undefined) {
-            log.error('Can\'t run! No solr_core defined!');
-            return false;
+            SolrService.solr = conf[deployment] + '/' + conf[defaultSite] + '/select';
         } else {
             SolrService.solr = conf[deployment] + '/' + site + '/select';
         }
@@ -96,6 +95,12 @@ angular.module('searchApp')
         if (nLocationTerms() > 0) {
             sessionStorage.removeItem('cq');
         } 
+
+        // if the site changes - ditch the stored data
+        var savedQuery = JSON.parse(sessionStorage.getItem('cq'));
+        if (savedQuery !== null && savedQuery.site !== SolrService.site) {
+            sessionStorage.removeItem('cq');
+        }
         
         // if a saved query exists - get it
         var savedQuery = sessionStorage.getItem('cq');
@@ -140,6 +145,8 @@ angular.module('searchApp')
         // if there's a term in the URL - set it
         if ($routeParams.q !== undefined) {
             SolrService.term = $routeParams.q;
+        } else {
+            SolrService.term = '*';
         }
 
         // set the various facets defined in the URI
@@ -273,7 +280,8 @@ angular.module('searchApp')
             'q': getQuery(0),
             'filters': SolrService.filters,
             'searchType': SolrService.searchType,
-            'sort': SolrService.sort
+            'sort': SolrService.sort,
+            'site': SolrService.site
         }
         log.debug('Storing the current query: ' + currentQuery.date);
         sessionStorage.setItem('cq', JSON.stringify(currentQuery));
