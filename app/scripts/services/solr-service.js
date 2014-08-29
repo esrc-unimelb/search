@@ -77,6 +77,7 @@ angular.module('searchApp')
            deployment = 'production';
         }
         if (site === undefined) {
+            SolrService.site = conf.defaultSite;
             SolrService.solr = conf[deployment] + '/' + conf.defaultSite + '/select';
         } else {
             SolrService.solr = conf[deployment] + '/' + site + '/select';
