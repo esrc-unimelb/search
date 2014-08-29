@@ -137,6 +137,11 @@ angular.module('searchApp')
         SolrService.appInit = true;
         log.info('Bootstrapping app');
 
+        // if there's a term in the URL - set it
+        if ($routeParams.q !== undefined) {
+            SolrService.term = $routeParams.q;
+        }
+
         // set the various facets defined in the URI
         angular.forEach($routeParams, function(v,k) {
             if (conf.allowedRouteParams.indexOf(k) !== -1 && k !== 'q') {
@@ -156,7 +161,8 @@ angular.module('searchApp')
                 $location.search(k, null);
             }
         })
-        saveCurrentSearch();
+
+        //saveCurrentSearch();
 
         $timeout(function() {
             // broadcast the fact that we've initialised from a previous

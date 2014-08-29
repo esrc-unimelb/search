@@ -16,7 +16,7 @@ angular.module('searchApp')
 
           // handle the app being bootstrapped
           $rootScope.$on('app-bootstrapped', function() {
-              scope.setSearchBox();
+              scope.searchBox = SolrService.term;
               scope.setSearchType(scope.searchType);
           });
 
