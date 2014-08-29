@@ -45,7 +45,7 @@ angular.module('searchApp')
          *  @param {string} msg - The message to log
          */
         info: function(msg) {
-            if (this.logLevel === 'INFO') {
+            if (this.logLevel === 'INFO' || this.logLevel == 'DEBUG') {
                 this.log('INFO', msg);
             }
         },
@@ -58,7 +58,7 @@ angular.module('searchApp')
          *  @param {string} msg - The message to log
          */
         error: function(msg) {
-            if (this.logLevel === 'ERROR') {
+            if (this.logLevel === 'ERROR' || this.logLevel === 'INFO' || this.logLevel === 'DEBUG') {
                 this.log('ERROR',  msg);
             }
         },
