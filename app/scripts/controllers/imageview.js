@@ -22,8 +22,8 @@ angular.module('searchApp')
         }
         */
 
-        $scope.w = $window.innerWidth;
-        $scope.h = $window.innerHeight;
+        $scope.width = $window.innerWidth;
+        $scope.height = $window.innerHeight;
         $scope.image_pane_height = $window.innerHeight * 0.9;
         $scope.image_label_height = $window.innerHeight - $scope.image_pane_height;
 
