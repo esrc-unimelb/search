@@ -4,7 +4,9 @@ angular.module('searchApp')
   .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$routeParams', 'SolrService',
     function ($rootScope, $scope, $window, $routeParams, SolrService) {
       if ($routeParams.site !== undefined) {
-          $scope.select = $routeParams.site;
+          $scope.site = $routeParams.site;
+      } else {
+          $scope.site = 'ESRC';
       }
 
       $scope.w = $window.innerWidth;
