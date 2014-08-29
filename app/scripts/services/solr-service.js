@@ -17,17 +17,19 @@ angular.module('searchApp')
         function SolrService($rootScope, $http, $routeParams, $route, $location, $timeout, $window, log, conf) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
+    var nLocationTerms = function() {
+        // we need to see if there are any location bits
+        var b = [];
+        angular.forEach($location.search(), function(k, v) {
+            b.push(k);
+        });
+        return b.length;
+    }
 
     $rootScope.$on('$routeUpdate', function() {
         if (!SolrService.appInit) {
-            // we need to see if there are any location bits
-            var b = [];
-            angular.forEach($location.search(), function(k, v) {
-                b.push(k);
-            });
-
             // is the site now different to what it was? if so - do a full init
-            if ($routeParams.site !== SolrService.site || b.length > 0) {
+            if ($routeParams.site !== SolrService.site || nLocationTerms() > 0) {
                 // purge any existing state data
                 sessionStorage.removeItem('cq');
 
@@ -90,6 +92,11 @@ angular.module('searchApp')
         // load the site data
         loadSiteData()
 
+        // url search parameters override saved queries
+        if (nLocationTerms() > 0) {
+            sessionStorage.removeItem('cq');
+        } 
+        
         // if a saved query exists - get it
         var savedQuery = sessionStorage.getItem('cq');
         if (savedQuery !== null) {
@@ -116,12 +123,10 @@ angular.module('searchApp')
         SolrService.searchType = data.searchType;
         SolrService.sort = data.sort;
 
-        $timeout(function() {
             // broadcast the fact that we've initialised from a previous
             //  saved state so that the search form can update itself
             $rootScope.$broadcast('init-from-saved-state-complete');
             SolrService.appInit = false;
-        }, 200);
     }
 
     /**

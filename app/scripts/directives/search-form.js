@@ -21,7 +21,7 @@ angular.module('searchApp')
           });
 
           // set the query box and search type if initialising from saved stated
-          $rootScope.$on('init-from-saved-state-complete', function() {
+          scope.$on('init-from-saved-state-complete', function() {
               scope.searchBox = SolrService.term;
               scope.setSearchType(SolrService.searchType);
           });
