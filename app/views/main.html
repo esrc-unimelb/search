@@ -1,45 +1,9 @@
-<div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12" ng-hide="select">
-        <div class="form-group">
-            <label>Select the search instance you wish to use.</label>
-            <select class="form-control pull-left" ng-change="onSelect()" ng-model="select">
-                <option></option>
-                <option>AHPI</option>
-                <option>APFA</option>
-                <option>ASMP</option>
-                <option>ASRS</option>
-                <option>AWAL</option>
-                <option>AWAP</option>
-                <option>BFYA</option>
-                <option>BXHM</option>
-                <option>BXTA</option>
-                <option>CTACPUBLIC</option>
-                <option>DHRA</option>
-                <option>EOAS</option>
-                <option>EMEL</option>
-                <option>ESRC</option>
-                <option>FACP</option>
-                <option>GOLD</option>
-                <option>IAEA</option>
-                <option>NQAR</option>
-                <option>RERN</option>
-                <option>SAUL</option>
-                <option>SIPP</option>
-                <option>TORP</option>
-                <option>UMAB</option>
-                <option>VCRC</option>
-                <option>WALL</option>
-                <option>WHSO</option>
-                <option>XAHI_theses</option>
-            </select>
-        </div>
-    </div>
-
+<span ng-controller="MainCtrl">
     <!-- background white div between the scrolling results pane and the header controls -->
-    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; background-color: white;"></div>
+    <div style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; background-color: white;"></div>
     
     <!-- header controls -->
-    <div ng-if="select" style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; z-index:10000; padding-left: 15px; ">
+    <div style="position: fixed; top: 0px; left 0px; height: {{t}}px; width: 100%; z-index:10000; padding-left: 15px; ">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <br/>
@@ -54,7 +18,7 @@
                     <search-form 
                         help='Normally this would be site / context specific help in this bit...'
                         deployment="testing"
-                        site="{{select}}",
+                        site="{{site}}",
                         search-type="keyword"
                         >
                     </search-form>
@@ -77,7 +41,7 @@
     </div>
 
     <!-- side bar: fixed to right -->
-    <div ng-if="select" style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px; ">
+    <div style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px; ">
         <div class="row">
             <div class="col-sm-12">
                 <p class="help-block text-center">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
@@ -94,10 +58,10 @@
         </div>
     </div>
     <div style="position:absolute; top: {{t}}px; left: {{lpw}}px; width: {{rpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px;">
-        <div class="row" ng-if="select">
+        <div class="row">
             <div class="col-sm-12">
                 <search-results display-provenance="true"></search-results>
             </div>
         </div>
    </div>
-</div>
+</span>
