@@ -160,9 +160,9 @@ angular.module('searchApp')
                 } else {
                     SolrService.filterQuery(k, v, true);
                 }
-                SolrService.updateFacetCount(k);
             }
         });
+        updateAllFacetCounts();
 
         angular.forEach($routeParams, function(v,k) {
             if (conf.allowedRouteParams.indexOf(k) !== -1) {
