@@ -13,7 +13,13 @@ angular.module('searchApp', [
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        reloadOnSearch: false
+      })
+      .when('/:site', {
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl',
+        reloadOnSearch: false
       })
       .when('/view/:imageid', {
         templateUrl: 'views/image-view.html',

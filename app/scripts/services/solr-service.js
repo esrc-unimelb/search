@@ -16,25 +16,33 @@ angular.module('searchApp')
   .factory('SolrService', [ '$rootScope', '$http', '$routeParams', '$route', '$location', '$timeout', '$window', 'LoggerService', 'Configuration',
         function SolrService($rootScope, $http, $routeParams, $route, $location, $timeout, $window, log, conf) {
     // AngularJS will instantiate a singleton by calling "new" on this function
-    //
-    //
-    //
-    $rootScope.$on('$locationChangeSuccess', function(e) {
-        var s = $location.search();
-        if (s.cq !== undefined) {
-            $route.current = SolrService.lastRoute;
+
+
+    $rootScope.$on('$routeUpdate', function() {
+        if (!SolrService.appInit) {
+            // we need to see if there are any location bits
+            var b = [];
+            angular.forEach($location.search(), function(k, v) {
+                b.push(k);
+            });
+
+            // is the site now different to what it was? if so - do a full init
+            if ($routeParams.site !== SolrService.site || b.length > 0) {
+                // purge any existing state data
+                sessionStorage.removeItem('cq');
+
+                init(SolrService.deployment, $routeParams.site);
+            } else {
+                // otherwise - are we just dealing with url changes
+                var savedQuery = sessionStorage.getItem('cq');
+                if (savedQuery !== null) {
+                    initAppFromSavedData(sessionStorage.getItem('cq'));
+                } else {
+                    init(SolrService.deployment, $routeParams.site);
+                }
+            }
         }
     });
-
-    function dropLocationElement(e) {
-        SolrService.lastRoute = $route.current;
-        $location.search(e, null);
-    }
-
-    function addLocationElement(e, v) {
-        SolrService.lastRoute = $route.current;
-        $location.search(e, v);
-    }
 
     /** 
     * @ngdoc function 
@@ -53,10 +61,10 @@ angular.module('searchApp')
     *
     */
     function init(deployment, site) {
-        console.log('############');
-        console.log('############ APPLICATION INITIALISED');
-        console.log('############');
         log.init(conf.loglevel);
+        log.info('############');
+        log.info('############ APPLICATION INITIALISED');
+        log.info('############');
         SolrService.site = site;
         SolrService.filters = {};
         SolrService.dateFilters = {};
@@ -82,32 +90,15 @@ angular.module('searchApp')
         // load the site data
         loadSiteData()
 
-        // if there's no cq in location - delete cq in storage if exists, init as normal
-        // if there is
-        //  - is there a cq stored in localstorage?
-        //   - if not - remove cq, init as normal
-        //   - if yes - init using stored data
-        //
-
-        // if there's a query in session storage - set it
-        var s = $location.search();
-        var savedQuery = JSON.parse(sessionStorage.getItem('cq'));
-
-        // no cq in url
-        var timeout
-        if (s.cq === undefined) {
-            initAppFromScratch();
+        // if a saved query exists - get it
+        var savedQuery = sessionStorage.getItem('cq');
+        if (savedQuery !== null) {
+            initAppFromSavedData(savedQuery);
         } else {
-            if (savedQuery !== null) {
-                initAppFromSavedData(savedQuery);
-            } else {
-                initAppFromScratch();
-            }
+            // init the app
+            initCurrentInstance();
         }
         
-        // kick off the first search
-        //$timeout(function() { search(SolrService.term, 0, true, false); }, timeout);
-
         return true;
     }
 
@@ -116,8 +107,9 @@ angular.module('searchApp')
      * @name initAppFromSavedData
      */
     function initAppFromSavedData(data) {
-        log.debug('Initialising app from saved data');
-        log.debug(data);
+        data = JSON.parse(data);
+        SolrService.appInit = true;
+        log.info('Initialising app from saved data');
         SolrService.q = data.q;
         SolrService.filters = data.filters;
         SolrService.term = data.term;
@@ -128,19 +120,17 @@ angular.module('searchApp')
             // broadcast the fact that we've initialised from a previous
             //  saved state so that the search form can update itself
             $rootScope.$broadcast('init-from-saved-state-complete');
+            SolrService.appInit = false;
         }, 200);
-
     }
 
     /**
      * @ngdoc function
-     * @name initAppFromScratch
+     * @name initCurrentInstance
      */
-    function initAppFromScratch() {
-        log.debug('Bootstrapping app');
-
-        dropLocationElement('cq');
-        sessionStorage.removeItem('cq');
+    function initCurrentInstance() {
+        SolrService.appInit = true;
+        log.info('Bootstrapping app');
 
         // set the various facets defined in the URI
         angular.forEach($routeParams, function(v,k) {
@@ -158,7 +148,7 @@ angular.module('searchApp')
 
         angular.forEach($routeParams, function(v,k) {
             if (conf.allowedRouteParams.indexOf(k) !== -1) {
-                dropLocationElement(k);
+                $location.search(k, null);
             }
         })
         saveCurrentSearch();
@@ -167,6 +157,7 @@ angular.module('searchApp')
             // broadcast the fact that we've initialised from a previous
             //  saved state so that the search form can update itself
             $rootScope.$broadcast('app-bootstrapped');
+            SolrService.appInit = false;
         }, 300);
 
     }
@@ -274,7 +265,6 @@ angular.module('searchApp')
             'sort': SolrService.sort
         }
         log.debug('Storing the current query: ' + currentQuery.date);
-        addLocationElement('cq', currentQuery.date);
         sessionStorage.setItem('cq', JSON.stringify(currentQuery));
     }
 
