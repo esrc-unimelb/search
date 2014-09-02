@@ -12,11 +12,11 @@ angular.module('searchApp')
       $scope.h = $window.innerHeight;
       //console.log($scope.w, $scope.h);
 
-      if ($scope.w < 900) {
+      if ($scope.w < 760) {
           //window.location.replace('/basic-search');
-          $scope.t = 110;
+          $scope.t = 85;
       } else {
-          $scope.t = 185;
+          $scope.t = 85;
       }
       // panel padding
       $scope.padding = 15;
