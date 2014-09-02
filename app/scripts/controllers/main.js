@@ -9,20 +9,30 @@ angular.module('searchApp')
           $scope.site = 'ESRC';
       }
 
-      $scope.w = $window.innerWidth;
-      $scope.h = $window.innerHeight;
-      //console.log($scope.w, $scope.h);
+      var w = angular.element($window);
+      w.bind('resize', function() {
+          $scope.$apply(function() {
+            sizeThePanels();
+          })
+      });
 
-      if ($scope.w < 760) {
-          //window.location.replace('/basic-search');
-          $scope.t = 152;
-      } else {
-          $scope.t = 152;
+      var sizeThePanels = function() {
+          $scope.w = $window.innerWidth;
+          $scope.h = $window.innerHeight;
+          //console.log($scope.w, $scope.h);
+
+          if ($scope.w < 760) {
+              //window.location.replace('/basic-search');
+              $scope.t = 152;
+          } else {
+              $scope.t = 152;
+          }
+
+          // left (lpw) and right (rpw) panel widths
+          $scope.lpw = Math.floor(($scope.w) * 0.3) - 1;
+          $scope.rpw = $scope.w - $scope.lpw - 1;
       }
-
-      // left (lpw) and right (rpw) panel widths
-      $scope.lpw = Math.floor(($scope.w) * 0.3) - 1;
-      $scope.rpw = $scope.w - $scope.lpw - 1;
+      sizeThePanels();
 
       /* handle summary / detail view toggle */
       $scope.$on('show-search-results-details', function() {
