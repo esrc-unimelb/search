@@ -8,6 +8,21 @@ angular.module('searchApp')
         $scope.showImage = null;
 
         $scope.data = ImageService.get($routeParams.imageid);
+
+        var w = angular.element($window);
+        w.bind('resize', function() {
+            $scope.$apply(function() {
+              sizeThePanels();
+            })
+        });
+
+        var sizeThePanels = function() {
+            $scope.height = $window.innerHeight;
+            $scope.width = $window.innerWidth;
+            $scope.image_pane_height = $window.innerHeight * 0.9;
+            $scope.image_label_height = $window.innerHeight - $scope.image_pane_height;
+        }
+        sizeThePanels();
         //if ($scope.data === undefined) { 
         //    $location.url('/'); 
         //}
@@ -21,11 +36,6 @@ angular.module('searchApp')
             site_url: 'http://web.esrc.unimelb.edu.au/UMABt'
         }
         */
-
-        $scope.width = $window.innerWidth;
-        $scope.height = $window.innerHeight;
-        $scope.image_pane_height = $window.innerHeight * 0.9;
-        $scope.image_label_height = $window.innerHeight - $scope.image_pane_height;
 
         var img = new Image();
         img.onload = function() {
