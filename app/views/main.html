@@ -1,6 +1,6 @@
 <div class="row">
-    <div style="position: fixed; top: 0px; width: 100%; padding: 0px 0px; margin: 0 auto;">
-        <div class="row" style="background-color: #003268; height: 30px; padding: 5px 5px;">
+    <div style="position: fixed; top: 0px; width: 100%; z-index: 10000; padding: 0px 5px;">
+        <div class="row" style="background-color: #003268;">
             <div class="col-sm-9 col-md-9 col-lg-9">
                 <a ng-if="returnToSiteLink" href="{{site_url}}" style="color:white; font-weight: 300;">Return to site</a>
             </div>
@@ -13,8 +13,7 @@
                 <a href="http://www.esrc.unimelb.edu.au/search-help/" style="color:white; font-weight: 300;">Help</a>
             </div>
         </div>
-        <div class="row" style="background-color: #efefea; height: 80px;">
-            <div class="row">
+        <div class="row" style="background-color: #efefea;">
                 <div class="col-sm-3 col-md-3 col-lg-3">
                 </div>
                 <div class="col-sm-9 col-md-9 col-lg-9">
@@ -23,8 +22,6 @@
                         <a href="http://www.lib.unimelb.edu.au" target="_blank" style="color: #24658A;" >The University of Melbourne Library</a>
                     </h4>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-3 col-md-3 col-lg-3">
                 </div>
                 <div class="col-sm-9 col-md-9 col-lg-9">
@@ -34,13 +31,10 @@
                         </h3>
                     </span>
                 </div>
-            </div>
         </div>
-    </div>
 
-    <!-- header controls -->
-    <div ng-if="select" style="position: fixed; top: 110px; left 0px; width: 100%; z-index:10000; padding: 10px 10px 0px 10px; background-color: #3d4343; ">
-        <div class="row" style="border-bottom: solid; border-width: 1px; border-color: gray;">
+        <!-- header controls -->
+        <div class="row" style="background-color: #3d4343; padding: 5px 5px;">
             <div class="col-sm-3 col-md-3 col-lg-3">
                <sort-results></sort-results> 
             </div>
@@ -48,12 +42,12 @@
                     <search-form 
                         help='Normally this would be site / context specific help in this bit...'
                         deployment="testing"
-                        site="{{select}}",
+                        site="{{site}}",
                         search-type="keyword"
                         >
                     </search-form>
             </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
+            <div class="col-sm-2 col-md-2 col-lg-2 pull-right">
                 <span ng-hide="detailsActive">
                     <button class="btn btn-default pull-right" ng-click="toggleDetails()">
                         <span class="glyphicon glyphicon-th-list"></span>
@@ -71,7 +65,7 @@
     </div>
 
     <!-- side bar: fixed to left -->
-    <div ng-if="select" style="background-color: #efefea; position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 5px {{padding}}px;">
+    <div style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 5px 15px; background-color: #efefea;">
         <div class="row">
             <div class="col-sm-12">
                 <!-- <p class="help-block">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>-->
@@ -89,8 +83,8 @@
         </div>
     </div>
     <!-- side bar: fixed to right -->
-    <div style="position:absolute; top: {{t}}px; left: {{lpw}}px; width: {{rpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px {{padding}}px; margin: 0px {{padding}}px;">
-        <div class="row" ng-if="select">
+    <div style="position:absolute; top: {{t}}px; left: {{lpw}}px; width: {{rpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px;">
+        <div class="row">
             <div class="col-sm-12">
                 <search-results display-provenance="true"></search-results>
             </div>

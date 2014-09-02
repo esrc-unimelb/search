@@ -1,38 +1,37 @@
 'use strict';
 
 angular.module('searchApp')
-  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$routeParams', '$location', 'SolrService',
-    function ($rootScope, $scope, $window, $routeParams, $location, SolrService) {
+  .controller('MainCtrl', [ '$scope', '$window', '$routeParams', '$location', 'SolrService',
+    function ($scope, $window, $routeParams, $location, SolrService) {
       if ($routeParams.site !== undefined) {
-          $scope.select = $routeParams.site;
+          $scope.site = $routeParams.site;
       } else {
-          $scope.select = 'ESRC';
+          $scope.site = 'ESRC';
       }
+
       $scope.w = $window.innerWidth;
       $scope.h = $window.innerHeight;
       //console.log($scope.w, $scope.h);
 
       if ($scope.w < 760) {
           //window.location.replace('/basic-search');
-          $scope.t = 85;
+          $scope.t = 152;
       } else {
-          $scope.t = 85;
+          $scope.t = 152;
       }
-      // panel padding
-      $scope.padding = 15;
 
       // left (lpw) and right (rpw) panel widths
-      $scope.lpw = Math.floor(($scope.w - 20) * 0.25) - $scope.padding;
-      $scope.rpw = $scope.w - $scope.lpw - $scope.padding;
+      $scope.lpw = Math.floor(($scope.w) * 0.3) - 1;
+      $scope.rpw = $scope.w - $scope.lpw - 1;
 
       /* handle summary / detail view toggle */
-      $rootScope.$on('show-search-results-details', function() {
+      $scope.$on('show-search-results-details', function() {
           $scope.detailsActive = false;
       });
-      $rootScope.$on('hide-search-results-details', function() {
+      $scope.$on('hide-search-results-details', function() {
           $scope.detailsActive = true;
       });
-      $rootScope.$on('site-name-retrieved', function() {
+      $scope.$on('site-name-retrieved', function() {
           if (SolrService.site === 'ESRC') {
               $scope.site_name = 'Search our data';
               $scope.site_url = $location.absUrl();
