@@ -15,7 +15,7 @@
  *
  */
 angular.module('searchApp')
-  .directive('facetWidget', [ '$rootScope', 'SolrService', function ($rootScope, SolrService) {
+  .directive('facetWidget', [ 'SolrService', function (SolrService) {
     return {
         templateUrl: 'views/facet-widget.html',
         restrict: 'E',
@@ -25,8 +25,11 @@ angular.module('searchApp')
             join: '@'
         },
         link: function postLink(scope, element, attrs) {
-            // on init - populate the widget
-            SolrService.updateFacetCount(scope.facetField);
+
+            // when we get a bootstrap message - init the filter
+            scope.$on('app-ready', function() {
+                SolrService.updateFacetCount(scope.facetField);
+            })
 
             // set the union operator for multiple selections
             if (scope.join === undefined) { 
@@ -39,7 +42,7 @@ angular.module('searchApp')
 
             // when we get an update event for this widget from the solr
             //  service - rejig the widget as required
-            $rootScope.$on(scope.facetField+'-facets-updated', function() {
+            scope.$on(scope.facetField+'-facets-updated', function() {
                 var selected = SolrService.filters[scope.facetField];
                 if (selected === undefined) { 
                     selected = []; 
@@ -69,7 +72,7 @@ angular.module('searchApp')
             });
 
             // wipe clean if told to do so
-            $rootScope.$on('reset-all-filters', function() {
+            scope.$on('reset-all-filters', function() {
                 for (var i=0; i < scope.facets.length; i++) {
                     scope.facets[i][2] = false;
                     scope.selected = [];

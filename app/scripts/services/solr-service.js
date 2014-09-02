@@ -72,6 +72,7 @@ angular.module('searchApp')
         SolrService.dateFilters = {};
         SolrService.results = {};
         SolrService.facets = {};
+        SolrService.searchType = 'keyword';
 
         if (deployment === undefined && deployment !== ('production' || 'testing')) {
            deployment = 'production';
@@ -129,10 +130,13 @@ angular.module('searchApp')
         SolrService.searchType = data.searchType;
         SolrService.sort = data.sort;
 
-            // broadcast the fact that we've initialised from a previous
-            //  saved state so that the search form can update itself
-            $rootScope.$broadcast('init-from-saved-state-complete');
+        // broadcast the fact that we've initialised from a previous
+        //  saved state so that the search form can update itself
+        $timeout(function() {
+            $rootScope.$broadcast('app-ready');
             SolrService.appInit = false;
+        }, 300);
+
     }
 
     /**
@@ -160,9 +164,9 @@ angular.module('searchApp')
                 } else {
                     SolrService.filterQuery(k, v, true);
                 }
+                SolrService.updateFacetCount(k);
             }
         });
-        updateAllFacetCounts();
 
         angular.forEach($routeParams, function(v,k) {
             if (conf.allowedRouteParams.indexOf(k) !== -1) {
@@ -170,15 +174,12 @@ angular.module('searchApp')
             }
         })
 
-        //saveCurrentSearch();
-
         $timeout(function() {
             // broadcast the fact that we've initialised from a previous
             //  saved state so that the search form can update itself
-            $rootScope.$broadcast('app-bootstrapped');
+            $rootScope.$broadcast('app-ready');
             SolrService.appInit = false;
         }, 300);
-
     }
 
     /**
