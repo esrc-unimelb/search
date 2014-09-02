@@ -1,37 +1,47 @@
 'use strict';
 
 angular.module('searchApp')
-  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$routeParams', 'SolrService',
-    function ($rootScope, $scope, $window, $routeParams, SolrService) {
+  .controller('MainCtrl', [ '$scope', '$window', '$routeParams', 'SolrService',
+    function ($scope, $window, $routeParams, SolrService) {
       if ($routeParams.site !== undefined) {
           $scope.site = $routeParams.site;
       } else {
           $scope.site = 'ESRC';
       }
 
-      $scope.w = $window.innerWidth;
-      $scope.h = $window.innerHeight;
-      //console.log($scope.w, $scope.h);
+      var w = angular.element($window);
+      w.bind('resize', function() {
+          $scope.$apply(function() {
+            sizeThePanels();
+          })
+      });
 
-      if ($scope.w < 760) {
-          //window.location.replace('/basic-search');
-          $scope.t = 85;
-      } else {
-          $scope.t = 85;
+      var sizeThePanels = function() {
+          $scope.w = $window.innerWidth;
+          $scope.h = $window.innerHeight;
+          //console.log($scope.w, $scope.h);
+
+          if ($scope.w < 760) {
+              //window.location.replace('/basic-search');
+              $scope.t = 152;
+          } else {
+              $scope.t = 152;
+          }
+
+          // left (lpw) and right (rpw) panel widths
+          $scope.lpw = Math.floor(($scope.w) * 0.3) - 1;
+          $scope.rpw = $scope.w - $scope.lpw - 1;
       }
-
-      // left (lpw) and right (rpw) panel widths
-      $scope.lpw = Math.floor(($scope.w - 20) * 0.3) - 1;
-      $scope.rpw = $scope.w - $scope.lpw - 1;
+      sizeThePanels();
 
       /* handle summary / detail view toggle */
-      $rootScope.$on('show-search-results-details', function() {
+      $scope.$on('show-search-results-details', function() {
           $scope.detailsActive = false;
       });
-      $rootScope.$on('hide-search-results-details', function() {
+      $scope.$on('hide-search-results-details', function() {
           $scope.detailsActive = true;
       });
-      $rootScope.$on('site-name-retrieved', function() {
+      $scope.$on('site-name-retrieved', function() {
           if (SolrService.site === 'ESRC') {
               $scope.site_name = undefined;
               $scope.site_url = undefined;
