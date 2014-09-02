@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchForm', [ '$rootScope', '$routeParams', '$timeout', '$location', 'SolrService',
-    function ($rootScope, $routeParams, $timeout, $location, SolrService) {
+  .directive('searchForm', [ '$routeParams', '$timeout', '$location', 'SolrService',
+    function ($routeParams, $timeout, $location, SolrService) {
     return {
       templateUrl: 'views/search-form.html',
       restrict: 'E',
@@ -15,15 +15,17 @@ angular.module('searchApp')
       link: function postLink(scope, element, attrs) {
 
           // handle the app being bootstrapped
-          $rootScope.$on('app-bootstrapped', function() {
+          scope.$on('app-ready', function() {
               scope.searchBox = SolrService.term;
-              scope.setSearchType(scope.searchType);
-          });
 
-          // set the query box and search type if initialising from saved stated
-          scope.$on('init-from-saved-state-complete', function() {
-              scope.searchBox = SolrService.term;
-              scope.setSearchType(SolrService.searchType);
+              // the search type stored in the service overrides that
+              //   set on the directive as it means we'rer restoring
+              //   state
+              if (SolrService.searchType !== scope.searchType) {
+                  scope.setSearchType(SolrService.searchType);
+              } else {
+                  scope.setSearchType(scope.searchType);
+              }
           });
 
           scope.setSearchBox = function() {
