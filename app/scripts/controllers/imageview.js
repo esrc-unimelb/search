@@ -7,7 +7,7 @@ angular.module('searchApp')
         $scope.showLoadingIndicator = true;
         $scope.showImage = null;
 
-        $scope.data = ImageService.get($routeParams.imageid);
+        $scope.data = ImageService.get();
 
         var w = angular.element($window);
         w.bind('resize', function() {
