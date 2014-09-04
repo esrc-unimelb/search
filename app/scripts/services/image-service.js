@@ -6,11 +6,18 @@ angular.module('searchApp')
       function push(image_data) {
           var key = Math.random().toString(36).slice(2);
           ImageService.set[key] = image_data;
-          return key
+          ImageService.current = key;
+
+          // and save it to session storage
+          sessionStorage.setItem('view', JSON.stringify(image_data));
       }
 
-      function get(key) {
-          return ImageService.set[key];
+      function get() {
+          if (ImageService.current === undefined) {
+              var image_data = JSON.parse(sessionStorage.getItem('view'));
+              ImageService.push(image_data);
+          }
+          return ImageService.set[ImageService.current];
       }
 
       function drop(key) {
