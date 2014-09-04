@@ -16,14 +16,14 @@ angular.module('searchApp', [
         controller: 'MainCtrl',
         reloadOnSearch: false
       })
+      .when('/view', {
+        templateUrl: 'views/image-view.html',
+        controller: 'ImageViewCtrl'
+      })
       .when('/:site', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         reloadOnSearch: false
-      })
-      .when('/view/:imageid', {
-        templateUrl: 'views/image-view.html',
-        controller: 'ImageViewCtrl'
       })
       .otherwise({
         redirectTo: '/'
