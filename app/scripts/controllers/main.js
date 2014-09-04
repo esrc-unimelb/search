@@ -29,7 +29,7 @@ angular.module('searchApp')
           }
 
           // left (lpw) and right (rpw) panel widths
-          $scope.lpw = Math.floor(($scope.w) * 0.3) - 1;
+          $scope.lpw = Math.floor(($scope.w) * 0.25) - 1;
           $scope.rpw = $scope.w - $scope.lpw - 1;
       }
       sizeThePanels();
