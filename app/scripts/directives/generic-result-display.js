@@ -11,7 +11,8 @@
  * @param {expression} data - The result data.
  */
 angular.module('searchApp')
-  .directive('genericResultDisplay', [ '$rootScope', 'SolrService', function ($rootScope, SolrService) {
+  .directive('genericResultDisplay', [ '$rootScope', '$location', 'SolrService', 'ImageService', 
+    function ($rootScope, $location, SolrService, ImageService) {
     return {
       templateUrl: 'views/generic-result-display.html',
       restrict: 'E',
@@ -34,6 +35,17 @@ angular.module('searchApp')
               scope.data.url = scope.data.display_url;
           } else {
               scope.data.url = scope.data.id;
+          }
+
+          // is this a finding aid item with an image set attached?
+          if (scope.data.type === 'Finding Aid Item' && scope.data.large_images !== undefined) {
+            scope.imageSet = true;
+            scope.imageCount = scope.data.small_images.length;
+          }
+
+          scope.view = function() {
+              // pop the image data into the service
+              ImageService.push(scope.data);
           }
       }
     };

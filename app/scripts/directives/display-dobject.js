@@ -37,8 +37,6 @@ angular.module('searchApp')
           scope.view = function() {
               // pop the image data into the service
               ImageService.push(scope.data);
-
-              $location.url('view');
           }
 
 
