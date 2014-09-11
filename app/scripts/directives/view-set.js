@@ -16,7 +16,6 @@ angular.module('searchApp')
 
           // get the data
           scope.data = ImageService.get();
-          console.log(scope.data);
 
           // handle window resize events
           var w = angular.element($window);
