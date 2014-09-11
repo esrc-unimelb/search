@@ -282,6 +282,7 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'bower_components/**/*',
             'images/{,*/}*.{webp}',
+            'styles/{,*/}*.{png,jpg,jpeg,gif}',
             'fonts/*'
           ]
         }, {
