@@ -8,11 +8,14 @@ angular.module('searchApp')
       scope: {
       },
       link: function postLink(scope, element, attrs) {
+          // set some defaults
           scope.showLoadingIndicator = true;
           scope.showImage = null;
 
+          // get the data for the image
           scope.data = ImageService.get();
 
+          // sort out the panels sizes
           var w = angular.element($window);
           w.bind('resize', function() {
               scope.$apply(function() {
@@ -28,6 +31,7 @@ angular.module('searchApp')
           }
           sizeThePanels();
 
+          // load the image
           var img = new Image();
           img.onload = function() {
               scope.$apply(function() {
