@@ -16,6 +16,7 @@ angular.module('searchApp')
 
           // get the data
           scope.data = ImageService.get();
+          //console.log(scope.data);
 
           // handle window resize events
           var w = angular.element($window);
@@ -47,7 +48,7 @@ angular.module('searchApp')
           // create our map from id to large image
           angular.forEach(scope.data.large_images, function(v, k) {
               var c = v.split('_');
-              scope.largeImageMap[c[1]] = scope.data.site_url + '/images/' + scope.data.item_id + '/large/' + v;
+              scope.largeImageMap[c[1]] = scope.data.source + '/images/' + scope.data.item_id + '/large/' + v;
               scope.styleMap[c[1]] = '';
               scope.largeImageById.push(c[1]);
           });
@@ -57,7 +58,7 @@ angular.module('searchApp')
               scope.smallImages.push(
                   { 
                     'id': v.split('_')[1],
-                    'src': scope.data.site_url + '/images/' + scope.data.item_id + '/small/' + v,
+                    'src': scope.data.source + '/images/' + scope.data.item_id + '/small/' + v,
                   }
               );
           });

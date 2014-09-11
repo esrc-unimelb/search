@@ -25,6 +25,12 @@ angular.module('searchApp')
               element.smoothZoom('destroy');
               scope.init();
           })
+          /*
+          scope.$watch('image', function() {
+                  element.smoothZoom('destroy');
+                  scope.init();
+          });
+          */
          
           scope.$watch('element.src', function() {
             scope.init();
