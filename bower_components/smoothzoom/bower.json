@@ -1,7 +1,7 @@
 {
   "name": "smoothzoom",
   "version": "1.7",
-  "main": [ "jquery.smoothZoom.min.js", "smoothzoom.css" ],
+  "main": [ "jquery.smoothZoom.min.js", "smoothzoom.css", "icons.png" ],
   "scripts": [
     "jquery.smoothZoom.min.js"
   ],
