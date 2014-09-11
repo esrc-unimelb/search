@@ -1,1 +1,86 @@
-<p>This is the view-set view.</p>
+<!-- controls (navbar) -->
+<div style="position:fixed; top: 0px; left: 0px; height: {{navbar_height}}px; width: 100%; background-color: black;">
+    <div class="row" style="padding: 10px;">
+        <div class="col-sm-2 col-md-2 col-lg-2"></div>
+        <div class="col-sm-8 col-md-8 col-lg-8" style="text-align: center;">
+
+            <span style="background-color: black; color: white;">Image {{displaying}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="btn-group">
+                <button class="btn" ng-click="jumpToStart()" style="background-color: black; color: white;">
+                    <span class="glyphicon glyphicon-step-backward"></span>
+                </button>
+                <button class="btn" ng-click="jumpToEnd()" style="background-color: black; color: white;">
+                    <span class="glyphicon glyphicon-step-forward"></span>
+                </button>
+                <button class="btn" style="background-color: black; color: white;" ng-click="toggleInformation()">
+                   <span ng-hide="showInformation">View Item Information</span>
+                   <span ng-show="showInformation">Hide Item Information</span>
+                </button>
+                <button class="btn" style="background-color: black; color: white;" ng-click="toggleFilmstrip()">
+                    <span ng-show="showFilmstrip">Hide Thumbnails</span>
+                    <span ng-hide="showFilmstrip">Show Thumbnails</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2"></div>
+    </div>
+</div>
+
+<!-- information panel -->
+<div style="position: fixed; top: 0px; left: 0px; height: {{height}}px; width: {{width}}px; z-index: 10; opacity: 0.6; background-color: #e0e0e0;" ng-show="showInformation"></div>
+<div style="position: fixed; top: 10%px; left: 10%px; height: 500px; width: 400px; z-index: 20; background-color: white; 
+        border-radius: 8px; box-shadow: 10px 10px 5px #888888; padding: 15px;" ng-show="showInformation">
+
+    <button class="btn btn-default pull-right" style="font-size: 26px; border-style: none;" ng-click="toggleInformation()">&times;</button>
+    <br/>
+    <span class="">
+        <h3>{{data.name}}</h3>
+        {{data.date_from | date:'yyyy'}} - {{data.date_to | date:'yyyy'}}
+        <small><a href="{{data.id}}">{{data.id}}</a></small><br/>
+        <h4><a href="{{data.site_url}}">{{data.site_name}}</a></h4>
+
+        <hr/>
+        <ol class="breadcrumb">
+            <li>{{data.series_id}}</li>
+            <li>{{data.item_id}}</li>
+            <li>{{data.large_images.length}} images in set.</li>
+        </ol>
+    </span>
+</div>
+
+<!-- Image large view panel -->
+<div style="position:fixed; top: {{navbar_height}}px; left: 0px; height: {{image_pane_height}}px; width: 100%; background-color: black;">
+    <div style="position: absolute; height: {{image_pane_height - 10}}px; width: 5%; left: 0px;">
+        <a ng-click="previous()" class="left carousel-control" ng-if="showPrevious">
+            <span class="glyphicon glyphicon-chevron-left" style="margin-left: 5px; font-size: 26px; color: white;"></span>
+        </a>
+    </div>
+    <div style="position: absolute; height: {{image_pane_height - 10}}px; width: 90%; left: 5%; ">
+        <img src="{{image}}" smoothzoom ng-show="show"/>
+    </div>
+    <div style="position: absolute; height: {{image_pane_height - 10}}px; width: 5%; left: 95%;">
+        <a ng-click="next()" class="right carousel-control" ng-if="showNext">
+            <span class="glyphicon glyphicon-chevron-right" style="margin-right: 5px; font-size: 26px; color: white;"></span>
+        </a>
+    </div>
+</div>
+
+<!-- Filmstrip -->
+<style>
+    .highlight-current {
+        border: 4px solid yellow;
+        border-radius: 8px;
+        padding: 2px;
+        display: inline-block;
+    }
+</style>
+<div ng-if="showFilmstrip"
+    style="position:fixed; top: {{navbar_height + image_pane_height}}px; left: 0px; height: {{filmstrip_height}}px; width: 100%; 
+            overflow-x: scroll; white-space: nowrap; display: inline-block; background-color: black;">
+    <span ng-repeat="img in smallImages">
+        <a ng-click="loadImage(img.id)" class="{{styleMap[img.id]}}" id="{{img.id}}" style="top:0; left: 0; right: 0; bottom: 0; margin: auto;">
+            <img src="{{img.src}}" class="img-thumbnail" style="height: 90%"  />
+        </a>
+    </span>
+</div>
+
