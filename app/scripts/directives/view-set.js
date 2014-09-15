@@ -34,6 +34,7 @@ angular.module('searchApp')
               if (scope.showFilmstrip === true) {
                   scope.image_pane_height = ($window.innerHeight - scope.navbar_height) * 0.80;
                   scope.filmstrip_height = $window.innerHeight - scope.navbar_height - scope.image_pane_height;
+                  scope.image_height = scope.filmstrip_height * 0.9;
               } else {
                   scope.image_pane_height = ($window.innerHeight - scope.navbar_height);
               }
