@@ -79,7 +79,7 @@
             overflow-x: scroll; white-space: nowrap; display: inline-block; background-color: black;">
     <span ng-repeat="img in smallImages">
         <a ng-click="loadImage(img.id)" class="{{styleMap[img.id]}}" id="{{img.id}}" style="top:0; left: 0; right: 0; bottom: 0; margin: auto;">
-            <img src="{{img.src}}" class="img-thumbnail" style="height: 90%"  />
+            <img src="{{img.src}}" class="img-thumbnail" style="height: {{image_height}}px;"  />
         </a>
     </span>
 </div>
