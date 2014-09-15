@@ -8,7 +8,7 @@
  */
 angular.module('searchApp')
   .constant('Configuration', {
-      production:           'https://data.esrc.unimelb.edu.au/solr',
+      production:           'https://solr.esrc.unimelb.edu.au',
       testing:              'https://data.esrc.info/solr',
       loglevel:             'DEBUG',
       allowedRouteParams:   [ 'q','type', 'function' ],
