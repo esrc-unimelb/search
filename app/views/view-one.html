@@ -12,8 +12,12 @@
          smoothzoom
          />
 </div>
-<div class="row" style="position: absolute; height: {{image_pane_height}}px; width: {{(width - (width * 0.6)) - 5}}px; top: 0px; left: {{(width * 0.6) + 5}}px; background-color: white; overflow: scroll;">
-    <span>{{data.text}}</span>
+<div class="row" style="position: absolute; height: {{image_pane_height}}px; width: {{width * 0.405}}px; top: 0px; left: {{(width * 0.6) + 4}}px; background-color: white; overflow: scroll;">
+    <ul>
+        <div ng-repeat="(k, line) in data.text track by $id(k)">
+            <li>{{line}}</li>
+        </div>
+    </ul>
 </div>
 
 <div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: black;"></div>
@@ -37,7 +41,7 @@
         </div>
         <div class="col-sm-8 col-md-8 col-lg-8 text-center">
             <div class="list-group">
-                <h4 class="list-group-item-heading"><a href="{{data.id}}">{{data.name}}</a></h4>
+                <h4 class="list-group-item-heading"><a href="{{data.id}}">{{data.id}}</a></h4>
                 <!--<p class="list-group-item-text"><a href="{{data.site_url}}">{{data.site_name}}</a></p>-->
             </div>
         </div>

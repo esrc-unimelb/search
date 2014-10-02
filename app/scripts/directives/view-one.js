@@ -14,6 +14,7 @@ angular.module('searchApp')
 
           // get the data for the image
           scope.data = ImageService.get();
+          scope.data.text = scope.data.text[0].split(/\n/);
 
           // sort out the panels sizes
           var w = angular.element($window);
