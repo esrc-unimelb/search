@@ -29,8 +29,9 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <span ng-if="isImage">
-                    <small ng-if="isImage">Click image for preview.</small>
+                    <small ng-if="isImage">Click image for preview.</small><br/>
                 </span>
+                <a href="{{data.pdf}}" target="_blank">View PDF (opens in new window)</a>
                 <!--
                 <span ng-if="!isImage">
                     <span class="glyphicon glyphicon-new-window"></span>
