@@ -88,7 +88,7 @@ angular.module('searchApp')
         log.debug('Site: ' + SolrService.site);
 
         // init the date widget
-        SolrService.dateOuterBounds();
+        //SolrService.dateOuterBounds();
 
         // load the site data
         loadSiteData()
@@ -223,13 +223,16 @@ angular.module('searchApp')
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            q = '(name:' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
+            //q = '(name:' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
+            q = '(text:' + what + ')';
         } else {
             if (SolrService.searchType === 'keyword') {
                 what = what.replace(/ /gi, ' AND ');
-                q = 'name:(' + what + ')^100 OR altname:(' + what + ')^50 OR locality:(' + what + ')^10 OR text:(' + what + ')';
+                //q = 'name:(' + what + ')^100 OR altname:(' + what + ')^50 OR locality:(' + what + ')^10 OR text:(' + what + ')';
+                q = 'text:(' + what + ')';
             } else {
-                q = 'name:"' + what + '"^100 OR altname:"' + what + '"^50 OR locality:"' + what + '"^10 OR text:"' + what + '"';
+                //q = 'name:"' + what + '"^100 OR altname:"' + what + '"^50 OR locality:"' + what + '"^10 OR text:"' + what + '"';
+                q = 'text:"' + what;
             }
         }
 
@@ -242,7 +245,8 @@ angular.module('searchApp')
         // set the sort order: wildcard sort ascending, everything else: by score
         if (SolrService.sort === undefined) {
             if (what === '*') {
-                sort = 'name_sort asc';
+                //sort = 'name_sort asc';
+                sort = 'score desc'
             } else {
                 sort = 'score desc';
             }
@@ -433,7 +437,7 @@ angular.module('searchApp')
         
         // update all facet counts
         updateAllFacetCounts();
-        compileDateFacets();
+        //compileDateFacets();
 
         // notify the result widget that it's time to update
         $rootScope.$broadcast('search-results-updated');
@@ -664,7 +668,7 @@ angular.module('searchApp')
             };
             $http.jsonp(SolrService.solr, q).then(function(d) {
                 SolrService.dateEndBoundary = d.data.response.docs[0].exist_to;
-                SolrService.compileDateFacets();
+                //SolrService.compileDateFacets();
             });
         });
     }

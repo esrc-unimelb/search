@@ -40,7 +40,7 @@ angular.module('searchApp')
                   scope.showDetails = true;
               })
           }
-          img.src = scope.data.fullsize;
+          img.src = scope.data.large_image;
 
           scope.back = function() {
               $window.history.back();

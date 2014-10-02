@@ -2,34 +2,27 @@
     <div style="position: fixed; top: 0px; width: 100%; z-index: 10000; padding: 0px 5px;">
         <div class="row" style="background-color: #003268;">
             <div class="col-sm-9 col-md-9 col-lg-9">
-                <a ng-if="returnToSiteLink" href="{{site_url}}" style="color:white; font-weight: 300;">Return to site</a>
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1">
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1">
-                <a href="http://www.esrc.unimelb.edu.au/search-about/" style="color:white; font-weight: 300;">About</a>
+                <a href="" style="color:white; font-weight: 300;">About</a>
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1">
-                <a href="http://www.esrc.unimelb.edu.au/search-help/" style="color:white; font-weight: 300;">Help</a>
+                <a href="" style="color:white; font-weight: 300;">Help</a>
             </div>
         </div>
         <div class="row" style="background-color: #efefea;">
                 <div class="col-sm-3 col-md-3 col-lg-3">
                 </div>
                 <div class="col-sm-9 col-md-9 col-lg-9">
-                    <h4 style="font-size: 16px; font-weight: 300; text-rendering: optimizelegibility; color: #24658A;">
-                        <a href="http://www.esrc.unimelb.edu.au" style="color: #24658A;">eScholarship Research Centre</a>, 
-                        <a href="http://www.lib.unimelb.edu.au" target="_blank" style="color: #24658A;" >The University of Melbourne Library</a>
+                    <h4 style="font-size: 25px; font-weight: 300; text-rendering: optimizelegibility; color: #24658A;">
+                        <a href="http://isisbibliography.org/" style="color: #24658A;">ISIS Current Bibliography</a> 
                     </h4>
                 </div>
                 <div class="col-sm-3 col-md-3 col-lg-3">
                 </div>
                 <div class="col-sm-9 col-md-9 col-lg-9">
-                    <span ng-show="site_name">
-                        <h3 style="font-size: 25px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; color: #658095; line-height: 1.1;">
-                            <span style="color: #3d4343;">{{site_name}}</span>
-                        </h3>
-                    </span>
                 </div>
         </div>
 
@@ -41,8 +34,8 @@
             <div class="col-sm-6 col-md-7 col-lg-7">
                     <search-form 
                         help='Normally this would be site / context specific help in this bit...'
-                        deployment="production"
-                        site="{{site}}",
+                        deployment="testing"
+                        site="ISIS",
                         search-type="keyword"
                         >
                     </search-form>
@@ -73,12 +66,11 @@
                 <h4 style="color: #3d4343; font-size: 18px; font-weight: normal; margin: 3px 0 0; padding: 0; text-shadow: 1px -1px 2px #595959; line-height: 1.1;">
                     Refine Search
                 </h4>
-                <date-facet-widget></date-facet-widget><br/>
-                <facet-widget facet-field="type" label="Entity Type"></facet-widget><br/>
-                <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget><br/>
+                <!-- <date-facet-widget></date-facet-widget><br/> -->
+                <facet-widget facet-field="title" label="Volume"></facet-widget><br/>
+                <!-- <facet-widget facet-field="volume" label="Volume"></facet-widget><br/>-->
+                <facet-widget facet-field="part" label="Part"></facet-widget><br/>
                 <!-- <facet-widget facet-field="state_long" label="Region"></facet-widget><br/> -->
-                <span ng-if="!returnToSiteLink"><facet-widget facet-field="site_name" label="Data Source"></facet-widget><br/></span>
-                <facet-widget facet-field="repository" label="Repository"></facet-widget><br/>
             </div>
         </div>
     </div>

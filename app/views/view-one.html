@@ -1,20 +1,22 @@
-<div class="row" style="height: {{image_pane_height}}px; width: 100%;">
+<div class="row" style="position: absolute; height: {{image_pane_height}}px; width: {{width * 0.6}}px; top: 0px; left: 0px;">
 
     <span ng-if="showLoadingIndicator">
-        <div class="progress" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 60%; max-height: 20px; width: auto; height: auto;">
+        <div class="progress" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 60%; max-height: 20px; width: auto; height: auto; z-index: 1000">
           <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
         </div>
     </span>
         
-    <span ng-show="showImage">
-        <img class="img-thumbnail"
-             src="{{data.fullsize}}"
-             style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 100%; max-height: 100%; width: auto; height: auto;"
-             />
-    </span>
+    <img class="img-thumbnail"
+         src="{{data.large_image}}"
+         style="max-width: 100%; max-height: 100%; width: auto; height: auto;"
+         smoothzoom
+         />
+</div>
+<div class="row" style="position: absolute; height: {{image_pane_height}}px; width: {{(width - (width * 0.6)) - 5}}px; top: 0px; left: {{(width * 0.6) + 5}}px; background-color: white; overflow: scroll;">
+    <span>{{data.text}}</span>
 </div>
 
-<div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: #282829;"></div>
+<div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: black;"></div>
 
 <!-- cog to show details pane when hidden -->
 <div style="position: fixed; left: 0px; top: {{height - 30}}px; width: 100%; z-index: 2000;" ng-show="!showDetails">
@@ -36,7 +38,7 @@
         <div class="col-sm-8 col-md-8 col-lg-8 text-center">
             <div class="list-group">
                 <h4 class="list-group-item-heading"><a href="{{data.id}}">{{data.name}}</a></h4>
-                <p class="list-group-item-text"><a href="{{data.site_url}}">{{data.site_name}}</a></p>
+                <!--<p class="list-group-item-text"><a href="{{data.site_url}}">{{data.site_name}}</a></p>-->
             </div>
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>

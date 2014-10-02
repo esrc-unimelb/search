@@ -3,12 +3,6 @@
 angular.module('searchApp')
   .controller('MainCtrl', [ '$scope', '$window', '$routeParams', '$location', 'SolrService',
     function ($scope, $window, $routeParams, $location, SolrService) {
-      if ($routeParams.site !== undefined) {
-          $scope.site = $routeParams.site;
-      } else {
-          $scope.site = 'ESRC';
-      }
-
       var w = angular.element($window);
       w.bind('resize', function() {
           $scope.$apply(function() {
@@ -23,9 +17,9 @@ angular.module('searchApp')
 
           if ($scope.w < 760) {
               //window.location.replace('/basic-search');
-              $scope.t = 152;
+              $scope.t = 132;
           } else {
-              $scope.t = 152;
+              $scope.t = 132;
           }
 
           // left (lpw) and right (rpw) panel widths

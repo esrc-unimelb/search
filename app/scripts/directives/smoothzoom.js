@@ -21,7 +21,7 @@ angular.module('searchApp')
               });
           }
 
-          scope.$watch('image_pane_height', function() {
+          scope.$watch('$window.innerHeight', function() {
               element.smoothZoom('destroy');
               scope.init();
           })
