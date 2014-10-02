@@ -12,13 +12,15 @@
          smoothzoom
          />
 </div>
-<div class="row" style="position: absolute; height: {{image_pane_height}}px; width: {{width * 0.405}}px; top: 0px; left: {{(width * 0.6) + 4}}px; background-color: white; overflow: scroll;">
-    <ul>
-        <div ng-repeat="(k, line) in data.text track by $id(k)">
-            <li>{{line}}</li>
-        </div>
-    </ul>
-</div>
+<span ng-if="showImage">
+    <div class="row" style="position: absolute; height: {{image_pane_height}}px; width: {{width * 0.405}}px; top: 0px; left: {{(width * 0.6) + 4}}px; background-color: white; overflow: scroll;">
+        <ul>
+            <div ng-repeat="(k, line) in data.text track by $id(k)">
+                <li>{{line}}</li>
+            </div>
+        </ul>
+    </div>
+</span>
 
 <div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: black;"></div>
 
