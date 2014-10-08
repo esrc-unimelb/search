@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchForm', [ '$routeParams', '$timeout', '$location', 'SolrService',
-    function ($routeParams, $timeout, $location, SolrService) {
+  .directive('searchForm', [ '$routeParams', '$location', 'SolrService',
+    function ($routeParams, $location, SolrService) {
     return {
       templateUrl: 'views/search-form.html',
       restrict: 'E',
       scope: {
           help: '@',
-          deployment: '@',
-          site: '@',
           searchType: '@'
       },
       link: function postLink(scope, element, attrs) {
@@ -69,11 +67,8 @@ angular.module('searchApp')
 
           // let's get this party started!!
           scope.setSearchBox();
-          scope.ready = SolrService.init(scope.deployment, scope.site);
+          scope.ready = SolrService.init();
 
-          //var timeout = Object.keys($routeParams).length * 200 + 100;
-          //$timeout(function() { scope.search(); }, timeout);
-          //$timeout(function() { $rootScope.$broadcast('app-ready'); }, 3000);
       },
     };
   }]);
