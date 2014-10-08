@@ -62,28 +62,26 @@ angular.module('searchApp')
     *   scope.good_to_go = SolrService.init(scope.deployment, scope.site);
     *
     */
-    function init(deployment, site) {
+    function init() {
         log.init(conf.loglevel);
         log.info('############');
         log.info('############ APPLICATION INITIALISED');
         log.info('############');
-        SolrService.site = site;
         SolrService.filters = {};
         SolrService.dateFilters = {};
         SolrService.results = {};
         SolrService.facets = {};
         SolrService.searchType = 'keyword';
 
-        if (deployment === undefined && deployment !== ('production' || 'testing')) {
-           deployment = 'production';
-        }
-        if (site === undefined) {
-            SolrService.site = conf.defaultSite;
-            SolrService.solr = conf[deployment] + '/' + conf.defaultSite + '/select';
+        var site;
+        if ($routeParams.site !== undefined) {
+            site = $routeParams.site;
         } else {
-            SolrService.solr = conf[deployment] + '/' + site + '/select';
+            site = conf.site;
         }
-        SolrService.deployment = deployment;
+        SolrService.deployment = conf[conf.deployment];
+        SolrService.site = site;
+        SolrService.solr = SolrService.deployment + '/' + SolrService.site + '/select';
         log.debug('Solr Service: ' + SolrService.solr);
         log.debug('Site: ' + SolrService.site);
 

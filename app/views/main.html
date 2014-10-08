@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <br/>
-                <label ng-if="site_name">Using: {{site_name}} (reload the page to select another site)</label>
+                <label ng-if="site_name">Using: {{site_name}}</label>
             </div>
         </div>
         <div class="row" style="border-bottom: solid; border-width: 1px; border-color: gray;">
@@ -17,8 +17,6 @@
             <div class="col-sm-6 col-md-7 col-lg-7">
                     <search-form 
                         help='Normally this would be site / context specific help in this bit...'
-                        deployment="testing"
-                        site="{{site}}",
                         search-type="keyword"
                         >
                     </search-form>

@@ -1,14 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .controller('MainCtrl', [ '$scope', '$window', '$routeParams', 'SolrService',
-    function ($scope, $window, $routeParams, SolrService) {
-      if ($routeParams.site !== undefined) {
-          $scope.site = $routeParams.site;
-      } else {
-          $scope.site = 'ESRC';
-      }
-
+  .controller('MainCtrl', [ '$scope', '$window', 'SolrService',
+    function ($scope, $window, SolrService) {
       var w = angular.element($window);
       w.bind('resize', function() {
           $scope.$apply(function() {
