@@ -6,13 +6,17 @@
             <span ng-switch-when="Publication"><span class="glyphicon glyphicon-book"></span> Publication - {{data.type}}</span>
             <span ng-switch-when="Archival Resource"><span class="glyphicon glyphicon-file"></span> Archival Resource</span>
             <span ng-switch-default><span class="glyphicon glyphicon-certificate"></span> {{data.type}}</span>
-            <small> - <em>{{data.site_name}}</em></small>
         </div>
     </div>
     <div class="col-sm-4 col-md-4 col-lg-4">
         <span ng-if="imageSet" class="pull-right">
             <button class="btn btn-default btn-sm" ng-click="view()">View Image Set</button>
         </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        &#8212;&nbsp;<strong><small>{{data.site_name}}</small></strong>
     </div>
 </div>
 <div class="row">
