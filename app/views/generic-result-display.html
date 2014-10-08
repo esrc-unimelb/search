@@ -6,6 +6,7 @@
             <span ng-switch-when="Publication"><span class="glyphicon glyphicon-book"></span> Publication - {{data.type}}</span>
             <span ng-switch-when="Archival Resource"><span class="glyphicon glyphicon-file"></span> Archival Resource</span>
             <span ng-switch-default><span class="glyphicon glyphicon-certificate"></span> {{data.type}}</span>
+            <small> - <em>{{data.site_name}}</em></small>
         </div>
     </div>
     <div class="col-sm-4 col-md-4 col-lg-4">
