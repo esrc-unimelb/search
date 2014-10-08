@@ -127,6 +127,7 @@ angular.module('searchApp')
         SolrService.term = data.term;
         SolrService.searchType = data.searchType;
         SolrService.sort = data.sort;
+        SolrService.rows = data.nResults;
 
         // broadcast the fact that we've initialised from a previous
         //  saved state so that the search form can update itself
@@ -134,7 +135,6 @@ angular.module('searchApp')
             $rootScope.$broadcast('app-ready');
             SolrService.appInit = false;
         }, 300);
-
     }
 
     /**
@@ -279,7 +279,8 @@ angular.module('searchApp')
             'filters': SolrService.filters,
             'searchType': SolrService.searchType,
             'sort': SolrService.sort,
-            'site': SolrService.site
+            'site': SolrService.site,
+            'nResults': SolrService.results.docs.length
         }
         log.debug('Storing the current query: ' + currentQuery.date);
         sessionStorage.setItem('cq', JSON.stringify(currentQuery));
@@ -324,11 +325,6 @@ angular.module('searchApp')
         var q = getQuery(start);
         log.debug(q);
         
-        if (saveSearch || saveSearch === undefined) {
-            // save the current search
-            saveCurrentSearch();
-        }
-
         $http.jsonp(SolrService.solr, q).then(function(d) {
             // if we don't get a hit and there aren't any filters in play, try suggest and fuzzy seearch
             // 
@@ -430,6 +426,7 @@ angular.module('searchApp')
         // update all facet counts
         updateAllFacetCounts();
         compileDateFacets();
+        saveCurrentSearch();
 
         // notify the result widget that it's time to update
         $rootScope.$broadcast('search-results-updated');
@@ -442,7 +439,8 @@ angular.module('searchApp')
      *  Get the next set of results.
      */
     function nextPage() {
-        var start = SolrService.results.start + SolrService.rows;
+        //var start = SolrService.results.start + SolrService.rows;
+        var start = SolrService.results.docs.length;
         search(SolrService.term, start);
     }
 
@@ -729,6 +727,7 @@ angular.module('searchApp')
         searchType: 'phrase',
         term: '*',
         rows: 10,
+        defaultRows: 10,
         sort: undefined,
         resultSort: undefined,
         hideDetails: false,

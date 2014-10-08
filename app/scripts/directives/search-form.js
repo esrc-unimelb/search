@@ -24,6 +24,10 @@ angular.module('searchApp')
               } else {
                   scope.setSearchType(scope.searchType);
               }
+
+              if (SolrService.rows !== SolrService.defaultRows) {
+                  SolrService.rows = SolrService.defaultRows;
+              }
           });
 
           scope.setSearchBox = function() {
