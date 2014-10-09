@@ -16,8 +16,13 @@ angular.module('searchApp')
           //console.log($scope.w, $scope.h);
 
           if ($scope.w < 760) {
-              //window.location.replace('/basic-search');
-              $scope.t = 152;
+              var site = $window.location.hash.split('/')[1];
+              var newLocation; 
+              if (site !== '') {
+                $window.location.replace('/basic-search/' + site);
+              } else {
+                $window.location.replace('/basic-search');
+              }
           } else {
               $scope.t = 152;
           }
