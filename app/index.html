@@ -23,7 +23,15 @@
   </head>
   <body ng-app="searchApp">
     <!--[if lte IE 8]>
-        <script type="text/javascript">window.location = "/basic-search";</script>
+        <script type="text/javascript">
+            var site = window.location.hash.split('/')[1];
+            var newLocation;
+            if (site !== '') {
+              window.location.replace('/basic-search/' + site);
+            } else {
+              window.location.replace('/basic-search');
+            }
+        </script>
     <![endif]-->
 
     <!-- Add your site or application content here -->
