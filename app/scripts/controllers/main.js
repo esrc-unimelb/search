@@ -19,7 +19,7 @@ angular.module('searchApp')
               var site = $window.location.hash.split('/')[1];
               var newLocation; 
               if (site !== '') {
-                $window.location.replace('/basic-search/' + site);
+                $window.location.replace('/basic-search/#/' + site);
               } else {
                 $window.location.replace('/basic-search');
               }
