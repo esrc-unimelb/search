@@ -26,6 +26,11 @@
             <span ng-show="data.date_to">{{data.date_to | date:'yyyy'}}</span>
         </span>
     </div>
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <span ng-if="data.altname">
+            <strong>Also known as:</strong> {{data.altname.join('; ')}}
+        </span>
+    </div>
 </div>
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
