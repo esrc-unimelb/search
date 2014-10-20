@@ -15,17 +15,17 @@ angular.module('searchApp')
           $scope.h = $window.innerHeight;
           //console.log($scope.w, $scope.h);
 
-          if ($scope.w < 760) {
-              var site = $window.location.hash.split('/')[1];
-              var newLocation; 
-              if (site !== '') {
-                $window.location.replace('/basic-search/#/' + site);
-              } else {
-                $window.location.replace('/basic-search');
-              }
-          } else {
-              $scope.t = 152;
-          }
+          //if ($scope.w < 760) {
+          //    var site = $window.location.hash.split('/')[1];
+          //    var newLocation; 
+              //if (site !== '') {
+              //  $window.location.replace('/basic-search/#/' + site);
+              //} else {
+              //  $window.location.replace('/basic-search');
+              //}
+          //} else {
+              $scope.t = 120;
+          //}
 
           // left (lpw) and right (rpw) panel widths
           $scope.lpw = Math.floor(($scope.w) * 0.25) - 1;
@@ -40,6 +40,7 @@ angular.module('searchApp')
       $scope.$on('hide-search-results-details', function() {
           $scope.detailsActive = true;
       });
+      /*
       $scope.$on('site-name-retrieved', function() {
           if (SolrService.site === 'ESRC') {
               $scope.site_name = 'Search the datasets.';
@@ -51,6 +52,7 @@ angular.module('searchApp')
               $scope.returnToSiteLink = true;
           }
       })
+      */
 
       /* button methods */
       $scope.toggleDetails = function() {

@@ -221,13 +221,13 @@ angular.module('searchApp')
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            q = '(name:' + what + '^20 OR altname:' + what + '^10 OR locality:' + what + '^10 OR text:' + what + ')';
+            q = '(name_search:' + what + '^20 OR abstract:' + what + ')';
         } else {
             if (SolrService.searchType === 'keyword') {
                 what = what.replace(/ /gi, ' AND ');
-                q = 'name:(' + what + ')^100 OR altname:(' + what + ')^50 OR locality:(' + what + ')^10 OR text:(' + what + ')';
+                q = 'name_search:(' + what + ')^100 OR abstract:(' + what + ')^50';
             } else {
-                q = 'name:"' + what + '"^100 OR altname:"' + what + '"^50 OR locality:"' + what + '"^10 OR text:"' + what + '"';
+                q = 'name_search:"' + what + '"^100 OR abstract:"' + what + '"^50';
             }
         }
 
@@ -240,7 +240,7 @@ angular.module('searchApp')
         // set the sort order: wildcard sort ascending, everything else: by score
         if (SolrService.sort === undefined) {
             if (what === '*') {
-                sort = 'name_sort asc';
+                sort = 'name asc';
             } else {
                 sort = 'score desc';
             }
@@ -379,10 +379,10 @@ angular.module('searchApp')
         log.debug('Suggest: ');
         log.debug(q);
 
-        $http.jsonp(SolrService.solr, q).then(function(d) {
-            SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
-            $rootScope.$broadcast('search-suggestion-available');
-        });
+        //$http.jsonp(SolrService.solr, q).then(function(d) {
+        //    SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
+        //    $rootScope.$broadcast('search-suggestion-available');
+        //});
     }
 
     /**
@@ -655,11 +655,12 @@ angular.module('searchApp')
                     'rows': 1,
                     'wt': 'json',
                     'json.wrf': 'JSON_CALLBACK',
-                    'sort': 'exist_from desc'
+                    'sort': 'exist_to desc'
                 }
             };
             $http.jsonp(SolrService.solr, q).then(function(d) {
                 SolrService.dateEndBoundary = d.data.response.docs[0].exist_to;
+                console.log(SolrService.dateStartBoundary, SolrService.dateEndBoundary);
                 SolrService.compileDateFacets();
             });
         });
