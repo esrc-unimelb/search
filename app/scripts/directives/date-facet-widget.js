@@ -33,8 +33,8 @@ angular.module('searchApp')
           var updateFacets = function(data) {
               for (var i=0; i < data.length; i++) {
                   var s = parseInt(data[i][0]);
-                  var e = parseInt(data[i][0]) + 100;
-                  var v = parseInt(data[i][0]) + 99;
+                  var e = parseInt(data[i][0]) + 50;
+                  var v = parseInt(data[i][0]) + 49;
                   var d = {
                       'start': s,
                       'end': e,

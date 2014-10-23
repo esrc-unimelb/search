@@ -221,13 +221,16 @@ angular.module('searchApp')
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            q = '(name_search:' + what + '^20 OR abstract:' + what + ')';
+            q = 'name_search:(' + what + ')^100 OR title_search:(' + what + ')^100 OR author_search(' + what +')^100 OR \
+                editor_search(' + what + ')^100 OR journal_search(' + what + ')^50 OR publisher_search(' + what + ')^50 OR abstract:(' + what + ')';
         } else {
             if (SolrService.searchType === 'keyword') {
                 what = what.replace(/ /gi, ' AND ');
-                q = 'name_search:(' + what + ')^100 OR abstract:(' + what + ')^50';
+                q = 'name_search:(' + what + ')^100 OR title_search:(' + what + ')^100 OR author_search(' + what +')^100 OR \
+                    editor_search(' + what + ')^100 OR journal_search(' + what + ')^50 OR publisher_search(' + what + ')^50 OR abstract:(' + what + ')';
             } else {
-                q = 'name_search:"' + what + '"^100 OR abstract:"' + what + '"^50';
+                q = 'name_search:"' + what + '"^100 OR title_search:"' + what + '"^100 OR author_search"' + what +'"^100 OR \
+                    editor_search"' + what + '"^100 OR journal_search"' + what + '"^50 OR publisher_search"' + what + '"^50 OR abstract:"' + what + '"';
             }
         }
 
@@ -673,7 +676,7 @@ angular.module('searchApp')
         a.params.rows = 0;
         a.params.facet = true;
         a.params['facet.range'] = 'date_from';
-        a.params['facet.range.gap'] = '+100YEARS';
+        a.params['facet.range.gap'] = '+50YEARS';
 
         // round the start date down to the decade boundary
         var d;
