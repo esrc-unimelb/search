@@ -224,6 +224,7 @@ angular.module('searchApp')
             { 'name': 'editor_search', 'weight': '1' },
             { 'name': 'contributor_search', 'weight': '1' },
             { 'name': 'title_search', 'weight': '1' },
+            { 'name': 'name_search', 'weight': '1' },
         ]
 
 
@@ -245,6 +246,7 @@ angular.module('searchApp')
                 })
             }
         }
+        q = q.join(' OR ');
 
         // add in the facet query filters - if any...
         var fq = getFilterObject().join(' AND ');
