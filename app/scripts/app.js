@@ -12,15 +12,14 @@ angular.module('searchApp', [
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        reloadOnSearch: false
+        templateUrl: 'views/about.html',
+        controller: '',
       })
       .when('/view', {
         templateUrl: 'views/image-view.html',
         controller: 'ImageViewCtrl'
       })
-      .when('/:site', {
+      .when('/app', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         reloadOnSearch: false
