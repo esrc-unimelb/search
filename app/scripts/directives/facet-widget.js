@@ -38,7 +38,7 @@ angular.module('searchApp')
             SolrService.filterUnion[scope.facetField] = scope.join;
 
             // set a display limit
-            scope.displayLimit = 8;
+            scope.displayLimit = 50;
 
             // when we get an update event for this widget from the solr
             //  service - rejig the widget as required
