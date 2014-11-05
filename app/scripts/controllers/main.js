@@ -24,8 +24,9 @@ angular.module('searchApp')
               //  $window.location.replace('/basic-search');
               //}
           //} else {
-              $scope.t = 140;
+          //    $scope.t = 140;
           //}
+          $scope.t = 175;
 
           // left (lpw) and right (rpw) panel widths
           $scope.lpw = Math.floor(($scope.w) * 0.25) - 1;
