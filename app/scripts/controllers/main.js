@@ -60,4 +60,8 @@ angular.module('searchApp')
           SolrService.toggleDetails();
       };
 
+      $scope.clearAllFilters = function() {
+        SolrService.clearAllFilters();
+      };
+
   }]);
