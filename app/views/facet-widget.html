@@ -1,7 +1,9 @@
-<a href="" ng-click="isCollapsed = !isCollapsed">
-    <span ng-hide="isCollapsed">by {{label}}<span class="caret"></span></span>
-    <span ng-show="isCollapsed">hide {{label}} filter</span>
-</a>
+<span ng-hide="alwaysOpen">
+    <a href="" ng-click="isCollapsed = !isCollapsed">
+        <span ng-hide="isCollapsed">by {{label}}<span class="caret"></span></span>
+        <span ng-show="isCollapsed">hide {{label}} filter</span>
+    </a>
+</span>
 <div ng-hide="!isCollapsed" class="facet">
     <span ng-repeat="result in facets">
         <div class="checkbox">

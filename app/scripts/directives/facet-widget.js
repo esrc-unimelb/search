@@ -22,7 +22,9 @@ angular.module('searchApp')
         scope: {
             facetField: '@',
             label: '@',
-            join: '@'
+            join: '@',
+            isCollapsed: '@',
+            alwaysOpen: '@'
         },
         link: function postLink(scope, element, attrs) {
 
@@ -30,6 +32,13 @@ angular.module('searchApp')
             scope.$on('app-ready', function() {
                 SolrService.updateFacetCount(scope.facetField);
             })
+
+            if (scope.isCollapsed === undefined) {
+                scope.isCollapsed = true;
+            } 
+            if (scope.alwaysOpen === undefined) {
+                scope.alwaysOpen = false;
+            }
 
             // set the union operator for multiple selections
             if (scope.join === undefined) { 
