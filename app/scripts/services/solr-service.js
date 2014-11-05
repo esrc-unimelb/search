@@ -215,22 +215,34 @@ angular.module('searchApp')
      *  Construct the actual query object - the workhorse
      */
     function getQuery(start) {
-        var q, sort;
+        var sort;
+        var q = [];
 
         var what = SolrService.term;
+        var searchFields = [
+            { 'name': 'author_search', 'weight': '1' },
+            { 'name': 'editor_search', 'weight': '1' },
+            { 'name': 'contributor_search', 'weight': '1' },
+            { 'name': 'title_search', 'weight': '1' },
+        ]
+
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            q = 'name_search:(' + what + ')^100 OR title_search:(' + what + ')^100 OR author_search(' + what +')^100 OR \
-                editor_search(' + what + ')^100 OR journal_search(' + what + ')^50 OR publisher_search(' + what + ')^50 OR abstract:(' + what + ')';
+            angular.forEach(searchFields, function(v, k) {
+                q.push(v.name + ':(' + what + ')');
+            })
         } else {
             if (SolrService.searchType === 'keyword') {
                 what = what.replace(/ /gi, ' AND ');
-                q = 'name_search:(' + what + ')^100 OR title_search:(' + what + ')^100 OR author_search(' + what +')^100 OR \
-                    editor_search(' + what + ')^100 OR journal_search(' + what + ')^50 OR publisher_search(' + what + ')^50 OR abstract:(' + what + ')';
+                angular.forEach(searchFields, function(v, k) {
+                    q.push(v.name + ':(' + what + ')');
+                })
+
             } else {
-                q = 'name_search:"' + what + '"^100 OR title_search:"' + what + '"^100 OR author_search"' + what +'"^100 OR \
-                    editor_search"' + what + '"^100 OR journal_search"' + what + '"^50 OR publisher_search"' + what + '"^50 OR abstract:"' + what + '"';
+                angular.forEach(searchFields, function(v, k) {
+                    q.push(v.name + ':"' + what + '"');
+                })
             }
         }
 
@@ -430,7 +442,7 @@ angular.module('searchApp')
         
         // update all facet counts
         updateAllFacetCounts();
-        compileDateFacets();
+        //compileDateFacets();
         saveCurrentSearch();
 
         // notify the result widget that it's time to update
@@ -663,7 +675,7 @@ angular.module('searchApp')
             };
             $http.jsonp(SolrService.solr, q).then(function(d) {
                 SolrService.dateEndBoundary = d.data.response.docs[0].exist_to;
-                SolrService.compileDateFacets();
+                //SolrService.compileDateFacets();
             });
         });
     }
