@@ -54,7 +54,6 @@ angular.module('searchApp')
             } else {
                 scope.showPaginationControls = angular.fromJson(scope.showPaginationControls);
             }
-            console.log('****', scope.facetField, scope.showPaginationControls, scope.alwaysOpen, scope.isCollapsed);
 
             // set the union operator for multiple selections
             if (scope.join === undefined) { 
@@ -73,24 +72,12 @@ angular.module('searchApp')
                 }
 
                 var f = SolrService.facets[scope.facetField];
-                var i;
-                for (i=0; i < f.length; i++) {
-                    if (selected.indexOf(f[i][0]) !== -1) {
-                        f[i][2] = true;
+                angular.forEach(f, function(v,k) {
+                    if (selected.indexOf(f[k][0]) !== -1) {
+                        f[k][2] = true;
                     }
-                }
-                for (i=0; i < f.length; i++) {
-                    if (f[i][1] === 0 && i < scope.displayLimit) {
-                        f = f.slice(0, i);
-                    } else {
-                        f = f.slice(0, scope.displayLimit);
-                    }
-                }
-
+                })
                 scope.facets = f;
-                if (SolrService.facets[scope.facetField].length > scope.displayLimit) {
-                    scope.moreResults = true;
-                }
             });
 
             // wipe clean if told to do so
