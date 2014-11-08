@@ -11,7 +11,7 @@ angular.module('searchApp')
       production:           'https://solr.esrc.unimelb.edu.au',
       testing:              'https://data.esrc.info/solr',
       loglevel:             'DEBUG',
-      deployment:           'production',
+      deployment:           'testing',
       allowedRouteParams:   [ 'q','type', 'function' ],
       site:                 'ISISrecords'
   });
