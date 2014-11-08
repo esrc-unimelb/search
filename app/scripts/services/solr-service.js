@@ -471,6 +471,13 @@ angular.module('searchApp')
      * @param {string} facet - The field to facet on
      */
     function updateFacetCount(facet, offset, limit) {
+        if (offset === undefined) {
+            offset = 0;
+        }
+        if (limit === undefined) {
+            limit = 10;
+        }
+
         var q = getQuery(0);
         q.params.facet = true;
         q.params['facet.field'] = facet;
