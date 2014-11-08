@@ -509,7 +509,7 @@ angular.module('searchApp')
         // iterate over the facets and 
         //  - add it if it's not there 
         //  - remove it if it is
-        
+        //
         // initially - the object will be empty
         if (SolrService.filters[facetField] === undefined) {
             SolrService.filters[facetField] = [ facet ];
@@ -608,6 +608,17 @@ angular.module('searchApp')
 
         // tell all the filters to reset
         $rootScope.$broadcast('reset-all-filters');
+    }
+
+    /*
+     * @ngdoc function
+     * @name SolrService.service:clearFilter
+     */
+    function clearFilter(facet) {
+        delete SolrService.filters[facet];
+        
+        // update the search
+        search(SolrService.term, 0, true);
     }
 
     /**
@@ -752,6 +763,7 @@ angular.module('searchApp')
         filterQuery: filterQuery,
         getFilterObject: getFilterObject,
         filterDateQuery: filterDateQuery,
+        clearFilter: clearFilter,
         clearAllFilters: clearAllFilters,
         toggleDetails: toggleDetails,
         reSort: reSort,

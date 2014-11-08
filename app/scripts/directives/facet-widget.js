@@ -82,16 +82,21 @@ angular.module('searchApp')
 
             // wipe clean if told to do so
             scope.$on('reset-all-filters', function() {
-                for (var i=0; i < scope.facets.length; i++) {
-                    scope.facets[i][2] = false;
-                    scope.selected = [];
-                }
+                angular.forEach(scope.facets, function(v,k) {
+                    scope.facets[k][2] = false;
+                })
+                scope.selected = [];
             });
 
             scope.reset = function() {
                 scope.offset = 0;
                 scope.pageSize = 10;
+                SolrService.clearFilter(scope.facetField);
                 SolrService.updateFacetCount(scope.facetField, scope.offset , scope.pageSize);
+                angular.forEach(scope.facets, function(v,k) {
+                    scope.facets[k][2] = false;
+                })
+                scope.selected = [];
             };
         
             scope.facet = function(facet) {
