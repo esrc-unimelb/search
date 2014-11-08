@@ -470,10 +470,13 @@ angular.module('searchApp')
      *  Trigger a facet search returning a promise for use by the caller.
      * @param {string} facet - The field to facet on
      */
-    function updateFacetCount(facet) {
+    function updateFacetCount(facet, offset, limit) {
         var q = getQuery(0);
         q.params.facet = true;
         q.params['facet.field'] = facet;
+        q.params['facet.limit'] = limit;
+        q.params['facet.sort'] = 'count';
+        q.params['facet.offset'] = offset;
         q.params.rows = 0;
         //log.debug(q);
         $http.jsonp(SolrService.solr, q).then(function(d) {
@@ -749,8 +752,8 @@ angular.module('searchApp')
         dateFilters: {},
         searchType: 'phrase',
         term: '*',
-        rows: 50,
-        defaultRows: 50,
+        rows: 10,
+        defaultRows: 10,
         sort: undefined,
         resultSort: undefined,
         hideDetails: false,
