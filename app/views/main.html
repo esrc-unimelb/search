@@ -46,27 +46,27 @@
                 <!--<date-range-graph></date-range-graph><br/>-->
                 <hr/>
             </div>
-            <div class="col-sm-12">
-                <strong>Refine Search</strong><br/>
+            <div class="col-sm-12" style="margin: 10px 0px;">
+                <strong>Refine Search</strong>
             </div>
             <div class="col-sm-12">
                 <button class="btn btn-sm btn-default btn-block" ng-click="clearAllFilters()">Clear all filters</button>
             </div>
             <div class="col-sm-12">
-                <date-facet-widget facet-field="exist_from" id="1" label="Date" start="1600" interval="50"></date-facet-widget><br/>
+                <date-facet-widget facet-field="exist_from" id="1" label="Date" start="1600" interval="50"></date-facet-widget>
             </div>
             <div class="col-sm-12">
-                <facet-widget facet-field="type" label="Entity Type"></facet-widget><br/>
+                <facet-widget facet-field="type" label="Entity Type"></facet-widget>
             </div>
             <div class="col-sm-12">
-                <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget><br/>
+                <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget>
                 <!-- <facet-widget facet-field="state_long" label="Region"></facet-widget><br/> -->
             </div>
             <div class="col-sm-12">
-                <span ng-if="!site_name"><facet-widget facet-field="site_name" label="Data Source"></facet-widget><br/></span>
+                <span ng-if="!site_name"><facet-widget facet-field="site_name" label="Data Source"></facet-widget></span>
             </div>
             <div class="col-sm-12">
-                <facet-widget facet-field="repository" label="Repository"></facet-widget><br/>
+                <facet-widget facet-field="repository" label="Repository"></facet-widget>
             </div>
         </div>
     </div>
