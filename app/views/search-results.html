@@ -28,16 +28,13 @@
         </div>
     </div>
 
-    <div class="row well" ng-show="showFilters && filters" style="margin: 5px;">
+    <div class="row well" ng-show="showFilters" style="margin: 5px;">
         <!-- filters and controls -->
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <button class="btn btn-sm btn-default" ng-click="clearAllFilters()">Clear all filters</button>
-        </div>
-        <div class="col-sm-10 col-md-10 col-lg-10">
+        <span ng-if="filters.length === 0">No filters applied.</span>
+        <span ng-if="filters.length > 0">Multiple terms are combined with 'AND'.</span>
             <ul>
                 <li ng-repeat="filter in filters">{{filter | dateFilterPrettifier}}</li>
             </ul>
-        </div>
         <!-- end filters and controls -->
     </div>
 

@@ -41,17 +41,31 @@
     <!-- side bar: fixed to right -->
     <div style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px; ">
         <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="col-sm-12">
                 <p class="help-block text-center">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
                 <!--<date-range-graph></date-range-graph><br/>-->
                 <hr/>
+            </div>
+            <div class="col-sm-12">
                 <strong>Refine Search</strong><br/>
+            </div>
+            <div class="col-sm-12">
                 <button class="btn btn-sm btn-default btn-block" ng-click="clearAllFilters()">Clear all filters</button>
+            </div>
+            <div class="col-sm-12">
                 <date-facet-widget facet-field="exist_from" id="1" label="Date" start="1600" interval="50"></date-facet-widget><br/>
+            </div>
+            <div class="col-sm-12">
                 <facet-widget facet-field="type" label="Entity Type"></facet-widget><br/>
+            </div>
+            <div class="col-sm-12">
                 <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget><br/>
                 <!-- <facet-widget facet-field="state_long" label="Region"></facet-widget><br/> -->
+            </div>
+            <div class="col-sm-12">
                 <span ng-if="!site_name"><facet-widget facet-field="site_name" label="Data Source"></facet-widget><br/></span>
+            </div>
+            <div class="col-sm-12">
                 <facet-widget facet-field="repository" label="Repository"></facet-widget><br/>
             </div>
         </div>

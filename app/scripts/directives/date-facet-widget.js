@@ -14,7 +14,8 @@ angular.module('searchApp')
           interval: '@',
           isCollapsed: '@',
           alwaysOpen: '@',
-          showPaginationControls: '@'
+          showPaginationControls: '@',
+          existence: '@'
       },
       link: function postLink(scope, element, attrs) {
           if (scope.start === undefined) {
@@ -40,6 +41,11 @@ angular.module('searchApp')
               scope.showPaginationControls = true;
           } else {
               scope.showPaginationControls = angular.fromJson(scope.showPaginationControls);
+          }
+          if (scope.existence === undefined) {
+              scope.existence = false;
+          } else {
+              scope.existence = angular.fromJson(scope.existence);
           }
 
           scope.$on('app-ready', function() {
@@ -95,7 +101,7 @@ angular.module('searchApp')
           };
 
           scope.toggleFacet = function(facetLabel) {
-              SolrService.filterDateQuery(scope.facetField, facetLabel, false);
+              SolrService.filterDateQuery(scope.facetField, facetLabel, scope.existence);
               if (scope.selected.indexOf(facetLabel) === -1) {
                   scope.selected.push(facetLabel);
               } else {
