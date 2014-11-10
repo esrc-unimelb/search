@@ -571,6 +571,7 @@ angular.module('searchApp')
                 'facetField': facetField,
                 'existence': existence
             };
+            console.log(df);
             SolrService.dateFilters[facetLowerBound] = df;
         } else {
             delete SolrService.dateFilters[facetLowerBound];
@@ -602,10 +603,10 @@ angular.module('searchApp')
         var dfq = [];
         for (f in SolrService.dateFilters) {
             var v = SolrService.dateFilters[f];
-            if (v.existence === true) {
-                var query = v.facetField + ':[' + v.from + ' TO ' + conf.datasetEnd + ']';
+            if (v['existence'] === true) {
+                var query = 'exist_from:[' + v.from + ' TO ' + conf.datasetEnd + ']';
                 query += ' AND ';
-                query += v.facetField + ':[' + conf.datasetStart + ' TO ' + v.to + ']';
+                query += 'exist_to:[' + conf.datasetStart + ' TO ' + v.to + ']';
                 dfq.push(query);
             } else {
                 var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';

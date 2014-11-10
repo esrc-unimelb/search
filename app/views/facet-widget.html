@@ -26,7 +26,7 @@
 
     <span ng-show="!showPaginationControls">
         <nav>
-          <ul class="pagination pagination-sm" style="margin: 5px 0px 0px 0px;">
+          <ul class="pagination pagination-sm" style="margin: 0px 0px 5px 0px;">
             <li><button class="btn btn-sm btn-default" ng-click="pageBackward()"><span class="glyphicon glyphicon-chevron-left"></span></button></li>
             <li><button class="btn btn-sm btn-default" ng-click="reset()"><span class="glyphicon glyphicon-refresh"></span></button></li>
             <li><input type="number" class="form-control input-sm" style="width: 40%; display: inline;" value="{{pageSize}}" min="1" ng-model="pageSize" ng-change="updatePageSize()"/></li>
