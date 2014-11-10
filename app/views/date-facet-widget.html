@@ -1,12 +1,12 @@
 <a href="" ng-click="isCollapsed = !isCollapsed">
-    <span ng-hide="isCollapsed">by Date<span class="caret"></span></span>
-    <span ng-show="isCollapsed">hide Date filter</span>
+    <span ng-hide="isCollapsed">{{label}}<span class="caret"></span></span>
+    <span ng-show="isCollapsed">hide {{label}} filter</span>
 </a>
 <div ng-hide="!isCollapsed" class="facet">
-    <span ng-repeat="result in facets">
+    <span ng-repeat="facet in facets">
         <div class="checkbox">
             <label>
-                <input type="checkbox" ng-click="facet(result.start)" ng-checked="{{result.checked}}">{{result.label}}
+                <input type="checkbox" ng-click="toggleFacet(facet.label)" ng-checked="{{facet.checked}}">{{facet.label}} <em ng-if="facet.count">({{facet.count}})</em>
             </label>
         </div>
     </span>

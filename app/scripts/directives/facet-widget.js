@@ -114,6 +114,7 @@ angular.module('searchApp')
             }
             scope.updatePageSize = function() {
                 if (scope.pageSize === null) { scope.pageSize = 10; }
+                if (scope.pageSize > 1000) { scope.pageSize = 1000; }
                 SolrService.updateFacetCount(scope.facetField, scope.offset, scope.pageSize);
             }
       }
