@@ -14,6 +14,6 @@ angular.module('searchApp')
       deployment:           'production',
       allowedRouteParams:   [ 'q','type', 'function' ],
       site:                 'ESRC',
-      datasetStart:         '1000-01-01T00:00:00Z',
+      datasetStart:         '1600-01-01T00:00:00Z',
       datasetEnd:           '2014-12-31T23:59:59Z'
   });

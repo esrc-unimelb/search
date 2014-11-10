@@ -734,26 +734,6 @@ angular.module('searchApp')
             $rootScope.$broadcast(marker + '-facet-data-ready');
         });
 
-        b = getQuery();
-        b.params.rows = 0;
-        b.params.facet = true;
-        b.params['facet.range'] = 'date_to';
-        b.params['facet.range.gap'] = '+10YEARS';
-        b.params['facet.range.start'] = d + '-01-01T00:00:00Z';
-        if (SolrService.dateEndBoundary !== undefined) {
-            b.params['facet.range.end'] = SolrService.dateEndBoundary;
-            $http.jsonp(SolrService.solr, b).then(function(d) {
-                var counts = d.data.facet_counts.facet_ranges.date_to.counts;
-
-                var i, df;
-                df = [];
-                for (i=0; i < counts.length; i+=2) {
-                    df.push([counts[i].split('-')[0], counts[i+1]]);
-                }
-                SolrService.endDateFacets = [ { 'key': '', 'values': df } ];
-                $rootScope.$broadcast('end-date-facet-data-ready');
-            });
-        }
     }
 
 
