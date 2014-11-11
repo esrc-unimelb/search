@@ -76,9 +76,30 @@
             <div class="col-sm-12">
                 <button class="btn btn-sm btn-default btn-block" ng-click="clearAllFilters()">Clear all filters</button>
             </div>
+            <!-- DATE FACETING -->
             <div class="col-sm-12">
-                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' id="1" label="Date" start="1600" interval="50"></date-facet-widget>
+                <hr style="border-color: #003268;" />
+                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
+                    id="1" label="Date - Age of Discovery" start="1400" end="1699" interval="50"></date-facet-widget>
             </div>
+            <div class="col-sm-12">
+                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
+                    id="2" label="Date - Georgian Era" start="1700" end="1879" interval="20"></date-facet-widget>
+            </div>
+            <div class="col-sm-12">
+                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
+                    id="3" label="Date - Machine Age" start="1880" end="1939" interval="10"></date-facet-widget>
+            </div>
+            <div class="col-sm-12">
+                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
+                    id="4" label="Date - Atomic Age" start="1940" end="1969" interval="5"></date-facet-widget>
+            </div>
+            <div class="col-sm-12">
+                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
+                    id="5" label="Date - Information Age" start="1970" interval="5"></date-facet-widget>
+                <hr style="border-color: #003268;" />
+            </div>
+            <!-- DATE FACETING -->
             <div class="col-sm-12">
                 <facet-widget facet-field="type" label="Entity Type"></facet-widget>
             </div>
