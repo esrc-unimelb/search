@@ -33,8 +33,9 @@ angular.module('searchApp')
             scope.isCollapsed = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
             scope.showPaginationControls = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
 
-            // facet offset
+            // facet offset and begining page size
             scope.offset = 0;
+            scope.pageSize = 10;
 
             // when we get a bootstrap message - init the filter
             scope.$on('app-ready', function() {
