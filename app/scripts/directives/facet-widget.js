@@ -28,32 +28,18 @@ angular.module('searchApp')
             showPaginationControls: '@'
         },
         link: function postLink(scope, element, attrs) {
+            // configure defaults for those optional attributes if not defined
+            scope.alwaysOpen = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
+            scope.isCollapsed = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
+            scope.showPaginationControls = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
+
             // facet offset
             scope.offset = 0;
-
-            // facet results per page
-            scope.pageSize = 10;
 
             // when we get a bootstrap message - init the filter
             scope.$on('app-ready', function() {
                 SolrService.updateFacetCount(scope.facetField, scope.offset, scope.pageSize);
             })
-
-            if (scope.isCollapsed === undefined) {
-                scope.isCollapsed = true;
-            } else {
-                scope.isCollapsed = angular.fromJson(scope.isCollapsed);
-            }
-            if (scope.alwaysOpen === undefined) {
-                scope.alwaysOpen = false;
-            } else {
-                scope.alwaysOpen = angular.fromJson(scope.alwaysOpen);
-            }
-            if (scope.showPaginationControls === undefined) {
-                scope.showPaginationControls = true;
-            } else {
-                scope.showPaginationControls = angular.fromJson(scope.showPaginationControls);
-            }
 
             // set the union operator for multiple selections
             if (scope.join === undefined) { 
@@ -67,8 +53,6 @@ angular.module('searchApp')
                 var selected = SolrService.filters[scope.facetField];
                 if (selected === undefined) { 
                     selected = []; 
-                } else { 
-                    scope.isCollapsed = true; 
                 }
 
                 var f = SolrService.facets[scope.facetField];

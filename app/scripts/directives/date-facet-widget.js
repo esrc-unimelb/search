@@ -77,8 +77,11 @@ angular.module('searchApp')
           }
           var updateSelections = function() {
               var selected = [];
+              var marker = scope.existenceFromField + '-' + scope.existenceToField + '-';
               angular.forEach(SolrService.dateFilters, function(v,k) {
-                  selected.push(v.label);
+                  if (v.existenceFromField === scope.existenceFromField && v.existenceToField === scope.existenceToField && v.facetField === scope.facetField) {
+                    selected.push(v.label);
+                  }
               })
               angular.forEach(scope.facets, function(v, k) {
                   if (selected.indexOf(v.label) !== -1) {
