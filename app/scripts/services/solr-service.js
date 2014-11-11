@@ -612,9 +612,13 @@ angular.module('searchApp')
         for (f in SolrService.dateFilters) {
             var v = SolrService.dateFilters[f];
             if (v.existenceFromField !== undefined && v.existenceToField !== undefined) {
-                var query = '(exist_from:[' + v.from + ' TO ' + conf.datasetEnd + ']';
+                var query;
+                var query = '(exist_from:[' + conf.datasetStart + ' TO ' + v.to + ']';
                 query += ' AND ';
-                query += 'exist_to:[' + conf.datasetStart + ' TO ' + v.to + '])';
+                query += 'exist_to:[' + v.from + ' TO ' + conf.datasetEnd + '])';
+
+                console.log(query);
+                
                 dfq.push(query);
             } else {
                 var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';
