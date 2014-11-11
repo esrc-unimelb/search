@@ -123,7 +123,8 @@ angular.module('searchApp')
         SolrService.appInit = true;
         log.info('Initialising app from saved data');
         SolrService.q = data.q;
-        SolrService.filters = data.filters;
+        SolrService.filters = data.filters,
+        SolrService.dateFilters = data.dateFilters,
         SolrService.term = data.term;
         SolrService.searchType = data.searchType;
         SolrService.sort = data.sort;
@@ -277,6 +278,7 @@ angular.module('searchApp')
             'term': SolrService.term,
             'q': getQuery(0),
             'filters': SolrService.filters,
+            'dateFilters': SolrService.dateFilters,
             'searchType': SolrService.searchType,
             'sort': SolrService.sort,
             'site': SolrService.site,
@@ -540,22 +542,28 @@ angular.module('searchApp')
      *  a search.
      * @param {string} facet
      */
-    function filterDateQuery(facetField, facetLabel, existence) {
-        var facetLowerBound, facetUpperBound, df;
+    function filterDateQuery(facetField, existenceFromField, existenceToField, facetLabel) {
+        var facetLowerBound, facetUpperBound, df, marker;
         facetLowerBound = facetLabel.split(' - ')[0];
         facetUpperBound = facetLabel.split(' - ')[1];
+        if (existenceFromField !== undefined && existenceToField !== undefined) {
+            marker = existenceFromField + '-' + existenceToField + '-' + facetLabel.replace(' - ', '_');
+        } else {
+            marker = facetField + '-' + facetLabel.replace(' - ', '_');
+        }
 
-        if (! SolrService.dateFilters[facetLowerBound]) {
+        if (! SolrService.dateFilters[marker]) {
             df = {
                 'from': facetLowerBound + '-01-01T00:00:00Z',
                 'to': facetUpperBound + '-12-31T23:59:59Z',
                 'facetField': facetField,
-                'existence': existence
+                'label': facetLabel,
+                'existenceFromField': existenceFromField,
+                'existenceToField': existenceToField,
             };
-            console.log(df);
-            SolrService.dateFilters[facetLowerBound] = df;
+            SolrService.dateFilters[marker] = df;
         } else {
-            delete SolrService.dateFilters[facetLowerBound];
+            delete SolrService.dateFilters[marker];
         }
 
         SolrService.results.docs = [];
@@ -584,10 +592,10 @@ angular.module('searchApp')
         var dfq = [];
         for (f in SolrService.dateFilters) {
             var v = SolrService.dateFilters[f];
-            if (v['existence'] === true) {
-                var query = 'exist_from:[' + v.from + ' TO ' + conf.datasetEnd + ']';
+            if (v.existenceFromField !== undefined && v.existenceToField !== undefined) {
+                var query = '(exist_from:[' + v.from + ' TO ' + conf.datasetEnd + ']';
                 query += ' AND ';
-                query += 'exist_to:[' + conf.datasetStart + ' TO ' + v.to + ']';
+                query += 'exist_to:[' + conf.datasetStart + ' TO ' + v.to + '])';
                 dfq.push(query);
             } else {
                 var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';
