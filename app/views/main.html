@@ -77,7 +77,7 @@
                 <button class="btn btn-sm btn-default btn-block" ng-click="clearAllFilters()">Clear all filters</button>
             </div>
             <div class="col-sm-12">
-                <date-facet-widget facet-field="exist_from" id="1" label="Date" start="1600" interval="50"></date-facet-widget>
+                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' id="1" label="Date" start="1600" interval="50"></date-facet-widget>
             </div>
             <div class="col-sm-12">
                 <facet-widget facet-field="type" label="Entity Type"></facet-widget>
