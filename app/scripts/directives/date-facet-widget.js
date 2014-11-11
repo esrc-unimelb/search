@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('dateFacetWidget', [ '$rootScope', '$http', 'SolrService', function ($rootScope, $http, SolrService) {
+  .directive('dateFacetWidget', [ 'SolrService', function (SolrService) {
     return {
       templateUrl: 'views/date-facet-widget.html',
       restrict: 'E',
       scope: {
           facetField: '@',
+          existenceFromField: '@',
+          existenceToField: '@',
           id: '@',
           label: '@',
           start: '@',
@@ -15,9 +17,13 @@ angular.module('searchApp')
           isCollapsed: '@',
           alwaysOpen: '@',
           showPaginationControls: '@',
-          existence: '@'
       },
       link: function postLink(scope, element, attrs) {
+          // configure defaults for those optional attributes if not defined
+          scope.alwaysOpen = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
+          scope.isCollapsed = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
+          scope.showPaginationControls = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
+
           if (scope.start === undefined) {
               console.error('start not defined. Need to pass in a year from which to start the facetting.');
           }
@@ -27,26 +33,7 @@ angular.module('searchApp')
           if (scope.id === undefined) {
               console.error('id not defined. Need to pass in an id for the range facetting.');
           }
-          if (scope.isCollapsed === undefined) {
-              scope.isCollapsed = true;
-          } else {
-              scope.isCollapsed = angular.fromJson(scope.isCollapsed);
-          }
-          if (scope.alwaysOpen === undefined) {
-              scope.alwaysOpen = false;
-          } else {
-              scope.alwaysOpen = angular.fromJson(scope.alwaysOpen);
-          }
-          if (scope.showPaginationControls === undefined) {
-              scope.showPaginationControls = true;
-          } else {
-              scope.showPaginationControls = angular.fromJson(scope.showPaginationControls);
-          }
-          if (scope.existence === undefined) {
-              scope.existence = false;
-          } else {
-              scope.existence = angular.fromJson(scope.existence);
-          }
+
 
           scope.$on('app-ready', function() {
               if (scope.end === undefined) {
@@ -59,7 +46,6 @@ angular.module('searchApp')
           })
 
           scope.facets = []; 
-          scope.selected = [];
 
           scope.$on('reset-date-facets', function() {
               scope.facets = [];
@@ -72,7 +58,6 @@ angular.module('searchApp')
           });
 
           scope.$on('reset-all-filters', function() {
-              scope.selected = [];
               updateSelections();
           });
 
@@ -91,8 +76,12 @@ angular.module('searchApp')
               })
           }
           var updateSelections = function() {
+              var selected = [];
+              angular.forEach(SolrService.dateFilters, function(v,k) {
+                  selected.push(v.label);
+              })
               angular.forEach(scope.facets, function(v, k) {
-                  if (scope.selected.indexOf(v.label) !== -1) {
+                  if (selected.indexOf(v.label) !== -1) {
                       scope.facets[k].checked = true;
                   } else {
                       scope.facets[k].checked = false;
@@ -101,12 +90,8 @@ angular.module('searchApp')
           };
 
           scope.toggleFacet = function(facetLabel) {
-              SolrService.filterDateQuery(scope.facetField, facetLabel, scope.existence);
-              if (scope.selected.indexOf(facetLabel) === -1) {
-                  scope.selected.push(facetLabel);
-              } else {
-                  scope.selected.splice(scope.selected.indexOf(facetLabel), 1);
-              }
+              SolrService.filterDateQuery(scope.facetField, scope.existenceFromField, scope.existenceToField, facetLabel);
+              updateSelections();
           }
 
       }

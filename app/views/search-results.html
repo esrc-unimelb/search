@@ -33,7 +33,7 @@
     <div class="row well" ng-show="showFilters" style="margin: 5px;">
         <!-- filters and controls -->
         <span ng-if="filters.length === 0">No filters applied.</span>
-        <span ng-if="filters.length > 0">Multiple terms are combined with 'AND'.</span>
+        <span ng-if="filters.length > 0">Filters are combined with 'AND'.</span>
             <ul>
                 <li ng-repeat="filter in filters">{{filter | dateFilterPrettifier}}</li>
             </ul>
