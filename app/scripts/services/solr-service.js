@@ -597,9 +597,6 @@ angular.module('searchApp')
                 var query = '(exist_from:[' + conf.datasetStart + ' TO ' + v.to + ']';
                 query += ' AND ';
                 query += 'exist_to:[' + v.from + ' TO ' + conf.datasetEnd + '])';
-
-                console.log(query);
-                
                 dfq.push(query);
             } else {
                 var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';
