@@ -1,11 +1,11 @@
-<span ng-hide="alwaysOpen">
-    <a href="" ng-click="isCollapsed = !isCollapsed">
-        <span ng-hide="isCollapsed">by {{label}}<span class="caret"></span></span>
-        <span ng-show="isCollapsed">hide {{label}} filter</span>
+<span ng-hide="ao">
+    <a href="" ng-click="ic = !ic">
+        <span ng-show="ic">{{label}}<span class="caret"></span></span>
+        <span ng-hide="ic">hide {{label}} filter</span>
     </a>
 </span>
-<div ng-hide="!isCollapsed" class="facet">
-    <span ng-show="!showPaginationControls">
+<div ng-hide="ic" class="facet">
+    <span ng-show="sp">
         <nav>
           <ul class="pagination pagination-sm" style="margin: 5px 0px 0px 0px;">
             <li><button class="btn btn-sm btn-default" ng-click="pageBackward()"><span class="glyphicon glyphicon-chevron-left"></span></button></li>
@@ -24,7 +24,7 @@
         </div>
     </span>
 
-    <span ng-show="!showPaginationControls">
+    <span ng-show="sp">
         <nav>
           <ul class="pagination pagination-sm" style="margin: 0px 0px 5px 0px;">
             <li><button class="btn btn-sm btn-default" ng-click="pageBackward()"><span class="glyphicon glyphicon-chevron-left"></span></button></li>
