@@ -65,7 +65,7 @@
     <!-- side bar: fixed to left -->
     <div style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 5px 15px; background-color: #efefea;">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 text-center">
                 <p class="help-block">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
             </div>
             <div class="col-sm-12">
@@ -80,23 +80,23 @@
             <div class="col-sm-12">
                 <hr style="border-color: #003268;" />
                 <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                    id="1" label="Date - Age of Discovery" start="1400" end="1699" interval="50"></date-facet-widget>
+                    id="1" label="Age of Discovery: 1400 - 1699" start="1400" end="1699" interval="50"></date-facet-widget>
             </div>
             <div class="col-sm-12">
                 <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                    id="2" label="Date - Georgian Era" start="1700" end="1879" interval="20"></date-facet-widget>
+                    id="2" label="Georgian Era: 1700 - 1879" start="1700" end="1879" interval="20"></date-facet-widget>
             </div>
             <div class="col-sm-12">
                 <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                    id="3" label="Date - Machine Age" start="1880" end="1939" interval="10"></date-facet-widget>
+                    id="3" label=" Machine Age: 1880 - 1939" start="1880" end="1939" interval="10"></date-facet-widget>
             </div>
             <div class="col-sm-12">
                 <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                    id="4" label="Date - Atomic Age" start="1940" end="1969" interval="5"></date-facet-widget>
+                    id="4" label="Atomic Age: 1940 - 1969" start="1940" end="1969" interval="5"></date-facet-widget>
             </div>
             <div class="col-sm-12">
                 <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                    id="5" label="Date - Information Age" start="1970" interval="5"></date-facet-widget>
+                    id="5" label="Information Age: 1970 - present" start="1970" interval="5"></date-facet-widget>
                 <hr style="border-color: #003268;" />
             </div>
             <!-- DATE FACETING -->
@@ -111,6 +111,9 @@
             </div>
             <div class="col-sm-12">
                 <facet-widget facet-field="repository" label="Repository"></facet-widget>
+            </div>
+            <div class="col-sm-12">
+                <facet-widget facet-field="tag" label="Tag" join="AND"></facet-widget>
             </div>
         </div>
     </div>
