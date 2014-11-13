@@ -29,9 +29,9 @@ angular.module('searchApp')
         },
         link: function postLink(scope, element, attrs) {
             // configure defaults for those optional attributes if not defined
-            scope.alwaysOpen = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
-            scope.isCollapsed = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
-            scope.showPaginationControls = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
+            scope.ao = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
+            scope.ic = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
+            scope.sp = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
 
             // facet offset and begining page size
             scope.offset = 0;
@@ -60,9 +60,14 @@ angular.module('searchApp')
                 angular.forEach(f, function(v,k) {
                     if (selected.indexOf(f[k][0]) !== -1) {
                         f[k][2] = true;
+                        if (scope.startup === undefined) {
+                            scope.ic = false;
+                            scope.startup = false;
+                        }
                     }
                 })
                 scope.facets = f;
+
             });
 
             // wipe clean if told to do so

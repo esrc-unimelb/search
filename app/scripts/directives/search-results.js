@@ -17,7 +17,7 @@ angular.module('searchApp')
           scope.detailsActive = 'active';
 
           /* handle data updates */
-          $rootScope.$on('search-results-updated', function() {
+          scope.$on('search-results-updated', function() {
               scope.results = SolrService.results;
               scope.filters = SolrService.getFilterObject();
               if (scope.results.docs.length !== parseInt(scope.results.total)) {
@@ -26,19 +26,19 @@ angular.module('searchApp')
           });
 
           // handle suggestions
-          $rootScope.$on('search-suggestion-available', function() {
+          scope.$on('search-suggestion-available', function() {
               scope.suggestion = SolrService.suggestion;
           });
-          $rootScope.$on('search-suggestion-removed', function() {
+          scope.$on('search-suggestion-removed', function() {
               scope.suggestion = SolrService.suggestion;
           });
 
           /* handle summary / detail view toggle */
-          $rootScope.$on('show-search-results-details', function() {
+          scope.$on('show-search-results-details', function() {
               scope.summaryActive = '';
               scope.detailsActive = 'active';
           });
-          $rootScope.$on('hide-search-results-details', function() {
+          scope.$on('hide-search-results-details', function() {
               scope.summaryActive = 'active';
               scope.detailsActive = '';
           });
