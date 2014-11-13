@@ -20,9 +20,9 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
           // configure defaults for those optional attributes if not defined
-          scope.alwaysOpen = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
-          scope.isCollapsed = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
-          scope.showPaginationControls = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
+          scope.ao = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
+          scope.ic = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
+          scope.sp = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
 
           if (scope.start === undefined) {
               console.error('start not defined. Need to pass in a year from which to start the facetting.');
@@ -86,6 +86,10 @@ angular.module('searchApp')
               angular.forEach(scope.facets, function(v, k) {
                   if (selected.indexOf(v.label) !== -1) {
                       scope.facets[k].checked = true;
+                      if (scope.startup === undefined) {
+                          scope.ic = false;
+                          scope.startup = false;
+                      }
                   } else {
                       scope.facets[k].checked = false;
                   }
