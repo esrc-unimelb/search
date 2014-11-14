@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('viewOne', [ '$window', 'ImageService', function ($window, ImageService) {
+  .directive('viewOne', [ '$window', 'ImageService', 'SolrService', function ($window, ImageService, SolrService) {
     return {
       templateUrl: 'views/view-one.html',
       restrict: 'E',
@@ -12,8 +12,10 @@ angular.module('searchApp')
           scope.showLoadingIndicator = true;
           scope.showImage = null;
 
-          // get the data for the image
-          scope.data = ImageService.get();
+          scope.$on('search-results-updated', function() {
+              scope.data = SolrService.results.docs[scope.sequenceNo];
+              checkType();
+          })
 
           // sort out the panels sizes
           var w = angular.element($window);
@@ -31,19 +33,35 @@ angular.module('searchApp')
           }
           sizeThePanels();
 
-          // load the image
-          var img = new Image();
-          img.onload = function() {
-              scope.$apply(function() {
-                  scope.showLoadingIndicator = null;
-                  scope.showImage = true;
-                  scope.showDetails = true;
-              })
+          var checkType = function() {
+              if (scope.data.main_type !== 'Digital Object' && scope.data.type !== 'Image') {
+                  scope.back();
+              }
           }
-          img.src = scope.data.fullsize;
+
+          // get the data for the image
+          scope.data = ImageService.get();
+          scope.sequenceNo = scope.data.sequenceNo;
 
           scope.back = function() {
               $window.history.back();
+          }
+
+          scope.previous = function() {
+              if (scope.sequenceNo !== 0) {
+                  scope.sequenceNo -= 1;
+                  scope.data = SolrService.results.docs[scope.sequenceNo];
+                  checkType();
+              }
+          }
+          scope.next = function() {
+              scope.sequenceNo += 1;
+              if (scope.data.sequenceNo === SolrService.results.docs.length -1) {
+                  SolrService.nextPage();
+              } else {
+                  scope.data = SolrService.results.docs[scope.sequenceNo];
+                  checkType();
+              }
           }
       }
     };

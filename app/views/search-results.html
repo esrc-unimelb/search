@@ -38,14 +38,21 @@
         <!-- end filters and controls -->
     </div>
 
-    <div class="row" style="">
+    <div class="row" style="padding-bottom: 20px;">
         <!-- results panel -->
-        <div ng-repeat="doc in results.docs" class="row result-border">
-            <generic-result-display ng-model="doc" display-provenance="{{displayProvenance}}"></generic-result-display>
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <span ng-if="gridView">
+                <grid-view ng-model="results.docs"></grid-view>
+            </span>
+            <span ng-if="!gridView">
+                <div ng-repeat="doc in results.docs" class="row result-border">
+                    <generic-result-display ng-model="doc" display-provenance="{{displayProvenance}}"></generic-result-display>
+                </div>
+            </span>
+            <button type="button" class="btn btn-sm btn-default btn-block" ng-click="loadNextPage()" ng-if="results && results.docs.length < results.total">
+                load more results
+            </button>
         </div>
-        <button type="button" class="btn btn-sm btn-default" ng-click="loadNextPage()" ng-if="results && results.docs.length < results.total">
-            load more results
-        </button>
         <!-- end results panel -->
     </div>
 </div>

@@ -1,0 +1,21 @@
+<div class="row" ng-repeat="set in docs" style="margin: 15px;">
+    <div class="row">
+        <span ng-repeat="doc in set">
+            <a href="" ng-click="view(doc)">
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                            <img src="{{doc.thumbnail}}" class="img-thumbnail img-responsive">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                            {{doc.name}}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </span>
+    </div>
+    <br/>
+</div>
