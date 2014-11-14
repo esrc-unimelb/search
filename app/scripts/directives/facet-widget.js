@@ -78,6 +78,14 @@ angular.module('searchApp')
                 scope.selected = [];
             });
 
+            // handle open / close broadcasts
+            scope.$on('open-all-filters', function() {
+                scope.ic = false;
+            })
+            scope.$on('close-all-filters', function() {
+                scope.ic = true;
+            })
+
             scope.reset = function() {
                 scope.offset = 0;
                 scope.pageSize = 10;
