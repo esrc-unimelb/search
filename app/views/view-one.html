@@ -1,11 +1,11 @@
+<div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: #282829;"></div>
+
 <div class="row" style="height: {{image_pane_height}}px; width: 100%;">
     <img class="img-thumbnail"
          src="{{data.fullsize}}"
-         style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 100%; max-height: 100%; width: auto; height: auto;"
+         style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 100%; max-height: 100%; width: auto; height: auto; z-index: 0;"
          />
 </div>
-
-<div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: #282829;"></div>
 
 <!-- cog to show details pane when hidden -->
 <div style="position: fixed; left: 0px; top: {{height - 30}}px; width: 100%; z-index: 2000;">
@@ -18,19 +18,19 @@
 </div>
 
 <!-- details pane and backing opaque white panel -->
-<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 1000; opacity: 0.9; background-color: white;"></div>
-<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 2000; padding-top: 10px;">
+<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 1000; opacity: 0.9; background-color: #EFEFEA; z-index: 5000;"></div>
+<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 2000; padding-top: 10px; z-index: 10000;">
     <div class="row">
         <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="padding-left: 30px;">
             <a href="" ng-click="back()">&larr; Back to search results</a>
         </div>
         <div class="col-sm-8 col-md-8 col-lg-8 text-center">
             <div class="">
-                <a href="" ng-click="previous()"><span class="glyphicon glyphicon-step-backward"></span></a>
+                <a ng-hide="hidePreviousPager" href="" ng-click="previous()"><span class="glyphicon glyphicon-step-backward"></span></a>
                 &nbsp;&nbsp;
                 <h5 style="display: inline;"><a href="{{data.id}}">{{data.name}}, {{data.site_name}}</a></h5>
                 &nbsp;&nbsp;
-                <a href="" ng-click="next()"><span class="glyphicon glyphicon-step-forward"></span></a>
+                <a ng-hide="hideNextPager" href="" ng-click="next()"><span class="glyphicon glyphicon-step-forward"></span></a>
             </div>
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>

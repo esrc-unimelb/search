@@ -28,8 +28,6 @@ angular.module('searchApp')
               ext = last.split('.').pop();
               if (ext !== undefined && imageExts.indexOf(ext.toLowerCase()) !== -1) {
                   scope.isImage = true;
-              } else {
-                log.error("Doesn't look like an image so skipping it: " + last);
               }
 
           }
