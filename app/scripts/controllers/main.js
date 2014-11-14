@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('searchApp')
-<<<<<<< HEAD
   .controller('MainCtrl', [ '$rootScope', '$scope', '$window', 'SolrService',
     function ($rootScope, $scope, $window, SolrService) {
       var w = angular.element($window);
