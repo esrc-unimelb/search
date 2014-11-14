@@ -61,6 +61,14 @@ angular.module('searchApp')
               updateSelections();
           });
 
+          // handle open / close broadcasts
+          scope.$on('open-all-filters', function() {
+              scope.ic = false;
+          })
+          scope.$on('close-all-filters', function() {
+              scope.ic = true;
+         })
+
           var updateFacets = function(data) {
               scope.facets = [];
               var d;

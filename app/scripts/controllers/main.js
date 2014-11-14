@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('searchApp')
-  .controller('MainCtrl', [ '$scope', '$window', 'SolrService',
-    function ($scope, $window, SolrService) {
+<<<<<<< HEAD
+  .controller('MainCtrl', [ '$rootScope', '$scope', '$window', 'SolrService',
+    function ($rootScope, $scope, $window, SolrService) {
       var w = angular.element($window);
       w.bind('resize', function() {
           $scope.$apply(function() {
@@ -32,7 +33,7 @@ angular.module('searchApp')
 
           // left (lpw) and right (rpw) panel widths
           if ($scope.w < 1024) {
-              $scope.lpw = Math.floor(($scope.w) * 0.30) - 1;
+              $scope.lpw = Math.floor(($scope.w) * 0.35) - 1;
               $scope.rpw = $scope.w - $scope.lpw - 1;
           } else {
               $scope.lpw = Math.floor(($scope.w) * 0.25) - 1;
@@ -66,5 +67,11 @@ angular.module('searchApp')
       $scope.clearAllFilters = function() {
         SolrService.clearAllFilters();
       };
+      $scope.openAllFilters = function() {
+          $rootScope.$broadcast('open-all-filters');
+      }
+      $scope.closeAllFilters = function() {
+          $rootScope.$broadcast('close-all-filters');
+      }
 
   }]);

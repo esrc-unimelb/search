@@ -41,13 +41,20 @@
     <!-- side bar: fixed to right -->
     <div style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px; ">
         <div class="row">
-            <div class="col-sm-12">
-                <p class="help-block text-center">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
-                <!--<date-range-graph></date-range-graph><br/>-->
-                <hr/>
+            <div class="col-sm-12 text-center">
+                <p class="help-block">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
             </div>
-            <div class="col-sm-12" style="margin: 10px 0px;">
-                <strong>Refine Search</strong>
+            <div class="col-sm-12 text-center">
+                <h4 style="color: #3d4343; font-size: 18px; font-weight: normal; margin: 10px 0px; padding: 0; text-shadow: 1px -1px 2px #595959; line-height: 1.1;">
+                    Refine Search
+                </h4>
+            </div>
+            <div class="col-sm-12 text-center">
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-default" ng-click="clearAllFilters()">Clear all</button>
+                    <button class="btn btn-sm btn-default" ng-click="openAllFilters()">Open all</button>
+                    <button class="btn btn-sm btn-default" ng-click="closeAllFilters()">Close all</button>
+                </div>
             </div>
             <div class="col-sm-12">
                 <button class="btn btn-sm btn-default btn-block" ng-click="clearAllFilters()">Clear all filters</button>
