@@ -8,13 +8,21 @@ angular.module('searchApp')
       scope: {
       },
       link: function postLink(scope, element, attrs) {
+          if (SolrService.results.docs === undefined) {
+              $window.location = '#/';
+          }
+
           // set some defaults
           scope.showLoadingIndicator = true;
           scope.showImage = null;
+          
+          // acceptable image extensions - whatever we find will
+          //  be lowercased so as to make this list a little shorter..
+          var imageExts =  [ 'jpg', 'jpeg', 'png', 'gif' ];
 
           scope.$on('search-results-updated', function() {
-              scope.data = SolrService.results.docs[scope.sequenceNo];
-              checkType();
+              peekForward();
+              peekBackward();
           })
 
           // sort out the panels sizes
@@ -33,15 +41,34 @@ angular.module('searchApp')
           }
           sizeThePanels();
 
-          var checkType = function() {
-              if (scope.data.main_type !== 'Digital Object' && scope.data.type !== 'Image') {
-                  scope.back();
+          var peekForward = function() {
+              if (scope.data.sequenceNo === SolrService.results.docs.length -1) {
+                  SolrService.nextPage();
+              } else {
+                  var d = SolrService.results.docs[scope.sequenceNo + 1];
+                  var ext = d.fullsize.split('.').pop();
+                  if (ext !== undefined && imageExts.indexOf(ext.toLowerCase()) === -1) {
+                      scope.hideNextPager = true;
+                  } else {
+                      scope.hideNextPager = false;
+                  }
+              }
+          }
+          var peekBackward = function() {
+              var d = SolrService.results.docs[scope.sequenceNo - 1];
+              var ext = d.fullsize.split('.').pop();
+              if (ext !== undefined && imageExts.indexOf(ext.toLowerCase()) === -1) {
+                  scope.hidePreviousPager = true;
+              } else {
+                  scope.hidePreviousPager = false;
               }
           }
 
           // get the data for the image
           scope.data = ImageService.get();
           scope.sequenceNo = scope.data.sequenceNo;
+          peekForward();
+          peekBackward();
 
           scope.back = function() {
               $window.history.back();
@@ -51,17 +78,15 @@ angular.module('searchApp')
               if (scope.sequenceNo !== 0) {
                   scope.sequenceNo -= 1;
                   scope.data = SolrService.results.docs[scope.sequenceNo];
-                  checkType();
+                  peekForward();
+                  peekBackward();
               }
           }
           scope.next = function() {
               scope.sequenceNo += 1;
-              if (scope.data.sequenceNo === SolrService.results.docs.length -1) {
-                  SolrService.nextPage();
-              } else {
-                  scope.data = SolrService.results.docs[scope.sequenceNo];
-                  checkType();
-              }
+              scope.data = SolrService.results.docs[scope.sequenceNo];
+              peekForward();
+              peekBackward();
           }
       }
     };
