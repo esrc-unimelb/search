@@ -20,7 +20,7 @@ angular.module('searchApp')
           scope.$on('search-results-updated', function() {
               scope.gridView = true;
               angular.forEach(SolrService.results.docs, function(v, k) {
-                  if (v.main_type !== 'Digital Object' && v.type !== 'Image') {
+                  if (v.thumbnail === undefined) {
                       scope.gridView = false;
                   }
               })

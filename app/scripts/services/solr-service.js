@@ -97,15 +97,15 @@ angular.module('searchApp')
         } 
 
         // if the site changes - ditch the stored data
-        var savedQuery = JSON.parse(sessionStorage.getItem('cq'));
-        if (savedQuery !== null && savedQuery.site !== SolrService.site) {
+        var savedQuery = SolrService.loadData()
+        if (savedQuery !== undefined && savedQuery.site !== SolrService.site) {
             sessionStorage.removeItem('cq');
         }
         
         // if a saved query exists - get it
-        var savedQuery = sessionStorage.getItem('cq');
-        if (savedQuery !== null) {
-            initAppFromSavedData(savedQuery);
+        var savedQuery = SolrService.loadData();
+        if (savedQuery !== undefined) {
+            initAppFromSavedData();
         } else {
             // init the app
             initCurrentInstance();
@@ -114,12 +114,34 @@ angular.module('searchApp')
         return true;
     }
 
+    /*
+     * @ngdoc function
+     * @name loadData
+     */
+    function loadData() {
+        var d = sessionStorage.getItem('cq');
+        return angular.fromJson($rootScope.$eval(d));
+    }
+
+    /*
+     * @ngdoc function
+     * @name loadData
+     */
+    function redirectToRoot() {
+        var d = loadData();
+        if (d.site === conf.site) {
+            $window.location = '#/';
+        } else {
+            $window.location = '#/' + d.site;
+        }
+    }
+
     /**
      * @ngdoc function
      * @name initAppFromSavedData
      */
-    function initAppFromSavedData(data) {
-        data = JSON.parse(data);
+    function initAppFromSavedData() {
+        var data = SolrService.loadData();
         SolrService.appInit = true;
         log.info('Initialising app from saved data');
         SolrService.q = data.q;
@@ -285,7 +307,7 @@ angular.module('searchApp')
             'nResults': SolrService.results.docs.length
         }
         log.debug('Storing the current query: ' + currentQuery.date);
-        sessionStorage.setItem('cq', JSON.stringify(currentQuery));
+        sessionStorage.setItem('cq', angular.toJson(currentQuery));
     }
 
     /**
@@ -761,6 +783,8 @@ angular.module('searchApp')
         hideDetails: false,
 
         init: init,
+        redirectToRoot: redirectToRoot,
+        loadData: loadData,
         search: search,
         saveData: saveData,
         nextPage: nextPage,
