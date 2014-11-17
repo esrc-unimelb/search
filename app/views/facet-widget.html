@@ -5,7 +5,7 @@
     </a>
 </span>
 <div ng-hide="ic" class="facet">
-    <span ng-show="sp">
+    <span ng-show="sp && pageSize > 16">
         <nav>
           <ul class="pagination pagination-sm" style="margin: 5px 0px 0px 0px;">
             <li><button class="btn btn-sm btn-default" ng-click="pageBackward()"><span class="glyphicon glyphicon-chevron-left"></span></button></li>
