@@ -9,17 +9,13 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
           if (SolrService.results.docs === undefined) {
-              $window.location = '#/';
+              SolrService.redirectToRoot();
           }
 
           // set some defaults
           scope.showLoadingIndicator = true;
           scope.showImage = null;
           
-          // acceptable image extensions - whatever we find will
-          //  be lowercased so as to make this list a little shorter..
-          var imageExts =  [ 'jpg', 'jpeg', 'png', 'gif' ];
-
           scope.$on('search-results-updated', function() {
               peekForward();
               peekBackward();
@@ -42,25 +38,31 @@ angular.module('searchApp')
           sizeThePanels();
 
           var peekForward = function() {
-              if (scope.data.sequenceNo === SolrService.results.docs.length -1) {
-                  SolrService.nextPage();
-              } else {
-                  var d = SolrService.results.docs[scope.sequenceNo + 1];
-                  var ext = d.fullsize.split('.').pop();
-                  if (ext !== undefined && imageExts.indexOf(ext.toLowerCase()) === -1) {
-                      scope.hideNextPager = true;
+              if (SolrService.results.docs !== undefined) {
+                  if (scope.data.sequenceNo === SolrService.results.docs.length -1) {
+                      SolrService.nextPage();
                   } else {
-                      scope.hideNextPager = false;
+                      var d = SolrService.results.docs[scope.sequenceNo + 1];
+                      if (ImageService.isImage(d.fullsize)) {
+                          scope.hideNextPager = false;
+                      } else {
+                          scope.hideNextPager = true;
+                      }
                   }
               }
           }
           var peekBackward = function() {
-              var d = SolrService.results.docs[scope.sequenceNo - 1];
-              var ext = d.fullsize.split('.').pop();
-              if (ext !== undefined && imageExts.indexOf(ext.toLowerCase()) === -1) {
-                  scope.hidePreviousPager = true;
-              } else {
-                  scope.hidePreviousPager = false;
+              if (SolrService.results.docs !== undefined) {
+                  if (scope.sequenceNo !== 0) {
+                      var d = SolrService.results.docs[scope.sequenceNo - 1];
+                      if (ImageService.isImage(d.fullsize)) {
+                          scope.hidePreviousPager = false;
+                      } else {
+                          scope.hidePreviousPager = true;
+                      }
+                  } else {
+                      scope.hidePreviousPager = true;
+                  }
               }
           }
 

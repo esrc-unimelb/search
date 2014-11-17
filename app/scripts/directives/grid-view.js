@@ -11,10 +11,6 @@ angular.module('searchApp')
           scope.rowCount = 3;
           scope.isImage = false;
 
-          // acceptable image extensions - whatever we find will
-          //  be lowercased so as to make this list a little shorter..
-          var imageExts =  [ 'jpg', 'jpeg', 'png', 'gif' ];
-
           var updateResults = function() {
               scope.docs = [];
               scope.results = SolrService.results.docs;
@@ -23,9 +19,11 @@ angular.module('searchApp')
                   scope.results.sequenceNo = i;
                   for (var j=0; j < scope.rowCount; j++) {
                       if (scope.results[i+j] !== undefined) {
-                          var ext = scope.results[i+j].fullsize.split('.').pop();
-                          if (ext !== undefined && imageExts.indexOf(ext.toLowerCase()) !== -1) {
+                          if (ImageService.isImage(scope.results[i+j].fullsize)) {
                               scope.results[i+j].isImage = true;
+                          } else {
+                              scope.results[i+j].isImage = false;
+
                           }
                           d.push(scope.results[i+j]);
                       }
