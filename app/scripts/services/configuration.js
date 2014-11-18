@@ -12,8 +12,8 @@ angular.module('searchApp')
       testing:              'https://data.esrc.info/solr',
       loglevel:             'DEBUG',
       deployment:           'production',
-      allowedRouteParams:   [ 'q','type', 'function' ],
-      site:                 'ESRC',
+      allowedRouteParams:   [ 'q','type', 'function', 'tag' ],
+      site:                 'UMAB',
       datasetStart:         '1600-01-01T00:00:00Z',
       datasetEnd:           '2014-12-31T23:59:59Z'
   });

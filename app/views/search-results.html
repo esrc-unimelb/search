@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <div class="row well" ng-show="showFilters" style="margin: 5px;">
+    <div class="row well" ng-show="showFilters" style="margin: 5px; color: black;">
         <!-- filters and controls -->
         <span ng-if="filters.length === 0">No filters applied.</span>
         <span ng-if="filters.length > 0">Filters are combined with 'AND'.</span>
@@ -49,7 +49,7 @@
                     <generic-result-display ng-model="doc" display-provenance="{{displayProvenance}}"></generic-result-display>
                 </div>
             </span>
-            <button type="button" class="btn btn-sm btn-success btn-block" ng-click="loadNextPage()" ng-if="results && results.docs.length < results.total" style="height: 50px;">
+            <button type="button" class="btn btn-sm btn-default btn-block" ng-click="loadNextPage()" ng-if="results && results.docs.length < results.total" style="height: 50px;">
                 load more results
             </button>
         </div>

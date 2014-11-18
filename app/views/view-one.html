@@ -1,3 +1,10 @@
+<style>
+a:link    { color: black; }
+a:visited { color: black; }
+a:focus   { color: black; }
+a:hover   { color: black; }
+a:active  { color: black; }
+</style>
 <div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: #282829;"></div>
 
 <div class="row" style="height: {{image_pane_height}}px; width: 100%;">
@@ -8,7 +15,7 @@
 </div>
 
 <!-- cog to show details pane when hidden -->
-<div style="position: fixed; left: 0px; top: {{height - 30}}px; width: 100%; z-index: 2000;">
+<div style="position: fixed; left: 0px; top: {{height - 30}}px; width: 100%; z-index: 2000;" ng-show="showDetails">
     <div class="row">
         <div class="col-sm-11 col-md-11 col-lg-11"></div>
         <div class="col-sm-1 col-md-1 col-lg-1">
@@ -18,8 +25,8 @@
 </div>
 
 <!-- details pane and backing opaque white panel -->
-<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 1000; opacity: 0.9; background-color: #EFEFEA; z-index: 5000;"></div>
-<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 2000; padding-top: 10px; z-index: 10000;">
+<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 1000; opacity: 0.9; background-color: #EFEFEA; z-index: 5000;" ng-hide="showDetails"></div>
+<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 2000; padding-top: 10px; z-index: 10000;" ng-hide="showDetails">
     <div class="row">
         <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="padding-left: 30px;">
             <a href="" ng-click="back()">&larr; Back to search results</a>
@@ -35,7 +42,7 @@
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-sm-1 col-md-1 col-lg-1">
-            <span class="glyphicon glyphicon-remove" ng-click="showDetails = !showDetails"></span>
+            <span class="glyphicon glyphicon-remove" ng-click="showDetails = !showDetails" style="color: black;"></span>
         </div>
     </div>
 </div>
