@@ -245,7 +245,7 @@ angular.module('searchApp')
             q = '(name:' + what + '^100 OR altname:' + what + '^50 OR locality:' + what + '^10 OR text:' + what + ')';
         } else {
             if (SolrService.searchType === 'keyword') {
-                what = what.replace(/ /gi, ' AND ');
+                what = what.replace(/ /gi, ' ' + conf.keywordSearchOperator + ' ');
                 q = 'name:(' + what + ')^100 OR altname:(' + what + ')^50 OR locality:(' + what + ')^10 OR text:(' + what + ')';
             } else {
                 q = 'name:"' + what + '"^100 OR altname:"' + what + '"^50 OR locality:"' + what + '"^10 OR text:"' + what + '"';
