@@ -9,16 +9,16 @@
 
     <!-- header controls -->
     <div class="row" style="margin-top: 10px; margin-right: 15px;">
-        <div class="col-md-3 col-lg-3">
+        <div class="col-md-2 col-lg-2">
         </div>
-        <div class="col-sm-6 col-md-5 col-lg-5">
+        <div class="col-sm-6 col-md-4 col-lg-4">
                 <search-form 
                     help='Normally this would be site / context specific help in this bit...'
                     search-type="keyword"
                     >
                 </search-form>
         </div>
-        <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="col-sm-6 col-md-4 col-lg-4">
            <sort-results></sort-results> 
         </div>
     </div>
@@ -46,13 +46,19 @@
                 id="1" label="Date" start="2000" end="2014" interval="1"></date-facet-widget>
         </div>
         <div class="col-sm-12">
-            <facet-widget facet-field="tag" label="Building Phase and Location" join="AND"></facet-widget>
+            <facet-widget facet-field="level1" label="Building Phase" show-pagination-controls="false"></facet-widget>
         </div>
         <div class="col-sm-12">
-            <facet-widget facet-field="type" label="Entity Type"></facet-widget>
+            <facet-widget facet-field="level2" label="Sub section"></facet-widget>
+        </div>
+        <div class="col-sm-12">
+            <facet-widget facet-field="dobject_type" label="Record Type" show-pagination-controls="false"></facet-widget>
         </div>
         <div class="col-sm-12">
             <facet-widget facet-field="function" label="Entity Category" join="AND"></facet-widget>
+        </div>
+        <div class="col-sm-12">
+            <facet-widget facet-field="main_type" label="Entity Type" show-pagination-controls="false"></facet-widget>
         </div>
         <div class="col-sm-12">
             <span ng-if="!returnToSiteLink"><facet-widget facet-field="site_name" label="Data Source"></facet-widget></span>
