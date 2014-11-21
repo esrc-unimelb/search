@@ -10,6 +10,7 @@ body {
   background-size: 100% auto;
   background-repeat: no-repeat;
   */
+  word-wrap: break-word;
 }
 
 .facet.ng-hide-remove {
