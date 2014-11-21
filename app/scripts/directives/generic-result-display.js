@@ -32,9 +32,9 @@ angular.module('searchApp')
 
           // determine the source url to use for the record
           if (scope.data.display_url !== undefined) {
-              scope.data.url = scope.data.display_url;
+              scope.data.resource = scope.data.display_url;
           } else {
-              scope.data.url = scope.data.id;
+              scope.data.reference = scope.data.id;
           }
 
           // is this a finding aid item with an image set attached?
