@@ -32,7 +32,7 @@ angular.module('searchApp')
 
           // determine the source url to use for the record
           if (scope.data.display_url !== undefined) {
-              scope.data.resource = scope.data.display_url;
+              scope.data.reference = scope.data.display_url;
           } else {
               scope.data.reference = scope.data.id;
           }
