@@ -5,11 +5,9 @@ body {
   background-color: black;
   font-color: white;
   color: white;
-  /*
   background-image: url('http://www.msd.unimelb.edu.au/sites/default/files/images/backgrounds/page.jpg');
   background-size: 100% auto;
   background-repeat: no-repeat;
-  */
   word-wrap: break-word;
 }
 

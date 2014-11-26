@@ -4,7 +4,7 @@
         <span ng-hide="ic">hide {{label}} filter</span>
     </a>
 </span>
-<div ng-hide="ic" class="facet">
+<div ng-hide="ic && !ao" class="facet">
     <span ng-show="sp && pageSize > 16">
         <nav>
           <ul class="pagination pagination-sm" style="margin: 5px 0px 0px 0px;">
