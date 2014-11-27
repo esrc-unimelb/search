@@ -35,7 +35,7 @@ a:active  { color: black; }
             <div class="">
                 <a ng-hide="hidePreviousPager" href="" ng-click="previous()"><span class="glyphicon glyphicon-step-backward"></span></a>
                 &nbsp;&nbsp;
-                <h5 style="display: inline;"><a href="{{data.id}}">{{data.name}}, {{data.site_name}}</a></h5>
+                <h5 style="display: inline;"><a href="{{data.id}}">{{data.name}} ({{data.creator}}, {{data.date}})</a></h5>
                 &nbsp;&nbsp;
                 <a ng-hide="hideNextPager" href="" ng-click="next()"><span class="glyphicon glyphicon-step-forward"></span></a>
             </div>

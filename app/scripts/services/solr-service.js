@@ -489,7 +489,7 @@ angular.module('searchApp')
         q.params.facet = true;
         q.params['facet.field'] = facet;
         q.params['facet.limit'] = limit;
-        q.params['facet.sort'] = 'count';
+        q.params['facet.sort'] = 'index';
         q.params['facet.offset'] = offset;
         q.params.rows = 0;
         //log.debug(q);
@@ -778,8 +778,8 @@ angular.module('searchApp')
         dateFilters: {},
         searchType: 'phrase',
         term: '*',
-        rows: 10,
-        defaultRows: 10,
+        rows: 12,
+        defaultRows: 12,
         sort: undefined,
         resultSort: undefined,
         hideDetails: false,
