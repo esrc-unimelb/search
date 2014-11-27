@@ -1,15 +1,22 @@
 <div class="row" ng-repeat="set in docs" style="margin: 15px;">
     <div class="row">
         <span ng-repeat="doc in set">
-            <div class="col-sm-4">
-                <div class="thumbnail">
+            <div class="col-sm-4 col-md-3 col-lg-2">
+                <div class="thumbnail" style="">
                     <a href="" ng-click="view(doc)">
                         <img src="{{doc.thumbnail}}" class="img-thumbnail img-responsive">
                     </a>
                     <div class="caption">
-                        <p class="text-center">{{doc.name}}</p>
-                        <a href="" class="pull-right" ng-click="showDetails = !showDetails">Details <span class="caret"></span></a>
-                        <br/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                
+                            
+                                <p class="text-center">{{doc.name}}</p>
+                                <a href="" class="btn btn-default btn-block" ng-click="view(doc)">View Image</a>
+                                <a href="{{doc.id}}" class="btn btn-default btn-block">View Page</a>
+                                <a href="" class="pull-right btn btn-default btn-block" ng-click="showDetails = !showDetails">Details <span class="caret"></span></a>
+                            </div>
+                        </div>
                         <span ng-show="showDetails">
                             <hr/>
                             <div class="row">
@@ -49,6 +56,5 @@
                 </div>
             </div>
         </span>
-        <hr/>
     </div>
 </div>
