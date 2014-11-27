@@ -2440,6 +2440,9 @@
 		for (var i = 0; i<l; i++) {
 			var $elem = $(self[i]);
 			var instance = $elem.data('smoothZoom');
+            if (instance !== undefined && ($elem.width() !== instance.iW || $elem.height() !== instance.iH)) {
+                instance.init();
+            }
 			
 			// Case 1: Initiate the plugin if not already have an instance
 			if (!instance) {
