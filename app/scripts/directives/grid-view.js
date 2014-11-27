@@ -8,7 +8,13 @@ angular.module('searchApp')
       scope: {
       },
       link: function postLink(scope, element, attrs) {
-          scope.rowCount = 3;
+          if ($window.innerWidth < 1000) {
+            scope.rowCount = 3;
+          } else if ($window.innerWidth > 1000 && $window.innerWidth < 1200) {
+            scope.rowCount = 4;
+          } else {
+            scope.rowCount = 6;
+          }
           scope.isImage = false;
 
           var updateResults = function() {
