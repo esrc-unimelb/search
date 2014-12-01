@@ -9,8 +9,6 @@
                     <div class="caption">
                         <div class="row">
                             <div class="col-lg-12">
-                                
-                            
                                 <p class="text-center">{{doc.name}}</p>
                                 <a href="" class="btn btn-default btn-block" ng-click="view(doc)">View Image</a>
                                 <a href="{{doc.id}}" class="btn btn-default btn-block">View Page</a>
@@ -20,20 +18,14 @@
                         <span ng-show="showDetails">
                             <hr/>
                             <div class="row">
-                                <div class="col-lg-4"><strong>Date</strong></div>
-                                <div class="col-lg-8">{{doc.date | valueOrDash}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4"><strong>Creator</strong></div>
-                                <div class="col-lg-8">{{doc.creator | valueOrDash}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4"><strong>Control</strong></div>
-                                <div class="col-lg-8">{{doc.control | valueOrDash}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4"><strong>Source</strong></div>
-                                <div class="col-lg-8">{{doc.source | valueOrDash}}</div>
+                                <div class="col-lg-12"><strong>Date</strong></div>
+                                <div class="col-lg-12">{{doc.date | valueOrDash}}</div>
+                                <div class="col-lg-12"><strong>Creator</strong></div>
+                                <div class="col-lg-12">{{doc.creator | valueOrDash}}</div>
+                                <div class="col-lg-12"><strong>Control</strong></div>
+                                <div class="col-lg-12">{{doc.control | valueOrDash}}</div>
+                                <div class="col-lg-12"><strong>Source</strong></div>
+                                <div class="col-lg-12">{{doc.source | valueOrDash}}</div>
                             </div>
                             <span ng-if="!doc.isImage">
                                 <div class="row">
