@@ -236,21 +236,38 @@ angular.module('searchApp')
      *  Construct the actual query object - the workhorse
      */
     function getQuery(start) {
-        var q, sort;
+        var q = [], sort;
 
         var what = SolrService.term;
+        var what = SolrService.term;
+        var searchFields = [
+            { 'name': 'name', 'weight': '100' },
+            { 'name': 'altname', 'weight': '50' },
+            { 'name': 'locality', 'weight': '30' },
+            { 'name': 'text', 'weight': '10' },
+            { 'name': 'description', 'weight': '1' },
+        ]
+
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            q = '(name:' + what + '^100 OR altname:' + what + '^50 OR locality:' + what + '^10 OR text:' + what + ')';
+            angular.forEach(searchFields, function(v, k) {
+                q.push(v.name + ':(' + what + ')^' + v.weight + ' ');
+            })
         } else {
             if (SolrService.searchType === 'keyword') {
                 what = what.replace(/ /gi, ' ' + conf.keywordSearchOperator + ' ');
-                q = 'name:(' + what + ')^100 OR altname:(' + what + ')^50 OR locality:(' + what + ')^10 OR text:(' + what + ')';
+                angular.forEach(searchFields, function(v, k) {
+                    q.push(v.name + ':(' + what + ')^' + v.weight + ' ');
+                })
+
             } else {
-                q = 'name:"' + what + '"^100 OR altname:"' + what + '"^50 OR locality:"' + what + '"^10 OR text:"' + what + '"';
+                angular.forEach(searchFields, function(v, k) {
+                    q.push(v.name + ':"' + what + '"^' + v.weight + ' ');
+                })
             }
         }
+        q = q.join(' OR ');
 
         // add in the facet query filters - if any...
         var fq = getFilterObject().join(' AND ');
