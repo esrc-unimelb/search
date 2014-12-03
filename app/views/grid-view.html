@@ -27,11 +27,15 @@
                                 <div class="col-lg-12"><strong>Source</strong></div>
                                 <div class="col-lg-12">{{doc.source | valueOrDash}}</div>
                             </div>
-                            <span ng-if="!doc.isImage">
-                                <br/>
-                                <span class="glyphicon glyphicon-new-window"></span>
-                                <small>Image links to external site.</small>
-                            </span>
+                        </span>
+                        <span ng-if="!doc.isImage">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <br/>
+                                    <span class="glyphicon glyphicon-new-window"></span>
+                                    <small>Image links to external site.</small>
+                                </div>
+                            </div>
                         </span>
                     </div>
                 </div>

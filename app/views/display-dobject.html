@@ -28,5 +28,21 @@
                 <div class="col-sm-3"><strong>Source</strong></div>
                 <div class="col-sm-9">{{data.source | valueOrDash}}</div>
             </div>
+            <span ng-if="!doc.isImage">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <br/>
+                        <span class="glyphicon glyphicon-new-window"></span>
+                        <small>Image links to external site.</small>
+                    </div>
+                </div>
+            </span>
+            <br/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="" class="btn btn btn-default" ng-click="view(data)">View Image</a>
+                    <a href="{{data.id}}" class="btn btn btn-default">View Page</a>
+                </div>
+            </div>
     </div>
 </div>
