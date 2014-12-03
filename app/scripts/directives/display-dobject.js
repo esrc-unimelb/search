@@ -32,11 +32,13 @@ angular.module('searchApp')
 
           }
 
-          scope.view = function() {
-              // pop the image data into the service
-              ImageService.push(scope.data);
+          scope.view = function(data) {
+            if (data.isImage) {
+                ImageService.push(data);
+            } else {
+                $window.location = data.fullsize;
+            }
           }
-
 
       }
     };
