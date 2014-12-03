@@ -312,7 +312,7 @@
 			this.$holder.append(testOb);
 			this.bu_icon = testOb.css("background-image").replace(regx,'$1');
 			if (this.bu_icon == 'none') {
-				this.bu_icon = 'zoom_assets/icons.png';
+				this.bu_icon = 'images/icons.png';
 			}
 			testOb.remove();
 		}		
@@ -330,7 +330,7 @@
 		//Preload icons and main image.	
 		this.$image.hide();	
 		this.imgList = [
-			{loaded: false, src: this.bu_icon || 'zoom_assets/icons.png'}, //Icon image
+			{loaded: false, src: this.bu_icon || 'images/icons.png'}, //Icon image
 			{loaded: false, src: this.image_url == ''? this.$image.attr('src') : this.image_url} // Main image
 		];
 		
