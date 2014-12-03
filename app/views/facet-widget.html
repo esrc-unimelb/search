@@ -17,13 +17,12 @@
     </span>
 
     <span ng-repeat="result in facets track by $id(result)">
-        <span ng-show="{{result[1]}}">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" ng-click="facet(result[0])" ng-checked="{{result[2]}}">{{result[0]}}&nbsp;<em>({{result[1]}})</em>
-                </label>
-            </div>
-        </span>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-click="facet(result[0])" ng-checked="{{result[2]}}">{{result[0]}}&nbsp;
+                <span ng-show="{{result[1]}}"><em>({{result[1]}})</em></span>
+            </label>
+        </div>
     </span>
 
     <span ng-show="sp">
