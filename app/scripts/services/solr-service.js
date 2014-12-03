@@ -185,7 +185,7 @@ angular.module('searchApp')
                 } else {
                     SolrService.filterQuery(k, v, true);
                 }
-                SolrService.updateFacetCount(k);
+                //SolrService.updateFacetCount(k);
             }
         });
 
@@ -494,19 +494,22 @@ angular.module('searchApp')
      *  Trigger a facet search returning a promise for use by the caller.
      * @param {string} facet - The field to facet on
      */
-    function updateFacetCount(facet, offset, limit) {
+    function updateFacetCount(facet, offset, limit, sortBy) {
         if (offset === undefined) {
             offset = 0;
         }
         if (limit === undefined) {
-            limit = 10;
+            limit = -1;
+        }
+        if (sortBy === undefined) {
+            sortBy = 'count';
         }
 
         var q = getQuery(0);
         q.params.facet = true;
         q.params['facet.field'] = facet;
         q.params['facet.limit'] = limit;
-        q.params['facet.sort'] = 'count';
+        q.params['facet.sort'] = sortBy;
         q.params['facet.offset'] = offset;
         q.params.rows = 0;
         //log.debug(q);
@@ -531,9 +534,10 @@ angular.module('searchApp')
      */
     function updateAllFacetCounts() {
         // now trigger an update of all facet counts
-        angular.forEach(SolrService.facets, function(v, k) {
-            SolrService.updateFacetCount(k);
-        });
+        //angular.forEach(SolrService.facets, function(v, k) {
+        //    SolrService.updateFacetCount(k);
+        //});
+        $rootScope.$broadcast('update-all-facets');
         $rootScope.$broadcast('update-date-facets');
     }
 
