@@ -1,7 +1,7 @@
 <span ng-hide="ao">
     <a href="" ng-click="ic = !ic">
-        <span ng-show="ic">{{label}}<span class="caret"></span></span>
-        <span ng-hide="ic" class="dropup">hide all <span class="caret"></span></span>
+        <span ng-show="ic">{{label}}</span>
+        <span ng-hide="ic" class="dropup">hide all</span>
     </a>
 </span>
 <div ng-hide="ic && !ao" class="facet">
@@ -25,6 +25,9 @@
         </div>
     </span>
 
+    <span ng-show="l">
+        <span ng-if="!allShowing"><a href="" ng-click="showAll()">see all</a></span>
+    </span>
     <span ng-show="sp">
         <nav>
           <ul class="pagination pagination-sm" style="margin: 0px 0px 5px 0px;">

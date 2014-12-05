@@ -1,4 +1,4 @@
-<div class="row">
+<showAll div class="row">
     <div style="position: fixed; top: 0px; width: 100%; z-index: 10000; padding: 0px 5px;">
         <div class="row" style="background-color: #003268;">
             <div class="col-sm-4 col-md-6 col-lg-7">
@@ -82,11 +82,17 @@
             </div>
             <div class="col-sm-12">
                 <hr style="border-color: #CCC; border-style: dotted; border-width: 1px;" />
-                <facet-widget facet-field="type" label="Types"></facet-widget>
+                <h5 style="color: #3d4343;"> 
+                   Types 
+                </h5>
+                <facet-widget facet-field="type" label="Types" show-pagination-controls="false" always-open="true" limit="true"></facet-widget>
             </div>
             <div class="col-sm-12">
                 <hr style="border-color: #CCC; border-style: dotted; border-width: 1px;" />
-                <facet-widget facet-field="function" label="Categories" join="AND"></facet-widget>
+                <h5 style="color: #3d4343;"> 
+                    Categories
+                </h5>
+                <facet-widget facet-field="function" label="Categories" join="AND" show-pagination-controls="false" always-open="true" limit="true"></facet-widget>
             </div>
         </div>
     </div>

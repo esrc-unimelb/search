@@ -26,6 +26,7 @@ angular.module('searchApp')
             isCollapsed: '@',
             alwaysOpen: '@',
             showPaginationControls: '@',
+            limit: '@',
             sortBy: '@'
         },
         link: function postLink(scope, element, attrs) {
@@ -34,6 +35,7 @@ angular.module('searchApp')
             scope.ic = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
             scope.sp = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
             scope.sb = scope.sortBy === undefined ? 'count' : scope.sortBy;
+            scope.l = scope.limit === undefined ? false : angular.fromJson(scope.limit);
 
             // facet offset and begining page size
             scope.offset = 0;
@@ -109,7 +111,14 @@ angular.module('searchApp')
                         f.push(v);
                     }
                 })
-                scope.facets = f;
+
+                // is pagination disabled and limiting on?
+                if (scope.sp === false && scope.l === true && scope.allShowing !== true) {
+                    scope.facetResults = f;
+                    scope.facets = f.slice(0,3);
+                } else {
+                    scope.facets = f;
+                }
             });
 
             // wipe clean if told to do so
@@ -160,6 +169,10 @@ angular.module('searchApp')
                 if (scope.pageSize === null) { scope.pageSize = 10; }
                 if (scope.pageSize > 1000) { scope.pageSize = 1000; }
                 updateFacetCounts();
+            }
+            scope.showAll = function() {
+                scope.facets = scope.facetResults;
+                scope.allShowing = true;
             }
       }
     };
