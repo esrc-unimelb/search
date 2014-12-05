@@ -13,9 +13,9 @@ angular.module('searchApp')
       loglevel:                 'DEBUG',
       deployment:               'production',
       allowedRouteParams:       [ 'q','type', 'function' ],
-      site:                     'ESRC',
+      site:                     'FACP',
       keywordSearchOperator:    'OR',
-      datasetStart:             '1600-01-01T00:00:00Z',
+      datasetStart:             '1788-01-01T00:00:00Z',
       datasetEnd:               '2014-12-31T23:59:59Z'
 
 /*

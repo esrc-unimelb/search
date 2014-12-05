@@ -24,4 +24,30 @@ a:focus   { color: #24658A; }
 a:hover   { color: #24658A; }
 a:active  { color: #24658A; }
 
+.white-text a:link    { color: white; }
+.white-text a:visited { color: white; }
+.white-text a:focus   { color: white; }
+.white-text a:hover   { color: white; }
+.white-text a:active  { color: white; }
+
+.header { padding: 10px 20px 15px; }
+.header-logo a
+{
+        display: block;
+            margin: 0 0 20px;
+}
+
+.header-details-large
+{
+        color: #201B6D;
+            font-size: 20px;
+}
+
+.header-details-small { font-size: 14px; }
+a.tel { text-decoration: none; }
+a.tel:link { color: #201B6D; }
+a.tel:visited { color: #201B6D; }
+a.tel:focus { color: #000; }
+a.tel:hover { color: #6D2C55; }
+a.tel:active { color: #9F1C20; }
 

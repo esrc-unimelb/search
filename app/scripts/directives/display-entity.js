@@ -9,6 +9,13 @@ angular.module('searchApp')
           data: '=ngModel'
       },
       link: function postLink(scope, element, attrs) {
+
+          try {
+              if (scope.data['function'].indexOf('Home') !== -1) {
+                  scope.data.type = scope.data.type + ' - Home';
+              }
+          } catch (e) {
+          }
       }
     };
   });

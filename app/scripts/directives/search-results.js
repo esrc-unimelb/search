@@ -18,12 +18,14 @@ angular.module('searchApp')
 
           /* handle data updates */
           scope.$on('search-results-updated', function() {
+              /*
               scope.gridView = true;
               angular.forEach(SolrService.results.docs, function(v, k) {
                   if (v.thumbnail === undefined) {
                       scope.gridView = false;
                   }
               })
+              */
               scope.results = SolrService.results;
               scope.filters = SolrService.getFilterObject();
           });
