@@ -112,10 +112,23 @@ angular.module('searchApp')
                     }
                 })
 
+                // THE DATA
+                scope.facetResults = f;
+                //
+
                 // is pagination disabled and limiting on?
                 if (scope.sp === false && scope.l === true && scope.allShowing !== true) {
-                    scope.facetResults = f;
-                    scope.facets = f.slice(0,3);
+                    var nchecked = 0;
+                    angular.forEach(f, function(v,k) {
+                        if (v[2]) {
+                            nchecked += 1;
+                        }
+                    })
+                    if (nchecked === 0) {
+                        nchecked = 3;
+                    }
+
+                    scope.facets = f.slice(0,nchecked);
                 } else {
                     scope.facets = f;
                 }
@@ -173,6 +186,20 @@ angular.module('searchApp')
             scope.showAll = function() {
                 scope.facets = scope.facetResults;
                 scope.allShowing = true;
+            }
+            scope.hide = function() {
+                scope.allShowing = false;
+                scope.facetResults = scope.facets;
+                var nchecked = 0;
+                angular.forEach(scope.facets, function(v,k) {
+                    if (v[2]) {
+                        nchecked += 1;
+                    }
+                })
+                if (nchecked === 0) {
+                    nchecked = 3;
+                }
+                scope.facets = angular.copy(scope.facets).slice(0,nchecked);
             }
       }
     };

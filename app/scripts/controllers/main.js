@@ -28,7 +28,7 @@ angular.module('searchApp')
           }
 
           // left (lpw) and right (rpw) panel widths
-          if ($scope.w < 1024) {
+          if ($scope.w < 1050) {
               $scope.lpw = Math.floor(($scope.w) * 0.35) - 1;
               $scope.rpw = $scope.w - $scope.lpw - 1;
           } else {
