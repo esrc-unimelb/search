@@ -12,13 +12,12 @@ angular.module('searchApp')
       testing:                  'https://data.esrc.info/solr',
       loglevel:                 'DEBUG',
       deployment:               'testing',
-      allowedRouteParams:       [ 'q','type', 'function', 'level1', 'level2', 'dobject_type' ],
+      allowedRouteParams:       [ 'q','type', 'function', 'level1', 'level2', 'level3', 'dobject_type' ],
       site:                     'UMAB',
       keywordSearchOperator:    'AND',
       datasetStart:             '2000-01-01T00:00:00Z',
       datasetEnd:               '2014-12-31T23:59:59Z',
 
-/*
       facetFilter: {
           'level2': {
               'pivotField': 'level1',
@@ -37,8 +36,29 @@ angular.module('searchApp')
                   'Post-construction':
                       [ 'Images', 'Videos', 'Drawings', 'Documents', 'Data' ],
               }
+          },
+          'level3': {
+              'pivotField': 'level2',
+              'filterModel': {
+                  'Planning':
+                    [ 'Competition outline', 'Briefing session', 'Competition questions', 'Competition email correspondence', 'Jury meeting minutes', 'Competition publicity' ],
+                  'Website':
+                    [ 'Include linke to competition website' ],
+                  'Entries': 
+                    [ 'Eligible', 'Failed to address selection criteria', 'Non-conforming', 'Additional' ],
+                  'Shortlisting':
+                    [ 'Submissions', 'Presentations' ],
+                  'Schematic design':
+                    [ 'Card models', 'Sketches', 'Webex', 'Drawings', 'Documents' ],
+                  'Detailed design':
+                    [ 'Card models', 'Renders', 'Sketches', 'Drawings', 'Documents' ],
+                  'Construction documentation':
+                    [ 'Card models', 'Renders', 'Sketches', 'Webex', 'Drawings', 'Documents' ],
+                  'Tender':
+                    [ 'Drawings', 'Documents' ]
+                  
+              }
           }
       }
-*/
 
   });
