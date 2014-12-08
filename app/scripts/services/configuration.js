@@ -28,7 +28,7 @@ angular.module('searchApp')
                   'Design competition':
                       [ 'Planning', 'Website', 'Entries', 'Shortlisting', 'Winner announcement' ],
                   'Design':
-                      [ 'Schematic design', 'Detailed design', 'Contract documentation', 'Tender' ],
+                      [ 'Schematic design', 'Detailed design', 'Construction documentation', 'Tender' ],
                   'Pre-construction':
                       [ 'Asbestos removal', 'Demolition', 'Enabling works', 'Hoardings and sheds', 'Joseph Reed Façade Works', 'Scaffolding', 'Timelapse camera locations', 'Tree Removal' ],
                   'Construction':
