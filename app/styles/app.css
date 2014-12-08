@@ -33,14 +33,14 @@ a:active  { color: #24658A; }
 .header { padding: 10px 20px 15px; }
 .header-logo a
 {
-        display: block;
-            margin: 0 0 20px;
+    display: block;
+    margin: 0 0 20px;
 }
 
 .header-details-large
 {
-        color: #201B6D;
-            font-size: 20px;
+    color: #201B6D;
+    font-size: 20px;
 }
 
 .header-details-small { font-size: 14px; }
