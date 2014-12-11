@@ -30,6 +30,10 @@ angular.module('searchApp')
               }
           });
 
+          scope.$on('search-results-updated', function() {
+              scope.searchBox = SolrService.term;
+          });
+
           scope.setSearchBox = function() {
               // set the content of the search box based on any q url params
               if ($routeParams.q !== undefined) {

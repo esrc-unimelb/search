@@ -24,7 +24,15 @@ angular.module('searchApp')
           
           //
           scope.updateResultSet = function() {
-              console.log(scope.ds, scope.de);
+              // are start and end numbers?
+              console.log(parseInt(scope.ds), parseInt(scope.de));
+              if (isNaN(scope.ds)) {
+                  scope.ds = scope.start;
+              }
+              if (isNaN(scope.de)) {
+                  scope.de = scope.end;
+              }
+
               // is start greater than end - set to end -1
               if (scope.ds > scope.de) {
                   scope.ds = scope.de -1;
