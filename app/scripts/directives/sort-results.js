@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('sortResults', [ '$rootScope', 'SolrService', function ($rootScope, SolrService) {
+  .directive('sortResults', [ 'SolrService', function (SolrService) {
     return {
       templateUrl: 'views/sort-results.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
           scope.sortBy = SolrService.resultSort;
 
-          $rootScope.$on('search-results-updated', function() {
+          scope.$on('search-results-updated', function() {
             scope.sortBy = SolrService.resultSort;
           });
 
