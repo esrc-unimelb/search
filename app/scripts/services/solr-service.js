@@ -97,15 +97,15 @@ angular.module('searchApp')
         } 
 
         // if the site changes - ditch the stored data
-        var savedQuery = JSON.parse(sessionStorage.getItem('cq'));
-        if (savedQuery !== null && savedQuery.site !== SolrService.site) {
+        var savedQuery = SolrService.loadData()
+        if (savedQuery !== undefined && savedQuery.site !== SolrService.site) {
             sessionStorage.removeItem('cq');
         }
         
         // if a saved query exists - get it
-        var savedQuery = sessionStorage.getItem('cq');
-        if (savedQuery !== null) {
-            initAppFromSavedData(savedQuery);
+        var savedQuery = SolrService.loadData();
+        if (savedQuery !== undefined) {
+            initAppFromSavedData();
         } else {
             // init the app
             initCurrentInstance();
@@ -114,12 +114,34 @@ angular.module('searchApp')
         return true;
     }
 
+    /*
+     * @ngdoc function
+     * @name loadData
+     */
+    function loadData() {
+        var d = sessionStorage.getItem('cq');
+        return angular.fromJson($rootScope.$eval(d));
+    }
+
+    /*
+     * @ngdoc function
+     * @name loadData
+     */
+    function redirectToRoot() {
+        var d = loadData();
+        if (d.site === conf.site) {
+            $window.location = '#/';
+        } else {
+            $window.location = '#/' + d.site;
+        }
+    }
+
     /**
      * @ngdoc function
      * @name initAppFromSavedData
      */
-    function initAppFromSavedData(data) {
-        data = JSON.parse(data);
+    function initAppFromSavedData() {
+        var data = SolrService.loadData();
         SolrService.appInit = true;
         log.info('Initialising app from saved data');
         SolrService.q = data.q;
@@ -163,7 +185,7 @@ angular.module('searchApp')
                 } else {
                     SolrService.filterQuery(k, v, true);
                 }
-                SolrService.updateFacetCount(k);
+                //SolrService.updateFacetCount(k);
             }
         });
 
@@ -218,8 +240,8 @@ angular.module('searchApp')
     function getQuery(start) {
         var sort;
         var q = [];
-
         var what = SolrService.term;
+
         var searchFields = [
             { 'name': 'author_search', 'weight': '1' },
             { 'name': 'editor_search', 'weight': '1' },
@@ -229,24 +251,24 @@ angular.module('searchApp')
         ]
 
 
-        // are we doing a wildcard search? or a single term search fuzzy search?
-        if ( what === '*' || what.substr(-1,1) === '~') {
+         // are we doing a wildcard search? or a single term search fuzzy search?
+         if ( what === '*' || what.substr(-1,1) === '~') {
             angular.forEach(searchFields, function(v, k) {
                 q.push(v.name + ':(' + what + ')');
             })
-        } else {
-            if (SolrService.searchType === 'keyword') {
+         } else {
+             if (SolrService.searchType === 'keyword') {
                 what = what.replace(/ /gi, ' AND ');
                 angular.forEach(searchFields, function(v, k) {
                     q.push(v.name + ':(' + what + ')');
                 })
 
-            } else {
+             } else {
                 angular.forEach(searchFields, function(v, k) {
                     q.push(v.name + ':"' + what + '"');
                 })
-            }
-        }
+             }
+         }
         q = q.join(' OR ');
 
         // add in the facet query filters - if any...
@@ -304,7 +326,7 @@ angular.module('searchApp')
             'nResults': SolrService.results.docs.length
         }
         log.debug('Storing the current query: ' + currentQuery.date);
-        sessionStorage.setItem('cq', JSON.stringify(currentQuery));
+        sessionStorage.setItem('cq', angular.toJson(currentQuery));
     }
 
     /**
@@ -355,17 +377,19 @@ angular.module('searchApp')
             if (d.data.response.numFound === 0 && Object.keys(SolrService.filters).length === 0) {
                 // no matches - do a spell check and run a fuzzy search 
                 //  ONLY_IF it's a single word search term
-                if (what.split(' ').length === 1) {
-                    suggest(SolrService.term);
-                    if (what !== '*') {
-                        if (what.substr(-1,1) !== '~') {
-                            search(what + '~', 0, false);
-                        }
-                    }
-                } else {
-                    // a phrase; wipe the results - can't do anything sensible
-                    saveData(undefined);
-                }
+                //if (what.split(' ').length === 1) {
+                //    suggest(SolrService.term);
+                //    if (what !== '*') {
+                //        if (what.substr(-1,1) !== '~') {
+                //            search(what + '~', 0, false);
+                //        }
+                //    }
+                //} else {
+
+                // a phrase; wipe the results - can't do anything sensible
+                saveData(undefined);
+
+                //}
             } else {
                 // all good - results found
                 saveData(d);
@@ -398,10 +422,10 @@ angular.module('searchApp')
         log.debug('Suggest: ');
         log.debug(q);
 
-        //$http.jsonp(SolrService.solr, q).then(function(d) {
-        //    SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
-        //    $rootScope.$broadcast('search-suggestion-available');
-        //});
+        $http.jsonp(SolrService.solr, q).then(function(d) {
+            SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
+            $rootScope.$broadcast('search-suggestion-available');
+        });
     }
 
     /**
@@ -472,19 +496,22 @@ angular.module('searchApp')
      *  Trigger a facet search returning a promise for use by the caller.
      * @param {string} facet - The field to facet on
      */
-    function updateFacetCount(facet, offset, limit) {
+    function updateFacetCount(facet, offset, limit, sortBy) {
         if (offset === undefined) {
             offset = 0;
         }
         if (limit === undefined) {
-            limit = 10;
+            limit = -1;
+        }
+        if (sortBy === undefined) {
+            sortBy = 'count';
         }
 
         var q = getQuery(0);
         q.params.facet = true;
         q.params['facet.field'] = facet;
         q.params['facet.limit'] = limit;
-        q.params['facet.sort'] = 'count';
+        q.params['facet.sort'] = sortBy;
         q.params['facet.offset'] = offset;
         q.params.rows = 0;
         //log.debug(q);
@@ -509,9 +536,10 @@ angular.module('searchApp')
      */
     function updateAllFacetCounts() {
         // now trigger an update of all facet counts
-        angular.forEach(SolrService.facets, function(v, k) {
-            SolrService.updateFacetCount(k);
-        });
+        //angular.forEach(SolrService.facets, function(v, k) {
+        //    SolrService.updateFacetCount(k);
+        //});
+        $rootScope.$broadcast('update-all-facets');
         $rootScope.$broadcast('update-date-facets');
     }
 
@@ -715,7 +743,7 @@ angular.module('searchApp')
                     'rows': 1,
                     'wt': 'json',
                     'json.wrf': 'JSON_CALLBACK',
-                    'sort': 'exist_to desc'
+                    'sort': 'exist_from desc'
                 }
             };
             $http.jsonp(SolrService.solr, q).then(function(d) {
@@ -761,28 +789,6 @@ angular.module('searchApp')
             $rootScope.$broadcast(marker + '-facet-data-ready');
         });
 
-        /*
-        b = getQuery();
-        b.params.rows = 0;
-        b.params.facet = true;
-        b.params['facet.range'] = 'date_to';
-        b.params['facet.range.gap'] = '+100YEARS';
-        b.params['facet.range.start'] = d + '-01-01T00:00:00Z';
-        if (SolrService.dateEndBoundary !== undefined) {
-            b.params['facet.range.end'] = SolrService.dateEndBoundary;
-            $http.jsonp(SolrService.solr, b).then(function(d) {
-                var counts = d.data.facet_counts.facet_ranges.date_to.counts;
-
-                var i, df;
-                df = [];
-                for (i=0; i < counts.length; i+=2) {
-                    df.push([counts[i].split('-')[0], counts[i+1]]);
-                }
-                SolrService.endDateFacets = [ { 'key': '', 'values': df } ];
-                $rootScope.$broadcast('end-date-facet-data-ready');
-            });
-        }
-        */
     }
 
 
@@ -795,13 +801,15 @@ angular.module('searchApp')
         dateFilters: {},
         searchType: 'phrase',
         term: '*',
-        rows: 10,
-        defaultRows: 10,
+        rows: 12,
+        defaultRows: 12,
         sort: undefined,
         resultSort: undefined,
         hideDetails: false,
 
         init: init,
+        redirectToRoot: redirectToRoot,
+        loadData: loadData,
         search: search,
         saveData: saveData,
         nextPage: nextPage,
