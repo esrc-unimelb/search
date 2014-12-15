@@ -62,6 +62,7 @@ angular.module('searchApp')
           });
 
           var updateFacets = function(data) {
+              scope.disableWidget = true;
               scope.facets = [];
               var d;
               angular.forEach(data, function(v, k) {
@@ -73,6 +74,9 @@ angular.module('searchApp')
                       'checked': false
                   }
                   scope.facets.push(d);
+                  if (v.count !== 0) {
+                      scope.disableWidget = false;
+                  }
               })
           }
           var updateSelections = function() {

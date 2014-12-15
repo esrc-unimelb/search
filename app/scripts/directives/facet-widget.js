@@ -63,6 +63,7 @@ angular.module('searchApp')
             // when we get an update event for this widget from the solr
             //  service - rejig the widget as required
             scope.$on(scope.facetField+'-facets-updated', function() {
+                scope.disableWidget = true;
                 var selected = SolrService.filters[scope.facetField];
                 if (selected === undefined) { 
                     selected = []; 
@@ -98,6 +99,11 @@ angular.module('searchApp')
                             scope.ic = false;
                             scope.startup = false;
                         }
+                    }
+
+                    // if any of the counts is non zero - enable the widget
+                    if (v[1] !== 0) {
+                        scope.disableWidget = false;
                     }
                     // also - if we're defining pivots and filters, only throw those
                     //  into the output mix otherwise send it all
