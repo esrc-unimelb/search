@@ -61,8 +61,10 @@
                 <button class="btn btn-sm btn-default btn-block" ng-click="clearAllFilters()">Clear all filters</button>
             </div>
             <div class="col-sm-12">
-                <facet-widget facet-field="record_type" label="Record Type" is-collapsed="false" always-open="true" show-pagination-controls="false"></facet-widget>
-            <hr style="border-color: #003268;"/>
+                <facet-widget facet-field="record_type" label="Record Type" is-collapsed="false" always-open="true" show-pagination-controls="false" sort-by="index"></facet-widget>
+                <hr style="border-color: #003268;"/>
+            </div>
+            <div class="col-sm-12">
                 <h4 style="color: #3d4343; font-size: 18px; font-weight: normal; margin: 10px 0px; padding: 0; text-shadow: 1px -1px 2px #595959; line-height: 1.1;">
                     Refine Search Bibliographic Records
                 </h4>
@@ -71,7 +73,7 @@
                 <date-facet-widget facet-field="date_created" id="4" label="Publication Date" start="1970" interval="5"></date-facet-widget>
             </div>
             <div class="col-sm-12">
-                <facet-widget facet-field="document_type" label="Document type" show-pagination-controls="false"></facet-widget>
+                <facet-widget facet-field="document_type" label="Document type" show-pagination-controls="false" sort-by='index'></facet-widget>
             </div>
             <div class="col-sm-12">
                 <facet-widget facet-field="name_role" label="Authors, Editors, etc"></facet-widget>
@@ -95,7 +97,7 @@
                 </h4>
             </div>
             <div class="col-sm-12">
-                <facet-widget facet-field="entity_type" label="Authority type"></facet-widget>
+                <facet-widget facet-field="entity_type" label="Authority type" show-pagination-controls='false'></facet-widget>
             </div>
             <div class="col-sm-12">
                 <date-facet-widget facet-field="exist_from" id="1" label="Birth date of subject persons - early" 
