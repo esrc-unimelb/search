@@ -26,7 +26,7 @@ angular.module('searchApp')
           //} else {
           //    $scope.t = 140;
           //}
-          $scope.t = 205;
+          $scope.t = 220;
 
           // left (lpw) and right (rpw) panel widths
           if ($scope.w < 1024) {

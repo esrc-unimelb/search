@@ -1,6 +1,6 @@
 <form role="form">
     <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="col-sm-6 col-md-7 col-lg-7">
             <input type="text" class="form-control" ng-model="searchBox" autofocus>
             <label class="radio-inline" style="color: white;">
                 <input type="radio" ng-checked="keywordSearch" ng-click="setSearchType('keyword')" />
@@ -21,7 +21,7 @@
                 Phrase search
             </label>
         </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="col-sm-4 col-md-3 col-lg-3">
             <select multiple class='form-control' ng-model="searchWhat">
                 <option value="1">Authors</option>
                 <option value="2">Editors</option>
@@ -31,7 +31,7 @@
             </select>
         </div>
         <div class="col-sm-2 col-md-2 col-lg-2">
-            <button class="btn btn-default" ng-click="search()">Search</button>
+            <button class="btn btn-default btn-block" ng-click="search()">Search</button>
         </div>
     </div>
     <!-- <p class="help-block">{{help}}</p> -->
