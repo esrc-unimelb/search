@@ -1,19 +1,39 @@
 <form role="form">
-    <div class="input-group">
-        <input type="text" class="form-control" ng-model="searchBox" autofocus>
-        <span class="input-group-btn">
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <input type="text" class="form-control" ng-model="searchBox" autofocus>
+            <label class="radio-inline" style="color: white;">
+                <input type="radio" ng-checked="keywordSearch" ng-click="setSearchType('keyword')" />
+                Keyword search
+            </label>
+            <span ng-if="keywordSearch" style="color: white;">
+                :&nbsp;
+                <label class="radio-inline">
+                    <input type="radio" ng-checked='keywordAnd' ng-click="setSearchUnion('AND')" />AND
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-checked='keywordOr' ng-click="setSearchUnion('OR')" />OR
+                </label>
+            </span>
+            <br/>
+            <label class="radio-inline" style="color: white;">
+                <input type="radio" ng-checked="phraseSearch" ng-click="setSearchType('phrase')" />
+                Phrase search
+            </label>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <select multiple class='form-control' ng-model="searchWhat">
+                <option value="1">Authors</option>
+                <option value="2">Editors</option>
+                <option value="3">Contributors</option>
+                <option value="4">Title</option>
+                <option value="5">Subject</option>
+            </select>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2">
             <button class="btn btn-default" ng-click="search()">Search</button>
-        </span>
+        </div>
     </div>
     <!-- <p class="help-block">{{help}}</p> -->
 </form>
-<span style="padding: 5px 0px;">
-    <label class="radio-inline" style="color: white;">
-        <input type="radio" ng-checked="keywordSearch" ng-click="setSearchType('keyword')" />
-        Keyword search
-    </label>
-    <label class="radio-inline" style="color: white;">
-        <input type="radio" ng-checked="phraseSearch" ng-click="setSearchType('phrase')" />
-        Phrase search
-    </label>
-</span>
+

@@ -242,28 +242,25 @@ angular.module('searchApp')
         var q = [];
         var what = SolrService.term;
 
-        var searchFields = [
-            { 'name': 'author_search', 'weight': '1' },
-            { 'name': 'editor_search', 'weight': '1' },
-            { 'name': 'contributor_search', 'weight': '1' },
-            { 'name': 'title_search', 'weight': '1' },
-            { 'name': 'name_search', 'weight': '1' },
-        ]
+        var searchFields = [];
+        angular.forEach(SolrService.searchWhat, function(v,k) {
+            searchFields.push({ 'name': conf.searchFields[v].fieldName, 'weight': conf.searchFields[v].weight });
 
+        });
 
-         // are we doing a wildcard search? or a single term search fuzzy search?
-         if ( what === '*' || what.substr(-1,1) === '~') {
-            angular.forEach(searchFields, function(v, k) {
-                q.push(v.name + ':(' + what + ')');
-            })
-         } else {
-             if (SolrService.searchType === 'keyword') {
-                what = what.replace(/ /gi, ' AND ');
-                angular.forEach(searchFields, function(v, k) {
-                    q.push(v.name + ':(' + what + ')');
-                })
+        // are we doing a wildcard search? or a single term search fuzzy search?
+        if ( what === '*' || what.substr(-1,1) === '~') {
+           angular.forEach(searchFields, function(v, k) {
+               q.push(v.name + ':(' + what + ')');
+           })
+        } else {
+           if (SolrService.searchType === 'keyword') {
+              what = what.replace(/ /gi, ' ' + SolrService.keywordUnion + ' ');
+              angular.forEach(searchFields, function(v, k) {
+                  q.push(v.name + ':(' + what + ')');
+              })
 
-             } else {
+            } else {
                 angular.forEach(searchFields, function(v, k) {
                     q.push(v.name + ':"' + what + '"');
                 })

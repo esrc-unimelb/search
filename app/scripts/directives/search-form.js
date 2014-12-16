@@ -12,6 +12,9 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
 
+          scope.searchWhat = [ '1', '2', '3', '4', '5' ];
+          scope.searchUnion = 'AND';
+
           // handle the app being bootstrapped
           scope.$on('app-ready', function() {
               scope.searchBox = SolrService.term;
@@ -54,6 +57,7 @@ angular.module('searchApp')
               // - what: scope.searchBox (the search term
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
+              SolrService.searchWhat = scope.searchWhat;
               SolrService.search(scope.searchBox, 0, true);
           };
 
@@ -65,9 +69,22 @@ angular.module('searchApp')
               } else {
                   scope.phraseSearch = false;
                   scope.keywordSearch = true;
+                  scope.setSearchUnion('AND');
               }
               scope.search();
           }
+
+          scope.setSearchUnion = function(union) {
+              SolrService.keywordUnion = union;
+              if (SolrService.keywordUnion === 'AND') {
+                  scope.keywordAnd = true;
+                  scope.keywordOr = false;
+              } else {
+                  scope.keywordAnd = false;
+                  scope.keywordOr = true;
+              }
+          }
+
 
           // let's get this party started!!
           scope.setSearchBox();

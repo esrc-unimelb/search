@@ -18,6 +18,14 @@ angular.module('searchApp')
       datasetStart:             '1000-01-01T00:00:00Z',
       datasetEnd:               '2014-12-31T23:59:59Z',
 
+      searchFields: {
+          '1': { 'fieldName': 'author_search',      'displayName': 'Authors',       'weight': '1' },
+          '2': { 'fieldName': 'editor_search',      'displayName': 'Editors',       'weight': '1' },
+          '3': { 'fieldName': 'contributor_search', 'displayName': 'Contributors',  'weight': '1' },
+          '4': { 'fieldName': 'name_search',        'displayName': 'Name',          'weight': '1' },
+          '5': { 'fieldName': 'title_search',       'displayName': 'Title',         'weight': '1' }
+      }
+
 /*
       facetFilter: {
           'level2': {
