@@ -5,8 +5,6 @@ angular.module('searchApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'nvd3ChartDirectives',
-  'mgcrea.ngStrap',
   'ngAnimate'
 ])
   .config(function ($routeProvider) {
@@ -14,10 +12,6 @@ angular.module('searchApp', [
       .when('/', {
         templateUrl: 'views/about.html',
         controller: '',
-      })
-      .when('/view', {
-        templateUrl: 'views/image-view.html',
-        controller: 'ImageViewCtrl'
       })
       .when('/app', {
         templateUrl: 'views/main.html',

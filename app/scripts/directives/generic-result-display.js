@@ -11,8 +11,8 @@
  * @param {expression} data - The result data.
  */
 angular.module('searchApp')
-  .directive('genericResultDisplay', [ '$rootScope', '$location', 'SolrService', 'ImageService', 
-    function ($rootScope, $location, SolrService, ImageService) {
+  .directive('genericResultDisplay', [ '$rootScope', '$location', 'SolrService',  
+    function ($rootScope, $location, SolrService) {
     return {
       templateUrl: 'views/generic-result-display.html',
       restrict: 'E',
@@ -43,10 +43,6 @@ angular.module('searchApp')
             scope.imageCount = scope.data.small_images.length;
           }
 
-          scope.view = function() {
-              // pop the image data into the service
-              ImageService.push(scope.data);
-          }
       }
     };
   }]);
