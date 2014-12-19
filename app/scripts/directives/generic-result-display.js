@@ -30,19 +30,6 @@ angular.module('searchApp')
               scope.hideDetails = false;
           });
 
-          // determine the source url to use for the record
-          if (scope.data.display_url !== undefined) {
-              scope.data.url = scope.data.display_url;
-          } else {
-              scope.data.url = scope.data.id;
-          }
-
-          // is this a finding aid item with an image set attached?
-          if (scope.data.type === 'Finding Aid Item' && scope.data.large_images !== undefined) {
-            scope.imageSet = true;
-            scope.imageCount = scope.data.small_images.length;
-          }
-
       }
     };
   }]);

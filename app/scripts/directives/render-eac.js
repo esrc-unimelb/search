@@ -3,10 +3,12 @@
 angular.module('searchApp')
   .directive('renderEac', function () {
     return {
-      template: '<div></div>',
+      templateUrl: 'views/render-eac.html',
       restrict: 'E',
+      scope: {
+          data: '=ngModel'
+      },
       link: function postLink(scope, element, attrs) {
-        element.text('this is the renderEac directive');
       }
     };
   });

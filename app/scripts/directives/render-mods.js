@@ -3,10 +3,12 @@
 angular.module('searchApp')
   .directive('renderMods', function () {
     return {
-      template: '<div></div>',
+      templateUrl: 'views/render-mods.html',
       restrict: 'E',
+      scope: {
+          data: '=ngModel'
+      },
       link: function postLink(scope, element, attrs) {
-        element.text('this is the renderMods directive');
       }
     };
   });

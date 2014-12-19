@@ -12,7 +12,7 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
 
-          scope.searchWhat = [ '1', '2', '3', '4', '5' ];
+          scope.searchWhat = [ '1', '2', '3', '4', '5', '6', '7' ];
           scope.searchUnion = 'AND';
 
           // handle the app being bootstrapped

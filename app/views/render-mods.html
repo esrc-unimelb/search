@@ -1,1 +1,134 @@
-<p>This is the render-mods view.</p>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div ng-switch on="data.document_type">
+            <div ng-switch-when="Review">
+                <strong>Review of {{data.reviewed_book}}</strong>
+            </div>
+            <div ng-switch-default>
+                <strong>{{data.title}}</strong>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <strong>Document type: </strong>
+        {{data.document_type}}
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.author">
+        <strong>Author(s): </strong>
+        <ul><li ng-repeat="author in data.author">{{author}}</li></ul>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.editor">
+        <strong>Editor(s): </strong>
+        <ul><li ng-repeat="editor in data.editor">{{editor}}</li></ul>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.date_created">
+        <strong>Date Published: </strong>
+        {{data.date_created| date: 'yyyy'}}
+    </div>
+
+</div>
+<div ng-switch on="data.document_type">
+    <div ng-switch-when="Review">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.journal_name || data.journal_year ||data.pages">
+                <strong>Review publication info: </strong>{{data.journal_name}}, {{data.journal_volume}} ({{data.journal_year | date: 'yyyy'}}): {{data.pages}}
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <strong>Reviewed work:</strong>
+                <ul>
+                    <li ng-if="data.reviewed_book"><strong>Book Title: </strong>{{data.reviewed_book}}</li>
+                    <li ng-if="data.reviewed_book_year"><strong>Year: </strong>{{data.reviewed_book_year | date: 'yyyy'}}</li>
+                    <li ng-if="data.reviewed_book_author"><strong>Authors(s): </strong>
+                        <ul><li ng-repeat="author in data.reviewed_book_author">{{author}}</li></ul>
+                    </li>
+                    <li ng-if="data.reviewed_book_editor"><strong>Editor(s): </strong>
+                        <ul><li ng-repeat="editor in data.reviewed_book_editor">{{editor}}</li></ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div ng-switch-when="Book">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.place || data.publisher || data.date_created">
+                <strong>Publication info: </strong>
+                {{data.place}}: {{data.publisher}}, {{data.date_created | date: 'yyyy'}}
+            </div>
+        </div>
+    </div>
+    <div ng-switch-when="Chapter">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <strong>Publication info: </strong>
+                <ul>
+                    <li ng-if="data.chapter_book_title"><strong>Book Title: </strong>{{data.chapter_book_title}}</li>
+                    <li ng-if="data.chapter_book_editor"><strong>Editor(s): </strong>
+                        <ul><li ng-repeat="editor in data.chapter_book_editor">{{editor}}</li></ul>
+                    </li>
+                    <li ng-if="data.chapter_book_year"><strong>Date: </strong>{{data.chapter_book_year | date: 'yyyy'}}</li>
+                    <li ng-if="data.pages"><strong>Pages: </strong>{{data.pages}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div ng-switch-when="Journal Article">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.journal_name || data.journal_volume || data.journal_year">
+                <strong>Publication info: </strong>{{data.journal_name}}, {{data.journal_volume}} ({{data.journal_year | date: 'yyyy'}}): {{data.pages}}.
+            </div>
+        </div>
+    </div>
+    <div ng-switch-when="Thesis">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+            </div>
+        </div>
+    </div>
+    <div ng-switch-when="Periodical">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <strong ng-if="data.subtitle">Subtitle: </strong>{{data.subtitle}}<br/>
+                <strong ng-if="data.publisher">Publisher: </strong>{{data.publisher}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.subject_temporal">
+        <strong>Subject Chronology:</strong>
+        <ul>
+            <li ng-repeat='t in data.subject_temporal'>{{t}}</li>
+        </ul>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.subject_topic">
+        <strong>Subject Topic:</strong>
+        <ul>
+            <li ng-repeat='t in data.subject_topic'>{{t}}</li>
+        </ul>
+        
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.subject_geographic">
+        <strong>Subject Geographic:</strong>
+        <ul>
+            <li ng-repeat='t in data.subject_geographic'>{{t}}</li>
+        </ul>
+        
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.subject_personal">
+        <strong>Subject Persons:</strong>
+        <ul>
+            <li ng-repeat='t in data.subject_personal'>{{t}}</li>
+        </ul>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12" ng-if="data.subject_corporate">
+        <strong>Subject Institutions</strong>
+        <ul>
+            <li ng-repeat='t in data.subject_corporate'>{{t}}</li>
+        </ul>
+    </div>
+</div>

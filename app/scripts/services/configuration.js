@@ -19,11 +19,13 @@ angular.module('searchApp')
       datasetEnd:               '2014-12-31T23:59:59Z',
 
       searchFields: {
-          '1': { 'fieldName': 'author_search',      'displayName': 'Authors',       'weight': '1' },
-          '2': { 'fieldName': 'editor_search',      'displayName': 'Editors',       'weight': '1' },
-          '3': { 'fieldName': 'contributor_search', 'displayName': 'Contributors',  'weight': '1' },
-          '4': { 'fieldName': 'name_search',        'displayName': 'Name',          'weight': '1' },
-          '5': { 'fieldName': 'title_search',       'displayName': 'Title',         'weight': '1' }
+          '1': { 'fieldName': 'author_search',         'displayName': 'Authors',         'weight': '1' },
+          '2': { 'fieldName': 'editor_search',         'displayName': 'Editors',         'weight': '1' },
+          '3': { 'fieldName': 'contributor_search',    'displayName': 'Contributors',    'weight': '1' },
+          '4': { 'fieldName': 'title_search',          'displayName': 'Title',           'weight': '1' },
+          '5': { 'fieldName': 'publisher_search',      'displayName': 'Publisher',       'weight': '1' },
+          '6': { 'fieldName': 'subject_topic_search',  'displayName': 'Subject: topic',  'weight': '1' },
+          '7': { 'fieldName': 'subject_personal_search', 'displayName': 'Subject: person', 'weight': '1' }
       }
 
 /*

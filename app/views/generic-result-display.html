@@ -1,7 +1,20 @@
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <strong>Download the source record: </strong>&nbsp;<a href="{{data.source}}" download>{{data.source}}</a><br/>
+        <div ng-switch on="data.record_type_short">
+            <span ng-switch-when="MODS">
+                <render-mods ng-model="data"></render-mods>
+            </span>
+            <span ng-switch-when="EAC">
+                <render-eac ng-model="data"></render-eac>
+            </span>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <strong>Link to XML:</strong>&nbsp;<a href="{{data.source}}" target="_blank">{{data.source}}</a><br/>
         <!--<a href="https://solr.esrc.unimelb.edu.au/ISISrecords/select?q=id:{{data.id}}" target="_blank">View the search record (opens in a new tab)</a>-->
-        <a href="https://data.esrc.info/solr/ISISrecords/select?q=id:{{data.id}}" target="_blank">View the search record (opens in a new tab)</a>
+        <strong>Link to Search record:&nbsp;</strong><a href="https://data.esrc.info/solr/ISISrecords/select?q=id:{{data.id}}" target="_blank">View the search record (opens in a new tab)</a>
     </div>
 </div>
