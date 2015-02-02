@@ -25,7 +25,6 @@ angular.module('searchApp')
           //
           scope.updateResultSet = function() {
               // are start and end numbers?
-              console.log(parseInt(scope.ds), parseInt(scope.de));
               if (isNaN(scope.ds)) {
                   scope.ds = scope.start;
               }
