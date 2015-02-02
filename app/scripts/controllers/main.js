@@ -13,7 +13,6 @@ angular.module('searchApp')
       var sizeThePanels = function() {
           $scope.w = $window.innerWidth;
           $scope.h = $window.innerHeight;
-          //console.log($scope.w, $scope.h);
 
           if ($scope.w < 760) {
               var site = $window.location.hash.split('/')[1];

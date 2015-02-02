@@ -73,14 +73,8 @@ angular.module('searchApp')
         SolrService.facets = {};
         SolrService.searchType = 'keyword';
 
-        var site;
-        if ($routeParams.site !== undefined) {
-            site = $routeParams.site;
-        } else {
-            site = conf.site;
-        }
         SolrService.deployment = conf[conf.deployment];
-        SolrService.site = site;
+        SolrService.site = conf.site;
         SolrService.solr = SolrService.deployment + '/' + SolrService.site + '/select';
         log.debug('Solr Service: ' + SolrService.solr);
         log.debug('Site: ' + SolrService.site);
