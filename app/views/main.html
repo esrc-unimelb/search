@@ -1,4 +1,4 @@
-<div style="position: fixed; top: 0px; width: 100%; z-index: 10000;">
+<div ng-style="topbarStyle">
     <div class="row" style="">
         <div class="col-sm-12 col-md-12 col-lg-12 text-center">
             <a href="http://www.msd.unimelb.edu.au/" >
@@ -25,7 +25,7 @@
 </div>
 
 <!-- side bar: fixed to left -->
-<div style="position:absolute; top: {{t}}px; left: 0px; width: {{lpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 5px 15px;">
+<div ng-style="sidebarStyle">
     <div class="row">
         <div class="col-sm-12 text-center">
             <h4 style="font-size: 18px; font-weight: normal; margin: 10px 0px; padding: 0; text-shadow: 1px -1px 2px #595959; line-height: 1.1;">
@@ -73,7 +73,7 @@
     </div>
 </div>
 <!-- side bar: fixed to right -->
-<div style="position:absolute; top: {{t}}px; left: {{lpw}}px; width: {{rpw}}px; height: {{h - t}}px; overflow-y: scroll; padding: 0px 15px;">
+<div ng-style="bodypanelStyle">
     <div class="row">
         <div class="col-sm-12">
             <search-results display-provenance="true"></search-results>
