@@ -13,7 +13,6 @@ angular.module('searchApp')
       var sizeThePanels = function() {
           $scope.w = $window.innerWidth;
           $scope.h = $window.innerHeight;
-          //console.log($scope.w, $scope.h);
 
           if ($scope.w < 760) {
               var site = $window.location.hash.split('/')[1];
@@ -34,6 +33,34 @@ angular.module('searchApp')
           } else {
               $scope.lpw = Math.floor(($scope.w) * 0.25) - 1;
               $scope.rpw = $scope.w - $scope.lpw - 1;
+          }
+
+          $scope.topbarStyle = {
+              'position': 'absolute',
+              'top':      '0px',
+              'left':     '0px',
+              'width':    '100%',
+              'z-index':  '10000',
+              'padding':  '0px 10px'
+          }
+          $scope.sidebarStyle = {
+              'position':         'absolute',
+              'top':              $scope.t + 'px',
+              'left':             '0px',
+              'width':            $scope.lpw + 'px',
+              'height':           $scope.h - $scope.t + 'px',
+              'overflow-y':       'scroll',
+              'padding':          '5px 15px',
+              'background-color': '#efefea'
+          }
+          $scope.bodypanelStyle = {
+              'position':     'absolute',
+              'top':          $scope.t + 'px',
+              'left':         $scope.lpw + 'px',
+              'width':        $scope.rpw + 'px',
+              'height':       $scope.h - $scope.t + 'px',
+              'overflow-y':   'scroll',
+              'padding':      '0px 15px'
           }
       }
       sizeThePanels();
