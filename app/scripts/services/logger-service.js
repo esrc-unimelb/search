@@ -7,7 +7,7 @@
  *  Logging service.
  */
 angular.module('searchApp')
-  .service('LoggerService', function LoggerService() {
+  .service('LoggerService', [ '$log', function LoggerService($log) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     return {
         logLevel: 'ERROR',
@@ -22,7 +22,7 @@ angular.module('searchApp')
         },
 
         log: function(level, msg) {
-            console.log(level + ': ', msg);
+            $log.log(level + ': ', msg);
         },
 
         /** @ngdoc function
@@ -64,4 +64,4 @@ angular.module('searchApp')
         },
     };
 
-  });
+  }]);
