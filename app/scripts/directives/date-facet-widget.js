@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('dateFacetWidget', [ 'SolrService', function (SolrService) {
+  .directive('dateFacetWidget', [ '$log', 'SolrService', function ($log, SolrService) {
     return {
       templateUrl: 'views/date-facet-widget.html',
       restrict: 'E',
@@ -25,13 +25,13 @@ angular.module('searchApp')
           scope.sp = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
 
           if (scope.start === undefined) {
-              console.error('start not defined. Need to pass in a year from which to start the facetting.');
+              $log.error('start not defined. Need to pass in a year from which to start the facetting.');
           }
           if (scope.interval === undefined) {
-              console.error('interval not defined. Need to pass in an interval for the range facetting.');
+              $log.error('interval not defined. Need to pass in an interval for the range facetting.');
           }
           if (scope.id === undefined) {
-              console.error('id not defined. Need to pass in an id for the range facetting.');
+              $log.error('id not defined. Need to pass in an id for the range facetting.');
           }
 
 
