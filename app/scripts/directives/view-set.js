@@ -37,8 +37,79 @@ angular.module('searchApp')
               } else {
                   scope.image_pane_height = ($window.innerHeight - scope.navbar_height);
               }
+
+              scope.navbarStyle = {
+                'position':         'fixed',
+                'top':              '0px',
+                'left':             '0px',
+                'height':           scope.navbar_height + 'px',
+                'width':            '100%',
+                'background-color': 'black'
+              }
+              scope.infoPanelBackStyle = {
+                  'position': 'fixed',
+                  'top': '0px',
+                  'left': '0px',
+                  'height': scope.height + 'px',
+                  'width': scope.width + 'px',
+                  'z-index': '10',
+                  'opacity': '0.6',
+                  'background-color': '#e0e0e0'
+              }
+              scope.infoPanelFrontStyle = {
+                  'position': 'fixed',
+                  'top': '10%',
+                  'left': '10%',
+                  'height': '500px',
+                  'width': '400px',
+                  'z-index': '20',
+                  'background-color': 'white',
+                  'border-radius': '8px',
+                  'box-shadow': '10px 10px 5px #888888',
+                  'padding': '15px'
+              }
+              scope.imageViewPanel = {
+                  'position': 'fixed',
+                  'top': scope.navbar_height + 'px',
+                  'left': '0px',
+                  'height': scope.image_pane_height + 'px',
+                  'width': '100%',
+                  'background-color': 'black',
+                  'display': 'inline'
+              }
+              scope.imageViewPanelLeft = {
+                  'position': 'absolute',
+                  'height': scope.image_pane_height - 10 + 'px',
+                  'width': scope.width * 0.05 + 'px',
+                  'left': '0px'
+              }
+              scope.imageViewPanelCentre = {
+                  'position': 'absolute',
+                  'height': scope.image_pane_height - 10 + 'px',
+                  'width': scope.width * 0.9 + 'px',
+                  'left': scope.width * 0.05 + 'px'
+              }
+              scope.imageViewPanelRight = {
+                  'position': 'absolute',
+                  'height': scope.image_pane_height - 10 + 'px',
+                  'width': scope.width * 0.05 + 'px',
+                  'left': scope.width * 0.95 + 'px'
+              }
+              scope.filmstripPanel = {
+                  'position': 'fixed',
+                  'top': scope.navbar_height + scope.image_pane_height + 'px',
+                  'left': '0px',
+                  'height': scope.filmstrip_height + 'px',
+                  'width': '100%',
+                  'overflow-x': 'scroll',
+                  'white-space': 'nowrap',
+                  'display': 'inline-block',
+                  'background-color': 'black'
+              }
+              scope.filmstripPanelImageHeight = {
+                  'height': scope.image_height + 'px'
+              }
           }
-          sizeThePanels();
 
           scope.smallImages = [];
           scope.largeImageMap = {};
@@ -65,7 +136,6 @@ angular.module('searchApp')
 
           // handle an image selection
           scope.loadImage = function(id) {
-              scope.show = false;
               scope.styleMap[scope.current] = '';
               scope.styleMap[id] = 'highlight-current';
               scope.image = scope.largeImageMap[id];
@@ -77,7 +147,6 @@ angular.module('searchApp')
               $location.hash(id);
               $anchorScroll();
               $location.hash(old);
-              $timeout(function() { scope.show = true; }, 100);
 
               // toggle the pagindation controls
               if (scope.largeImageById.indexOf(scope.current) == 0) {
@@ -96,9 +165,11 @@ angular.module('searchApp')
           }
 
           // load the first in the set
+          sizeThePanels();
           var i = scope.data.large_images[0];
           scope.current = i.split('_')[1];
           scope.loadImage(scope.current);
+          $timeout(function() { scope.show = true; }, 50);
 
           // page to next image
           scope.next = function() {

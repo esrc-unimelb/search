@@ -1,5 +1,5 @@
 <!-- controls (navbar) -->
-<div style="position:fixed; top: 0px; left: 0px; height: {{navbar_height}}px; width: 100%; background-color: black;">
+<div ng-style="navbarStyle">
     <div class="row" style="padding: 10px;">
         <div class="col-sm-2 col-md-2 col-lg-2"></div>
         <div class="col-sm-8 col-md-8 col-lg-8" style="text-align: center;">
@@ -27,10 +27,8 @@
 </div>
 
 <!-- information panel -->
-<div style="position: fixed; top: 0px; left: 0px; height: {{height}}px; width: {{width}}px; z-index: 10; opacity: 0.6; background-color: #e0e0e0;" ng-show="showInformation"></div>
-<div style="position: fixed; top: 10%px; left: 10%px; height: 500px; width: 400px; z-index: 20; background-color: white; 
-        border-radius: 8px; box-shadow: 10px 10px 5px #888888; padding: 15px;" ng-show="showInformation">
-
+<div ng-style="infoPanelBackStyle" ng-show="showInformation"></div>
+<div ng-style="infoPanelFrontStyle" ng-show="showInformation">
     <button class="btn btn-default pull-right" style="font-size: 26px; border-style: none;" ng-click="toggleInformation()">&times;</button>
     <br/>
     <span class="">
@@ -49,16 +47,16 @@
 </div>
 
 <!-- Image large view panel -->
-<div style="position:fixed; top: {{navbar_height}}px; left: 0px; height: {{image_pane_height}}px; width: 100%; background-color: black;">
-    <div style="position: absolute; height: {{image_pane_height - 10}}px; width: 5%; left: 0px;">
+<div ng-style="imageViewPanel" >
+    <div ng-style="imageViewPanelLeft">
         <a ng-click="previous()" class="left carousel-control" ng-if="showPrevious">
             <span class="glyphicon glyphicon-chevron-left" style="margin-left: 5px; font-size: 26px; color: white;"></span>
         </a>
     </div>
-    <div style="position: absolute; height: {{image_pane_height - 10}}px; width: 90%; left: 5%; ">
-        <img src="{{image}}" smoothzoom ng-show="show"/>
+    <div ng-style="imageViewPanelCentre">
+        <img src="{{image}}" ng-if="show" smoothzoom>
     </div>
-    <div style="position: absolute; height: {{image_pane_height - 10}}px; width: 5%; left: 95%;">
+    <div ng-style="imageViewPanelRight">
         <a ng-click="next()" class="right carousel-control" ng-if="showNext">
             <span class="glyphicon glyphicon-chevron-right" style="margin-right: 5px; font-size: 26px; color: white;"></span>
         </a>
@@ -74,12 +72,10 @@
         display: inline-block;
     }
 </style>
-<div ng-if="showFilmstrip"
-    style="position:fixed; top: {{navbar_height + image_pane_height}}px; left: 0px; height: {{filmstrip_height}}px; width: 100%; 
-            overflow-x: scroll; white-space: nowrap; display: inline-block; background-color: black;">
+<div ng-if="showFilmstrip" ng-style="filmstripPanel">
     <span ng-repeat="img in smallImages">
         <a ng-click="loadImage(img.id)" class="{{styleMap[img.id]}}" id="{{img.id}}" style="top:0; left: 0; right: 0; bottom: 0; margin: auto;">
-            <img src="{{img.src}}" class="img-thumbnail" style="height: {{image_height}}px;"  />
+            <img src="{{img.src}}" class="img-thumbnail" ng-style="filmstripPanelImageHeight"  />
         </a>
     </span>
 </div>

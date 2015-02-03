@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('smoothzoom', [ '$window', function ($window) {
+  .directive('smoothzoom', [ '$window', '$timeout', function ($window, $timeout) {
     return {
-      templateUrl: 'views/smoothzoom-view.html',
+      template: '',
       restrict: 'A',
       link: function postLink(scope, element, attrs) {
 
@@ -24,6 +24,7 @@ angular.module('searchApp')
           scope.$watch('image_pane_height', function() {
               element.smoothZoom('destroy');
               scope.init();
+
           })
 
           element.on('load', function() {
