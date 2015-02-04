@@ -50,7 +50,6 @@ angular.module('searchApp')
               'height':           $scope.h -$scope.t + 'px',
               'overflow-y':       'scroll',
               'padding':          '5px 15px',
-              'background-color': '#efefea'
           }
           $scope.bodypanelStyle = {
               'position':     'absolute',
