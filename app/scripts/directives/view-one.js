@@ -34,6 +34,37 @@ angular.module('searchApp')
               scope.width = $window.innerWidth;
               scope.image_pane_height = $window.innerHeight * 0.9;
               scope.image_label_height = $window.innerHeight - scope.image_pane_height;
+
+              scope.imageViewPanel = {
+                  'height': scope.image_pane_height + 'px',
+                  'width': '100%'
+              }
+              scope.infoPanelBackStyle = {
+                  'position': 'fixed',
+                  'left': '0px', 
+                  'top': scope.height - 60 + 'px',
+                  'height': '60px',
+                  'width': '100%',
+                  'z-index': '100',
+                  'opacity': '0.9',
+                  'background-color': '#EFEFEA'
+              }
+              scope.infoPanelFrontStyle = {
+                  'position': 'fixed',
+                  'left': '0px', 
+                  'top': scope.height - 60 + 'px',
+                  'height': '60px',
+                  'width': '100%',
+                  'z-index': '200',
+                  'padding-top': '10px'
+              }
+              scope.showInfoPanelStyle = {
+                  'position': 'fixed',
+                  'left': '0px',
+                  'top': scope.height - 30 + 'px',
+                  'width': '100%',
+                  'z-index': '200'
+              }
           }
           sizeThePanels();
 

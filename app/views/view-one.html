@@ -7,7 +7,7 @@ a:active  { color: black; }
 </style>
 <div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: #282829;"></div>
 
-<div class="row" style="height: {{image_pane_height}}px; width: 100%;">
+<div ng-style="imageViewPanel">
     <img class="img-thumbnail"
          src="{{data.fullsize}}"
          style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 100%; max-height: 100%; width: auto; height: auto; z-index: 0;"
@@ -15,7 +15,7 @@ a:active  { color: black; }
 </div>
 
 <!-- cog to show details pane when hidden -->
-<div style="position: fixed; left: 0px; top: {{height - 30}}px; width: 100%; z-index: 2000;" ng-show="showDetails">
+<div ng-style="showInfoPanelStyle" ng-show="showDetails">
     <div class="row">
         <div class="col-sm-10 col-md-10 col-lg-10"></div>
         <div class="col-sm-2 col-md-2 col-lg-2 dropup">
@@ -25,8 +25,8 @@ a:active  { color: black; }
 </div>
 
 <!-- details pane and backing opaque white panel -->
-<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 1000; opacity: 0.9; background-color: #EFEFEA; z-index: 5000;" ng-hide="showDetails"></div>
-<div style="position: fixed; left: 0px; top: {{height - 60}}px; height: 60px; width: 100%; z-index: 2000; padding-top: 10px; z-index: 10000;" ng-hide="showDetails">
+<div ng-style="infoPanelBackStyle" ng-hide="showDetails"></div>
+<div ng-style="infoPanelFrontStyle" ng-hide="showDetails">
     <div class="row">
         <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="padding-left: 30px;">
             <a href="" ng-click="back()">&larr; Back to search results</a>
