@@ -3,6 +3,8 @@
 angular.module('searchApp')
   .controller('MainCtrl', [ '$rootScope', '$scope', '$window', '$location', 'SolrService',
     function ($rootScope, $scope, $window, $location, SolrService) {
+      $scope.ready = false;
+
       var w = angular.element($window);
       w.bind('resize', function() {
           $scope.$apply(function() {
@@ -73,6 +75,14 @@ angular.module('searchApp')
               $scope.returnToSiteLink = true;
           }
       })
+      $scope.$on('app-ready', function() {
+          $scope.ready = true;
+
+          // get the data structures defining the date and normal facet widgets
+          $scope.facetWidgets = SolrService.configuration.facetWidgets;
+          $scope.dateFacetWidgets = SolrService.configuration.dateFacetWidgets;
+      });
+
       /* button methods */
       $scope.toggleDetails = function() {
           SolrService.toggleDetails();
@@ -87,7 +97,9 @@ angular.module('searchApp')
       $scope.closeAllFilters = function() {
           $rootScope.$broadcast('close-all-filters');
       }
-      $scope.search = SolrService.search;
+      $scope.search = function() {
+        if ($scope.ready) SolrService.search;
+      }
 
       // get the party started
       SolrService.init();

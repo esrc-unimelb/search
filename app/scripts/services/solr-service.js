@@ -16,17 +16,14 @@ angular.module('searchApp')
         function SolrService($rootScope, $http, $routeParams, $route, $location, $timeout, $window, $log, conf) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
-    var nLocationTerms = function() {
-        // we need to see if there are any location bits
-        var b = [];
-        angular.forEach($location.search(), function(k, v) {
-            b.push(k);
-        });
-        return b.length;
-    }
-
-    $rootScope.$on('$routeUpdate', function() {
-        if (!SolrService.appInit) SolrService.init();
+    // when the route changes, if we're not already initting
+    //  wipe any saved state and kick off an init
+    $rootScope.$on('$routeChangeSuccess', function() {
+        console.log('here');
+        if (!SolrService.appInit) {
+            sessionStorage.removeItem('cq');
+            SolrService.init();
+        }
     });
 
     /** 
@@ -58,7 +55,7 @@ angular.module('searchApp')
                 // got it - save it and use it
                 $log.info('Loading external configuration.');
                 SolrService.externalConfiguration = resp.data;
-                go();
+                return go();
             },
             function(resp) {
                 // Could't load external config - assuming the URL exists it's most likely
@@ -70,7 +67,7 @@ angular.module('searchApp')
         } else {
             // no external config referenced; carry on with internal configuration
             $log.info('No external configuration referenced. Using internal configuration.');
-            go();
+            return go();
         }
     }
     function go() {

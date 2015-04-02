@@ -34,13 +34,6 @@ angular.module('searchApp')
               $log.error('id not defined. Need to pass in an id for the range facetting.');
           }
 
-
-          scope.$on('app-ready', function() {
-              if (scope.end === undefined) {
-                  scope.end = new Date().getFullYear();
-              }
-              SolrService.compileDateFacets(scope.facetField, scope.id, scope.start, scope.end, scope.interval);
-          })
           scope.$on('update-date-facets', function() {
               SolrService.compileDateFacets(scope.facetField, scope.id, scope.start, scope.end, scope.interval);
           })
@@ -108,6 +101,12 @@ angular.module('searchApp')
               SolrService.filterDateQuery(scope.facetField, scope.existenceFromField, scope.existenceToField, facetLabel);
               updateSelections();
           }
+
+          // initialise the widget
+          if (scope.end === '') {
+              scope.end = new Date().getFullYear();
+          }
+          SolrService.compileDateFacets(scope.facetField, scope.id, scope.start, scope.end, scope.interval);
 
       }
     };

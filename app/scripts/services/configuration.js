@@ -25,14 +25,29 @@ angular.module('searchApp')
           "4": { "fieldName": "description",    "displayName": "Resource Content",      "weight": "1" }
       },
 
-      facetWidgets: [
+      "facetWidgets": [
+          { "facetField": "site_name",  "label": "Site",            "join": "OR" },
           { "facetField": "type",       "label": "Entity Type",     "join": "OR" },
           { "facetField": "function",   "label": "Entity Function", "join": "AND" },
           { "facetField": "repository", "label": "Repository",      "join": "OR" },
           { "facetField": "tag",        "label": "Tag",             "join": "AND" }
       ],
 
-      dateFacetWidgets: {
-      }
+      "dateFacetWidgets": [
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "1", 
+            "label": "Age of Discovery: 1400 - 1699", "start": "1400", "end": "1699", "interval": "50" },
+
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "2", 
+            "label": "Georgian Era: 1700 - 1879", "start": "1700", "end": "1879", "interval": "20" },
+
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "3", 
+            "label": "Machine Age: 1880 - 1939", "start": "1880", "end": "1939", "interval": "10" },
+
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "4", 
+            "label": "Atomic Age: 1940 - 1969", "start": "1940", "end": "1969", "interval": "5" },
+
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "5", 
+            "label": "Information Age: 1970 - present", "start": "1970", "interval": "5" },
+      ]
 
   });

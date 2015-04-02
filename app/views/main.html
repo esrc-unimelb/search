@@ -51,45 +51,30 @@
                             <button class="btn btn-xs btn-default" ng-click="closeAllFilters()">Close all</button>
                         </div>
                     </div>
-                    <!-- DATE FACETING -->
-                    <div class="col-sm-12">
-                        <hr style="border-color: #003268;" />
-                        <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                            id="1" label="Age of Discovery: 1400 - 1699" start="1400" end="1699" interval="50"></date-facet-widget>
-                    </div>
-                    <div class="col-sm-12">
-                        <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                            id="2" label="Georgian Era: 1700 - 1879" start="1700" end="1879" interval="20"></date-facet-widget>
-                    </div>
-                    <div class="col-sm-12">
-                        <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                            id="3" label=" Machine Age: 1880 - 1939" start="1880" end="1939" interval="10"></date-facet-widget>
-                    </div>
-                    <div class="col-sm-12">
-                        <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                            id="4" label="Atomic Age: 1940 - 1969" start="1940" end="1969" interval="5"></date-facet-widget>
-                    </div>
-                    <div class="col-sm-12">
-                        <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' 
-                            id="5" label="Information Age: 1970 - present" start="1970" interval="5"></date-facet-widget>
-                        <hr style="border-color: #003268;" />
-                    </div>
-                    <!-- DATE FACETING -->
-                    <div class="col-sm-12">
-                        <facet-widget facet-field="type" label="Entity Type"></facet-widget>
-                    </div>
-                    <div class="col-sm-12">
-                        <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget>
-                    </div>
-                    <div class="col-sm-12">
-                        <span ng-if="!returnToSiteLink"><facet-widget facet-field="site_name" label="Data Source"></facet-widget></span>
-                    </div>
-                    <div class="col-sm-12">
-                        <facet-widget facet-field="repository" label="Repository"></facet-widget>
-                    </div>
-                    <div class="col-sm-12">
-                        <facet-widget facet-field="tag" label="Tag" join="AND"></facet-widget>
-                    </div>
+
+                    <!-- DATE FACET WIDGETS -->
+                    <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
+                    <span ng-repeat="widget in dateFacetWidgets">
+                        <div class="col-sm-12">
+                            <date-facet-widget facet-field="{{widget.facetField}}"
+                                               existence-from-field="{{widget.existenceFromField}}"
+                                               existence-to-field="{{widget.existenceToField}}"
+                                               id="{{widget.id}}"
+                                               label="{{widget.label}}"
+                                               start="{{widget.start}}"
+                                               end="{{widget.end}}"
+                                               interval="{{widget.interval}}">
+                            </date-facet-widget>  
+                        </div>
+                    </span>
+                    <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
+
+                    <!-- FACET WIDGETS-->
+                    <span ng-repeat='widget in facetWidgets'>
+                        <div class="col-sm-12">
+                            <facet-widget facet-field="{{widget.facetField}}" label="{{widget.label}}" join="{{widget.join}}" />
+                        </div>
+                    </span>
                 </div>
                 <div class="col-sm-8 col-md-8 col-lg-9">
                     <search-results display-provenance="true"></search-results>

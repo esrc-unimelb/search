@@ -46,10 +46,6 @@ angular.module('searchApp')
                 SolrService.updateFacetCount(scope.facetField, scope.offset, scope.pageSize, scope.sb);
             }
 
-            // when we get a bootstrap message - init the filter
-            scope.$on('app-ready', function() {
-                updateFacetCounts();
-            })
             scope.$on('update-all-facets', function() {
                 updateFacetCounts();
             })
@@ -161,6 +157,9 @@ angular.module('searchApp')
                 if (scope.pageSize > 1000) { scope.pageSize = 1000; }
                 updateFacetCounts();
             }
+
+            // initialise the widget
+            updateFacetCounts();
       }
     };
   }]);
