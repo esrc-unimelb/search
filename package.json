@@ -34,7 +34,8 @@
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "grunt-build-control": "^0.1.3",
     "grunt-ngdocs": "^0.2.2",
-    "angular": "^1.2.21"
+    "angular": "^1.2.21",
+    "karma.gs": "^0.4.6"
   },
   "engines": {
     "node": ">=0.8.0"

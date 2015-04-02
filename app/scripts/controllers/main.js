@@ -23,7 +23,7 @@ angular.module('searchApp')
                 $window.location.replace('/basic-search');
               }
           } else {
-              $scope.t = 152;
+              $scope.t = 130;
           }
 
           // left (lpw) and right (rpw) panel widths
@@ -43,21 +43,11 @@ angular.module('searchApp')
               'z-index':  '10000',
               'padding':  '0px 10px'
           }
-          $scope.sidebarStyle = {
-              'position':         'absolute',
-              'top':              $scope.t + 'px',
-              'left':             '0px',
-              'width':            $scope.lpw + 'px',
-              'height':           $scope.h - $scope.t + 'px',
-              'overflow-y':       'scroll',
-              'padding':          '5px 15px',
-              'background-color': '#efefea'
-          }
           $scope.bodypanelStyle = {
               'position':     'absolute',
               'top':          $scope.t + 'px',
-              'left':         $scope.lpw + 'px',
-              'width':        $scope.rpw + 'px',
+              'left':         '0px',
+              'width':        '100%',
               'height':       $scope.h - $scope.t + 'px',
               'overflow-y':   'scroll',
               'padding':      '0px 15px'
@@ -83,7 +73,6 @@ angular.module('searchApp')
               $scope.returnToSiteLink = true;
           }
       })
-
       /* button methods */
       $scope.toggleDetails = function() {
           SolrService.toggleDetails();
@@ -98,5 +87,9 @@ angular.module('searchApp')
       $scope.closeAllFilters = function() {
           $rootScope.$broadcast('close-all-filters');
       }
+      $scope.search = SolrService.search;
+
+      // get the party started
+      SolrService.init();
 
   }]);

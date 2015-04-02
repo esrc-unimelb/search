@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12"><h4>Alter search type:</h4></div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <label class="radio-inline">
+            <input type="radio" ng-checked="keywordSearch" ng-click="setSearchType('keyword')" />
+            Keyword search
+        </label>
+        <span ng-if="keywordSearch">
+            <label class="radio-inline">
+                <input type="radio" ng-checked='keywordAnd' ng-click="setSearchUnion('AND')" />AND
+            </label>
+            <label class="radio-inline">
+                <input type="radio" ng-checked='keywordOr' ng-click="setSearchUnion('OR')" />OR
+            </label>
+        </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <label class="radio-inline">
+            <input type="radio" ng-checked="phraseSearch" ng-click="setSearchType('phrase')" />
+            Phrase search
+        </label>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12"><h4>Limit search to:</h4></div>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <a href="" ng-click="selectAll()" ng-if="selectAllToggle">select all</a>
+        <span ng-if="selectAllToggle && selectNoneToggle"><br/></span>
+        <a href="" ng-click="deselectAll()" ng-if="selectNoneToggle">select none</a>
+        <div ng-repeat="(k, v) in searchFields">
+            <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-click="updateSearchLimit(k)" ng-checked="searchWhat[k]"> {{v.displayName}}
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

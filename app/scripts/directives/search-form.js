@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchForm', [ '$routeParams', '$location', 'SolrService',
-    function ($routeParams, $location, SolrService) {
+  .directive('searchForm', [ '$log', 'SolrService',
+    function ($log, SolrService) {
     return {
       templateUrl: 'views/search-form.html',
       restrict: 'E',
@@ -12,66 +12,31 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
 
+
           // handle the app being bootstrapped
           scope.$on('app-ready', function() {
               scope.searchBox = SolrService.term;
-
-              // the search type stored in the service overrides that
-              //   set on the directive as it means we'rer restoring
-              //   state
-              if (SolrService.searchType !== scope.searchType) {
-                  scope.setSearchType(SolrService.searchType);
-              } else {
-                  scope.setSearchType(scope.searchType);
-              }
-
-              if (SolrService.rows !== SolrService.defaultRows) {
-                  SolrService.rows = SolrService.defaultRows;
-              }
+              scope.search();
           });
 
-          scope.setSearchBox = function() {
-              // set the content of the search box based on any q url params
-              if ($routeParams.q !== undefined) {
-                  if (angular.isArray($routeParams.q)) {
-                      var s = $location.search();
-                      scope.searchBox = $routeParams.q[0];
-                      $location.search('q', s.q[0]);
-                  } else {
-                    scope.searchBox = $routeParams.q;
-                  }
-              } else {
-                  scope.searchBox = '*';
-              }
-          }
+          // handle the update call
+          scope.$on('reset-all-filters', function() {
+              scope.searchBox = '*';
+          });
 
           scope.search = function() {
-              if (scope.searchBox === '') {
-                  scope.searchBox = '*';
-              }
-
               // args:
-              // - what: scope.searchBox (the search term
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
-              SolrService.search(scope.searchBox, 0, true);
+              if (scope.searchBox === '') scope.searchBox = '*';
+              SolrService.term = scope.searchBox;
+              SolrService.search(0, true);
           };
 
-          scope.setSearchType = function(type) {
-              SolrService.searchType = type;
-              if (SolrService.searchType === 'phrase') {
-                  scope.keywordSearch = false;
-                  scope.phraseSearch = true;
-              } else {
-                  scope.phraseSearch = false;
-                  scope.keywordSearch = true;
-              }
-              scope.search();
-          }
+          scope.reset = function() {
+              SolrService.clearAllFilters();
+          };
 
-          // let's get this party started!!
-          scope.setSearchBox();
-          scope.ready = SolrService.init();
 
       },
     };

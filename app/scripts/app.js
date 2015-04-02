@@ -4,7 +4,8 @@ angular.module('searchApp', [
   'ngCookies',
   'ngSanitize',
   'ngRoute',
-  'ngAnimate'
+  'ngAnimate',
+  'ui.bootstrap'
 ])
   .config(function ($routeProvider) {
     $routeProvider
