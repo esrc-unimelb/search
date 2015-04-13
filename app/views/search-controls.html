@@ -37,7 +37,7 @@
         <div ng-repeat="(k, v) in searchFields">
             <div class="checkbox">
                 <label>
-                  <input type="checkbox" ng-click="updateSearchLimit(k)" ng-checked="searchWhat[k]"> {{v.displayName}}
+                  <input type="checkbox" ng-click="updateSearchLimit(k)" ng-checked="v.checked"> {{v.displayName}}
                 </label>
             </div>
         </div>

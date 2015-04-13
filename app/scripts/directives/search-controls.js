@@ -14,35 +14,47 @@ angular.module('searchApp')
       scope: {
       },
       link: function postLink(scope, element, attrs) {
+          scope.searchType = {};
 
           scope.$on('app-ready', function() {
               // set up what is going to be searched
               //  on load - everything
-              scope.selectAll();
+              //scope.selectAll();
 
               // get the search fields from the SolrService
-              scope.searchFields = SolrService.searchFields;
+              scope.searchFields = SolrService.query.searchFields;
+              _.each(scope.searchFields, function(d, i) {
+                  scope.searchFields[i].checked = true;
+              });
 
-              // set the search type and union
-              scope.setSearchType(SolrService.configuration.searchType);
+              // set the search type based on the conf in solr service
+              scope.setSearchType(SolrService.query.searchType);
+              if (SolrService.keywordUnion === 'AND') {
+                  scope.keywordAnd = true;
+                  scope.keywordOr = false;
+              } else {
+                  scope.keywordAnd = false;
+                  scope.keywordOr = true;
+              }
 
               scope.selectAllToggle = false;
               scope.selectNoneToggle = true;
-          });
 
-          // directive initialisation
-          scope.searchWhat = [];
+          });
 
           // keyword or phrase search ?
           scope.setSearchType = function(type) {
-              SolrService.searchType = type;
-              if (SolrService.searchType === 'phrase') {
-                  scope.keywordSearch = false;
-                  scope.phraseSearch = true;
+              // store the type in the service
+              SolrService.query.searchType = type;
+
+              // do some toggling
+              if (type === 'phrase') {
+                  scope.searchType.keywordSearch = false;
+                  scope.searchType.phraseSearch = true;
               } else {
-                  scope.phraseSearch = false;
-                  scope.keywordSearch = true;
-                  scope.setSearchUnion(SolrService.configuration.keywordSearchOperator);
+                  scope.searchType.keywordSearch = true;
+                  scope.searchType.phraseSearch = false;
+                  scope.setSearchUnion(SolrService.query.searchTypeKeywordUnion);
               }
               //scope.search();
           }
@@ -63,42 +75,56 @@ angular.module('searchApp')
           //  if what is in the list - remove it
           //  if not in list - add it
           scope.updateSearchLimit = function(what) {
-              if (SolrService.searchWhat.indexOf(what) === -1) {
-                  scope.searchWhat[what] = true;
-                  SolrService.searchWhat.push(what);
-              } else {
-                  scope.searchWhat[what] = false;
+              if (scope.searchFields[what].checked) {
+                  // true - ie it's selected - deselect it
                   SolrService.searchWhat.splice(SolrService.searchWhat.indexOf(what), 1);
+                  scope.searchFields[what].checked = false;
+              } else {
+                  // false - ie it's deselected - select it
+                  SolrService.searchWhat.push(what);
+                  scope.searchFields[what].checked = true;
               }
 
-              if (SolrService.searchWhat.length === 0) {
-                  scope.selectAllToggle = true;
-                  scope.selectNoneToggle = false;
-              } else if (scope.searchWhat.length === SolrService.searchWhat.length) {
-                  scope.selectAllToggle = false;
-                  scope.selectNoneToggle = true;
-              } else {
-                  scope.selectAllToggle = true;
-                  scope.selectNoneToggle = true;
-              }
+              // figure out the toggle situation
+              scope.toggles();
           }
 
           // search all listed fields
           scope.selectAll = function() {
-              angular.forEach(SolrService.searchFields, function(v,k) {
-                  if (scope.searchWhat[k] === undefined || !scope.searchWhat[k]) {
-                    scope.updateSearchLimit(k);
-                  }
-              })
+              _.each(scope.searchFields, function(d,i) { scope.searchFields[i].checked = true; });
+
+              // figure out the toggle situation
+              scope.toggles();
           }
 
           // search none of the listed fields (this amounts
           //  to a blank search)
           scope.deselectAll = function() {
-              angular.forEach(scope.searchWhat, function(v,k) {
-                  if (v) scope.updateSearchLimit(k.toString());
-              });
+              _.each(scope.searchFields, function(d,i) { scope.searchFields[i].checked = false; });
+
+              // figure out the toggle situation
+              scope.toggles();
           }
+
+          scope.toggles = function() {
+              // which toggles need to be on / off
+              var toggled = _.groupBy(scope.searchFields, function(d) { return d.checked; });
+
+              if (toggled.false && toggled.true) {
+                  // some on, some off
+                  scope.selectAllToggle = true;
+                  scope.selectNoneToggle = true;
+              } else if (toggled.false && !toggled.true) {
+                  // all off
+                  scope.selectAllToggle = true;
+                  scope.selectNoneToggle = false;
+              } else {
+                  // all on
+                  scope.selectAllToggle = false;
+                  scope.selectNoneToggle = true;
+              }
+          }
+
       }
     };
   }]);
