@@ -15,7 +15,8 @@
  *
  */
 angular.module('searchApp')
-  .directive('facetWidget', [ 'SolrService', 'Configuration', function (SolrService, conf) {
+  .directive('facetWidget', [ '$window', 'SolrService', 'Configuration', 
+        function ($window, SolrService, conf) {
     return {
         templateUrl: 'views/facet-widget.html',
         restrict: 'E',
@@ -25,95 +26,44 @@ angular.module('searchApp')
             join: '@',
             isCollapsed: '@',
             alwaysOpen: '@',
-            showPaginationControls: '@',
-            sortBy: '@'
         },
         link: function postLink(scope, element, attrs) {
             // configure defaults for those optional attributes if not defined
-            scope.ao = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
-            scope.ic = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
-            scope.sp = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
-            scope.sb = scope.sortBy === undefined ? 'count' : scope.sortBy;
+            scope.ic = _.isUndefined(scope.isCollapsed) ? true  : angular.fromJson(scope.isCollapsed);
+            scope.ao = _.isUndefined(scope.alwaysOpen)  ? false : angular.fromJson(scope.alwaysOpen);
+            scope.jo = _.isUndefined(scope.join)        ? 'OR'  : scope.join;
+            scope.smallList = true;
 
-            // facet offset and begining page size
-            scope.offset = 0;
-            if (scope.sp === false) {
-                scope.pageSize = -1;
-            } else {
-                scope.pageSize = 10;
-            }
             var updateFacetCounts = function() {
-                SolrService.updateFacetCount(scope.facetField, scope.offset, scope.pageSize, scope.sb);
+                SolrService.updateFacetCount(scope.facetField);
             }
 
+            scope.$on('app-ready', function() {
+                updateFacetCounts();
+            })
             scope.$on('update-all-facets', function() {
                 updateFacetCounts();
             })
 
-            // set the union operator for multiple selections
-            if (scope.join === undefined) { 
-                scope.join = 'OR';
-            }
             SolrService.filterUnion[scope.facetField] = scope.join;
 
-            // when we get an update event for this widget from the solr
+            // when we get an update event from the solr
             //  service - rejig the widget as required
             scope.$on(scope.facetField+'-facets-updated', function() {
+                //var facetData = SolrService.facets[scope.facetField];
                 var selected = SolrService.filters[scope.facetField];
-                if (selected === undefined) { 
-                    selected = []; 
-                }
 
-                var f = [], pivotFields = [];
-                try {
-                    var filterModel = conf.facetFilter[scope.facetField].filterModel;
-                    var filterPivot = conf.facetFilter[scope.facetField].pivotField;
-                } catch (e) {
-                    // do nothing
-                }
+                var facetData = _.map(SolrService.facets[scope.facetField], function(d) {
+                    d.checked = false;
+                    if (_.contains(selected, d.name)) d.checked = true;
+                    return d;
+                });
 
-                // if a pivotField and filterModel is defined we first construct
-                //  a list containing only the subset of the defined pivotField
-                if (filterModel !== undefined && filterPivot !== undefined) {
-                    angular.forEach(SolrService.facets[filterPivot], function(v,k) {
-                        if (v[2] == true) {
-                            // it's a selected option
-                            angular.forEach(filterModel[v[0]], function(i, j) {
-                                pivotFields.push(i);
-                            });
-                        }
-                    });
-                }
-
-                // iterate over the facet list as returned by solr and re - tick 
-                //  anything that has been selected
-                angular.forEach(SolrService.facets[scope.facetField], function(v,k) {
-                    if (selected.indexOf(v[0]) !== -1) {
-                        v[2] = true;
-                        if (scope.startup === undefined) {
-                            scope.ic = false;
-                            scope.startup = false;
-                        }
-                    }
-                    // also - if we're defining pivots and filters, only throw those
-                    //  into the output mix otherwise send it all
-                    if (filterModel !== undefined && filterPivot !== undefined) {
-                        if (pivotFields.indexOf(v[0]) !== -1) {
-                            f.push(v);
-                        }
-                    } else {
-                        f.push(v);
-                    }
-                })
-                scope.facets = f;
-            });
-
-            // wipe clean if told to do so
-            scope.$on('reset-all-filters', function() {
-                angular.forEach(scope.facets, function(v,k) {
-                    scope.facets[k][2] = false;
-                })
-                scope.selected = [];
+                scope.smallFacetList = facetData.slice(0,5);
+                scope.largeFacetList = [];
+                scope.largeFacetList.push(facetData.slice(0,15));
+                scope.largeFacetList.push(facetData.slice(16,30));
+                scope.largeFacetList.push(facetData.slice(31,45));
             });
 
             // handle open / close broadcasts
@@ -143,23 +93,37 @@ angular.module('searchApp')
                 SolrService.filterQuery(scope.facetField, facet);
             };
 
-            scope.pageForward = function() {
-                scope.offset = scope.offset + scope.pageSize;
-                updateFacetCounts();
-            }
-            scope.pageBackward = function() {
-                scope.offset = scope.offset - scope.pageSize;
-                if (scope.offset < 0) { scope.offset = 0 };
-                updateFacetCounts();
-            }
-            scope.updatePageSize = function() {
-                if (scope.pageSize === null) { scope.pageSize = 10; }
-                if (scope.pageSize > 1000) { scope.pageSize = 1000; }
-                updateFacetCounts();
+            scope.showMore = function() {
+                scope.smallList = false;
+                scope.overlay = {
+                    'position': 'relative',
+                    'width': $window.innerWidth - 60,
+                    'z-index': '20',
+                    'background-color': 'white',
+                    'border': '1px solid grey',
+                    'border-radius': '8px',
+                    'padding': '15px'
+                }
+                scope.underlay = {
+                    'position': 'fixed',
+                    'top': '0px',
+                    'left': '0px',
+                    'width': $window.innerWidth,
+                    'height': $window.innerHeight,
+                    'background-color': '#ccc',
+                    'z-index': '10',
+                    'opacity': 0.3
+                }
             }
 
-            // initialise the widget
-            updateFacetCounts();
+            scope.close = function() {
+                scope.smallList = true;
+            }
+            scope.clearAll = function() {
+                delete SolrService.filters[scope.facetField];
+                SolrService.search();
+            }
+
       }
     };
   }]);

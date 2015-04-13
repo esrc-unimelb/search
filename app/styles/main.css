@@ -7,3 +7,7 @@ body {
     animation: fadeIn 0.5s;
 }
 
+
+.facet-largeList.ng-enter {
+    animation: fadeIn 0.5s;
+}
