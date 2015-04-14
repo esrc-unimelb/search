@@ -223,7 +223,7 @@ angular.module('searchApp')
         // set the sort order: wildcard sort ascending, everything else: by score
         if (!SolrService.query.sort) {
             if (what === '*') {
-                SolrService.query.sort = 'name asc';
+                SolrService.query.sort = 'name_sort asc';
             } else {
                 SolrService.query.sort = 'score desc';
             }
@@ -586,6 +586,7 @@ angular.module('searchApp')
         sessionStorage.removeItem('cq');
 
         //
+        SolrService.query.sort = 'name_sort asc';
         SolrService.query.filters = {};
         SolrService.query.dateFilters = {};
         
@@ -604,7 +605,8 @@ angular.module('searchApp')
      *  Re-sort the result set - this triggers a re-search with
      *  the updated sort order.
      */
-    function reSort() {
+    function reSort(by) {
+        SolrService.query.sort = by;
         search(0);
     }
 
@@ -664,7 +666,6 @@ angular.module('searchApp')
         rows: 10,
         facetLimit: 45,
         sort: undefined,
-        resultSort: undefined,
         hideDetails: false,
 
         init: init,

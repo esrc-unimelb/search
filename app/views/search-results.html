@@ -13,14 +13,17 @@
 <div ng-if="results">
     <div class="row" style="margin: 5px 0px;">
         <!-- header -->
-        <div class="col-sm-9 col-md-10 col-lg-10">
+        <div class="col-sm-12 col-md-12 col-lg-5">
             You searched for <strong>{{results.term}}</strong>.
             We found <strong>{{results.total}}</strong> documents.
             <span ng-if="suggestion">
                 Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?
             </span>
         </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
+        <div class="col-sm-9 col-md-9 col-lg-5">
+            <sort-results></sort-results>
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-2">
             <button class="btn btn-default btn-sm" ng-click="showFilters = !showFilters">
                 <span ng-hide="showFilters">View Filters</span>
                 <span ng-show="showFilters">Hide Filters</span>
