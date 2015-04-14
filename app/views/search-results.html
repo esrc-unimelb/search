@@ -20,11 +20,11 @@
                 Did you mean <em><a href="" ng-click="setSuggestion(suggestion)">{{suggestion}}</a></em>?
             </span>
         </div>
-        <div class="col-sm-9 col-md-9 col-lg-5">
+        <div class="col-sm-9 col-md-8 col-lg-5">
             <sort-results></sort-results>
         </div>
-        <div class="col-sm-3 col-md-3 col-lg-2">
-            <button class="btn btn-default btn-sm" ng-click="showFilters = !showFilters">
+        <div class="col-sm-3 col-md-4 col-lg-2 ">
+            <button class="btn btn-default btn-sm pull-right" ng-click="showFilters = !showFilters">
                 <span ng-hide="showFilters">View Filters</span>
                 <span ng-show="showFilters">Hide Filters</span>
             </button>
@@ -52,10 +52,17 @@
                     <generic-result-display ng-model="doc"></generic-result-display>
                 </div>
             </span>
-            <button type="button" class="btn btn-sm btn-success btn-block" ng-click="loadNextPage()" ng-if="results && results.docs.length < results.total" style="height: 50px;">
-                load more results
-            </button>
         </div>
         <!-- end results panel -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <button type="button" class="btn btn-sm btn-default" ng-click="previousPage()" ng-disabled="disablePrevious">
+                <span class="glyphicon glyphicon-arrow-left"></span> previous page
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-click="nextPage()" ng-disabled="disableNext">
+                next page <span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+        </div>
     </div>
 </div>

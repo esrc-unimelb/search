@@ -372,13 +372,14 @@ angular.module('searchApp')
                 'docs': []
             };
         } else {
-            var docs = [], i;
-            docs = _.map(d.data.response.docs, function(d, i) { d.sequenceNo = i; return d; });
+            var docs = [], start;
+            start = parseInt(d.data.responseHeader.params.start);
+            docs = _.map(d.data.response.docs, function(d, i) { d.sequenceNo = i + start; return d; });
             SolrService.results = {
                 'dateStamp': ( new Date() ).getTime(),
                 'term': SolrService.query.term,
                 'total': d.data.response.numFound,
-                'start': parseInt(d.data.responseHeader.params.start),
+                'start': start,
                 'docs': docs
             };
         }
@@ -398,7 +399,7 @@ angular.module('searchApp')
      *  Get the next set of results.
      */
     function previousPage() {
-        var start = SolrService.start - SolrService.rows;
+        var start = SolrService.results.start - SolrService.rows;
         SolrService.start = start;
         if (start < 0 || SolrService.start < 0) {
             SolrService.start = 0;
@@ -414,7 +415,7 @@ angular.module('searchApp')
      *  Get the next set of results.
      */
     function nextPage() {
-        var start = SolrService.start + SolrService.rows;
+        var start = SolrService.results.start + SolrService.rows;
         SolrService.start = start;
         search(start);
     }

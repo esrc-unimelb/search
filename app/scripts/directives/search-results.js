@@ -29,37 +29,56 @@ angular.module('searchApp')
               // save the data in scope
               scope.results = SolrService.results;
 
+              // figure out what to do with pagination
+              scope.togglePageControls();
+
           }, true);
 
           // handle suggestions
           scope.$on('search-suggestion-available', function() {
               scope.suggestion = SolrService.suggestion;
-          });
+          })
           scope.$on('search-suggestion-removed', function() {
               scope.suggestion = SolrService.suggestion;
-          });
+          })
 
           /* handle summary / detail view toggle */
           scope.$on('show-search-results-details', function() {
               scope.summaryActive = '';
               scope.detailsActive = 'active';
-          });
+          })
           scope.$on('hide-search-results-details', function() {
               scope.summaryActive = 'active';
               scope.detailsActive = '';
-          });
+          })
 
           scope.setSuggestion = function(suggestion) {
               SolrService.search(suggestion, 0, true);
-          };
+          }
 
-          scope.loadNextPage = function() {
+          scope.nextPage = function() {
               SolrService.nextPage();
-          };
+          }
+          scope.previousPage = function() {
+              SolrService.previousPage();
+          }
+          scope.togglePageControls = function() {
+              if (SolrService.results.start === 0) {
+                  scope.disablePrevious = true;
+              } else {
+                  scope.disablePrevious = false;
+              }
+
+              if (SolrService.results.start + SolrService.rows >= scope.results.total) {
+                  scope.disableNext = true;
+              } else {
+                  scope.disableNext = false;
+              }
+          }
 
           scope.clearAllFilters = function() {
             SolrService.clearAllFilters();
-          };
+          }
 
       }
     };
