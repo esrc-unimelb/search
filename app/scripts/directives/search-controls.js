@@ -17,10 +17,6 @@ angular.module('searchApp')
           scope.searchType = {};
 
           scope.$on('app-ready', function() {
-              // set up what is going to be searched
-              //  on load - everything
-              //scope.selectAll();
-
               // get the search fields from the SolrService
               scope.searchFields = SolrService.query.searchFields;
               _.each(scope.searchFields, function(d, i) {
@@ -29,13 +25,6 @@ angular.module('searchApp')
 
               // set the search type based on the conf in solr service
               scope.setSearchType(SolrService.query.searchType);
-              if (SolrService.keywordUnion === 'AND') {
-                  scope.keywordAnd = true;
-                  scope.keywordOr = false;
-              } else {
-                  scope.keywordAnd = false;
-                  scope.keywordOr = true;
-              }
 
               scope.selectAllToggle = false;
               scope.selectNoneToggle = true;
@@ -61,8 +50,8 @@ angular.module('searchApp')
 
           // set the union for keyword search
           scope.setSearchUnion = function(union) {
-              SolrService.keywordUnion = union;
-              if (SolrService.keywordUnion === 'AND') {
+              SolrService.query.searchTypeKeywordUnion = union;
+              if (union === 'AND') {
                   scope.keywordAnd = true;
                   scope.keywordOr = false;
               } else {
