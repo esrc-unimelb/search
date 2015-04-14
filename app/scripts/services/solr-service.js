@@ -96,6 +96,7 @@ angular.module('searchApp')
         SolrService.query.searchWhat = _.keys(SolrService.query.searchFields);
         SolrService.query.searchType = configuration.searchType;
         SolrService.query.searchTypeKeywordUnion = configuration.searchTypeKeywordUnion;
+        SolrService.query.term = '*';
         SolrService.query.filters = {};
         SolrService.query.dateFilters = {};
         SolrService.query.filterUnion = {};
@@ -203,7 +204,7 @@ angular.module('searchApp')
            })
         } else {
            if (SolrService.query.searchType === 'keyword') {
-              what = what.replace(/ /gi, ' ' + SolrService.searchTypeKeywordUnion + ' ');
+              what = what.replace(/ /gi, ' ' + SolrService.query.searchTypeKeywordUnion + ' ');
               angular.forEach(searchFields, function(v, k) {
                   q.push(v.name + ':(' + what + ')^' + v.weight);
               })
@@ -221,12 +222,10 @@ angular.module('searchApp')
         if (_.isEmpty(fq)) fq = '';
 
         // set the sort order: wildcard sort ascending, everything else: by score
-        if (!SolrService.query.sort) {
-            if (what === '*') {
-                SolrService.query.sort = 'name_sort asc';
-            } else {
-                SolrService.query.sort = 'score desc';
-            }
+        if (what === '*') {
+            SolrService.query.sort = 'name_sort asc';
+        } else {
+            SolrService.query.sort = 'score desc';
         }
 
         var query = {
