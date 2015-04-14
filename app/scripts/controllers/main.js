@@ -17,6 +17,7 @@ angular.module('searchApp')
           $scope.h = $window.innerHeight;
 
           if ($scope.w < 760) {
+              /*
               var site = $window.location.hash.split('/')[1];
               var newLocation; 
               if (site !== '') {
@@ -24,17 +25,9 @@ angular.module('searchApp')
               } else {
                 $window.location.replace('/basic-search');
               }
+              */
           } else {
               $scope.t = 130;
-          }
-
-          // left (lpw) and right (rpw) panel widths
-          if ($scope.w < 1024) {
-              $scope.lpw = Math.floor(($scope.w) * 0.35) - 1;
-              $scope.rpw = $scope.w - $scope.lpw - 1;
-          } else {
-              $scope.lpw = Math.floor(($scope.w) * 0.25) - 1;
-              $scope.rpw = $scope.w - $scope.lpw - 1;
           }
 
           $scope.topbarStyle = {
@@ -89,7 +82,7 @@ angular.module('searchApp')
       };
 
       $scope.clearAllFilters = function() {
-        SolrService.clearAllFilters();
+        SolrService.reset();
       };
       $scope.openAllFilters = function() {
           $rootScope.$broadcast('open-all-filters');
@@ -98,7 +91,7 @@ angular.module('searchApp')
           $rootScope.$broadcast('close-all-filters');
       }
       $scope.search = function() {
-        if ($scope.ready) SolrService.search;
+        if ($scope.ready) SolrService.search();
       }
 
       // get the party started

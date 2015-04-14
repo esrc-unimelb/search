@@ -15,7 +15,7 @@ angular.module('searchApp')
 
           // handle the app being bootstrapped
           scope.$on('app-ready', function() {
-              scope.searchBox = SolrService.term;
+              scope.searchBox = SolrService.query.term;
               scope.search();
           });
 
@@ -29,12 +29,12 @@ angular.module('searchApp')
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
               if (scope.searchBox === '') scope.searchBox = '*';
-              SolrService.term = scope.searchBox;
+              SolrService.query.term = scope.searchBox;
               SolrService.search(0, true);
           };
 
           scope.reset = function() {
-              SolrService.clearAllFilters();
+              SolrService.reset();
           };
 
 

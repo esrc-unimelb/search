@@ -5,9 +5,7 @@
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1">
         </div>
-        <div class="col-sm-1 col-md-1 col-lg-1">
-        </div>
-        <div class="col-sm-1 col-md-1 col-lg-1">
+        <div class="col-sm-2 col-md-2 col-lg-1">
             <!--<a href="http://www.esrc.unimelb.edu.au/search-help/" style="color:white; font-weight: 300;">Help</a>-->
             <a href="http://www.esrc.unimelb.edu.au/search-about/" style="color:white; font-weight: 300;">About</a>
         </div>
@@ -23,7 +21,7 @@
 
     <!-- header controls -->
     <div class="row" style="background-color: #3d4343; padding: 5px 5px;">
-        <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
                 <search-form 
                     help='Normally this would be site / context specific help in this bit...'
                     search-type="keyword"
@@ -35,55 +33,59 @@
 
 <!-- side bar: fixed to right -->
 <div ng-style="bodypanelStyle">
-    <tabset>
-        <tab heading="Search the data" select="search()">
-            <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-3">
-                    <div class="col-sm-12 text-center">
-                        <h4 style="color: #3d4343; font-size: 16px; font-weight: normal; margin: 10px 0px; padding: 0; text-shadow: 1px -1px 2px #595959; line-height: 1.1;">
-                            Refine Search
-                        </h4>
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <div class="btn-group">
-                            <button class="btn btn-xs btn-default" ng-click="clearAllFilters()">Clear all</button>
-                            <button class="btn btn-xs btn-default" ng-click="openAllFilters()">Open all</button>
-                            <button class="btn btn-xs btn-default" ng-click="closeAllFilters()">Close all</button>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
+            <tabset>
+                <tab heading="Search the data" select="search()">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4 col-lg-3">
+                            <div class="col-sm-12 text-center">
+                                <h4 style="color: #3d4343; font-size: 16px; font-weight: normal; margin: 10px 0px; padding: 0; text-shadow: 1px -1px 2px #595959; line-height: 1.1;">
+                                    Refine Search
+                                </h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <button class="btn btn-xs btn-default btn-block" ng-click="clearAllFilters()">clear all</button>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <small><a href="" class="" ng-click="openAllFilters()">open all</a></small>
+                                <small><a href="" class="" ng-click="closeAllFilters()">close all</a></small>
+                            </div>
 
-                    <!-- DATE FACET WIDGETS -->
-                    <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
-                    <span ng-repeat="widget in dateFacetWidgets">
-                        <div class="col-sm-12">
-                            <date-facet-widget facet-field="{{widget.facetField}}"
-                                               existence-from-field="{{widget.existenceFromField}}"
-                                               existence-to-field="{{widget.existenceToField}}"
-                                               id="{{widget.id}}"
-                                               label="{{widget.label}}"
-                                               start="{{widget.start}}"
-                                               end="{{widget.end}}"
-                                               interval="{{widget.interval}}">
-                            </date-facet-widget>  
-                        </div>
-                    </span>
-                    <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
+                            <!-- DATE FACET WIDGETS -->
+                            <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
+                            <span ng-repeat="widget in dateFacetWidgets">
+                                <div class="col-sm-12">
+                                    <date-facet-widget facet-field="{{widget.facetField}}"
+                                                       existence-from-field="{{widget.existenceFromField}}"
+                                                       existence-to-field="{{widget.existenceToField}}"
+                                                       id="{{widget.id}}"
+                                                       label="{{widget.label}}"
+                                                       start="{{widget.start}}"
+                                                       end="{{widget.end}}"
+                                                       interval="{{widget.interval}}">
+                                    </date-facet-widget>  
+                                </div>
+                            </span>
+                            <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
 
-                    <!-- FACET WIDGETS-->
-                    <span ng-repeat='widget in facetWidgets'>
-                        <div class="col-sm-12">
-                            <facet-widget facet-field="{{widget.facetField}}" label="{{widget.label}}" join="{{widget.join}}" />
+                            <!-- FACET WIDGETS-->
+                            <span ng-repeat='widget in facetWidgets'>
+                                <div class="col-sm-12">
+                                    <facet-widget facet-field="{{widget.facetField}}" label="{{widget.label}}" join="{{widget.join}}" />
+                                </div>
+                            </span>
                         </div>
-                    </span>
-                </div>
-                <div class="col-sm-8 col-md-8 col-lg-9">
-                    <search-results display-provenance="true"></search-results>
-                </div>
-            </div>
-        </tab>
-        <tab heading="Controls" select="">
-            <search-controls></search-controls>
-            
-        </tab>
-    </tabset>
+                        <div class="col-sm-8 col-md-8 col-lg-9">
+                            <search-results display-provenance="true"></search-results>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Controls" select="">
+                    <search-controls></search-controls>
+                    
+                </tab>
+            </tabset>
+        </div>
+    </div>
 </div>

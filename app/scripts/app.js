@@ -12,7 +12,7 @@ angular.module('searchApp', [
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
-        reloadOnSearch: false
+        reloadOnSearch: false 
       })
       .when('/view', {
         templateUrl: 'views/image-view.html',

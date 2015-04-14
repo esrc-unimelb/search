@@ -6,27 +6,30 @@ angular.module('searchApp')
       templateUrl: 'views/search-results.html',
       restrict: 'E',
       scope: {
-          'displayProvenance': '@'
       },
       link: function postLink(scope, element, attrs) {
 
-          /* Initialise the widget / defaults */
+          // Initialise the widget / defaults
           scope.showFilters = false;
           scope.site = SolrService.site;
           scope.summaryActive = '';
           scope.detailsActive = 'active';
 
-          /* handle data updates */
-          scope.$on('search-results-updated', function() {
-              scope.gridView = true;
-              angular.forEach(SolrService.results.docs, function(v, k) {
-                  if (v.thumbnail === undefined) {
-                      scope.gridView = false;
-                  }
-              })
-              scope.results = SolrService.results;
+          // put a watch on results.dateStamp to do stuff when it changes
+          scope.$watch(function() { return SolrService.results.dateStamp;}, function() {
+              // data updated - do fancy things
+
+              // but if any of the results has undefined for the thumbnail - ditch it
+              var thumbs = _.groupBy(SolrService.results.docs, function(d) { return d.thumbnail; });
+              scope.gridView = _.has(thumbs, 'undefined') ? false : true;
+
+              // grab the filter object
               scope.filters = SolrService.getFilterObject();
-          });
+
+              // save the data in scope
+              scope.results = SolrService.results;
+
+          }, true);
 
           // handle suggestions
           scope.$on('search-suggestion-available', function() {

@@ -18,17 +18,9 @@ angular.module('searchApp')
       restrict: 'E',
       scope: {
           'data': '=ngModel',
-          'displayProvenance': '@'
       },
       link: function postLink(scope, element, attrs) {
-          scope.hideDetails = SolrService.hideDetails;
-
-          $rootScope.$on('hide-search-results-details', function() {
-              scope.hideDetails = true;
-          });
-          $rootScope.$on('show-search-results-details', function() {
-              scope.hideDetails = false;
-          });
+          scope.showProvenance = false;
 
           // determine the source url to use for the record
           if (scope.data.display_url !== undefined) {

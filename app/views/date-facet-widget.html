@@ -1,15 +1,17 @@
 <span ng-hide="ao">
     <a href="" ng-click="ic = !ic">
         <span ng-show="ic">{{label}}<span class="caret"></span></span>
-        <span ng-hide="ic">hide {{label}}</span>
+        <span ng-show="!ic" class="dropup">{{label}}<span class="caret"></span></span>
     </a>
 </span>
 <div ng-hide="ic" class="facet">
-    <span ng-repeat="facet in facets">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-click="toggleFacet(facet.label)" ng-checked="{{facet.checked}}">{{facet.label}} <em ng-if="facet.count">({{facet.count}})</em>
-            </label>
-        </div>
+    <span ng-repeat="f in facets">
+        <span ng-if="f.count">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-click="facet(f.label)" ng-checked="{{f.checked}}">{{f.label}}
+                </label>
+            </div>
+        </span>
     </span>
 </div>

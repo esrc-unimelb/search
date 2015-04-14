@@ -35,7 +35,7 @@ angular.module('searchApp')
                   scope.docs.push(d);
               }
           }
-          updateResults();
+          //updateResults();
 
           /* handle data updates */
           scope.$on('search-results-updated', function() {

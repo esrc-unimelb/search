@@ -7,7 +7,6 @@ angular.module('searchApp')
       restrict: 'E',
       scope: {
           'data': '=',
-          'displayProvenance': '@'
       },
       link: function postLink(scope, element, attrs) {
       }

@@ -29,33 +29,30 @@ angular.module('searchApp')
         },
         link: function postLink(scope, element, attrs) {
             // configure defaults for those optional attributes if not defined
-            scope.ic = _.isUndefined(scope.isCollapsed) ? true  : angular.fromJson(scope.isCollapsed);
-            scope.ao = _.isUndefined(scope.alwaysOpen)  ? false : angular.fromJson(scope.alwaysOpen);
-            scope.jo = _.isUndefined(scope.join)        ? 'OR'  : scope.join;
+            scope.ic                                        = _.isUndefined(scope.isCollapsed) ? true  : angular.fromJson(scope.isCollapsed);
+            scope.ao                                        = _.isUndefined(scope.alwaysOpen)  ? false : angular.fromJson(scope.alwaysOpen);
+            SolrService.query.filterUnion[scope.facetField] = _.isUndefined(scope.join)        ? 'OR'  : scope.join;
             scope.smallList = true;
 
             var updateFacetCounts = function() {
                 SolrService.updateFacetCount(scope.facetField);
             }
 
-            scope.$on('app-ready', function() {
-                updateFacetCounts();
-            })
             scope.$on('update-all-facets', function() {
                 updateFacetCounts();
             })
 
-            SolrService.filterUnion[scope.facetField] = scope.join;
-
             // when we get an update event from the solr
             //  service - rejig the widget as required
             scope.$on(scope.facetField+'-facets-updated', function() {
-                //var facetData = SolrService.facets[scope.facetField];
-                var selected = SolrService.filters[scope.facetField];
+                var selected = SolrService.query.filters[scope.facetField];
 
-                var facetData = _.map(SolrService.facets[scope.facetField], function(d) {
+                var facetData = _.map(SolrService.query.facets[scope.facetField], function(d) {
                     d.checked = false;
-                    if (_.contains(selected, d.name)) d.checked = true;
+                    if (_.contains(selected, d.name)) { 
+                        d.checked = true;
+                        scope.ic = false;
+                    }
                     return d;
                 });
 
@@ -74,25 +71,12 @@ angular.module('searchApp')
                 scope.ic = true;
             })
 
-            scope.reset = function() {
-                scope.offset = 0;
-                if (scope.sp === false) {
-                    scope.pageSize = -1;
-                } else {
-                    scope.pageSize = 10;
-                }
-                SolrService.clearFilter(scope.facetField);
-                updateFacetCounts();
-                angular.forEach(scope.facets, function(v,k) {
-                    scope.facets[k][2] = false;
-                })
-                scope.selected = [];
-            };
-        
+            // apply the clicked facet
             scope.facet = function(facet) {
                 SolrService.filterQuery(scope.facetField, facet);
             };
 
+            // show the expanded panel
             scope.showMore = function() {
                 scope.smallList = false;
                 scope.overlay = {
@@ -116,13 +100,19 @@ angular.module('searchApp')
                 }
             }
 
+            // close the expanded panel
             scope.close = function() {
                 scope.smallList = true;
             }
+
+            // clear all the selections
             scope.clearAll = function() {
-                delete SolrService.filters[scope.facetField];
+                delete SolrService.query.filters[scope.facetField];
                 SolrService.search();
             }
+
+            // initialise the widget
+            updateFacetCounts();
 
       }
     };

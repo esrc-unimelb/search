@@ -46,7 +46,7 @@
             </span>
             <span ng-if="!gridView">
                 <div ng-repeat="doc in results.docs" class="row result-border">
-                    <generic-result-display ng-model="doc" display-provenance="{{displayProvenance}}"></generic-result-display>
+                    <generic-result-display ng-model="doc"></generic-result-display>
                 </div>
             </span>
             <button type="button" class="btn btn-sm btn-success btn-block" ng-click="loadNextPage()" ng-if="results && results.docs.length < results.total" style="height: 50px;">
