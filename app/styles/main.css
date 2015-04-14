@@ -3,12 +3,3 @@ body {
   word-wrap: break-word;
 }
 
-.facet.ng-hide-remove {
-    animation: fadeIn 0.7s;
-}
-.facet-largeList.ng-enter {
-    animation: fadeIn 0.7s;
-}
-.provenance.ng-hide-remove {
-    animation: fadeIn 0.7s;
-}

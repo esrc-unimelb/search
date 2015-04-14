@@ -3,7 +3,7 @@
  */
 .result-border {
     border: 1px solid gray; 
-    border-radius:8px; 
+    border-radius:4px; 
     padding:0.5em; 
     margin:0.5em;
 }
@@ -25,3 +25,13 @@ a:hover   { color: #24658A; }
 a:active  { color: #24658A; }
 
 
+
+.facet.ng-hide-remove {
+        animation: fadeIn 0.7s;
+}
+.facet-largeList.ng-enter {
+        animation: fadeIn 0.7s;
+}
+.provenance.ng-hide-remove {
+        animation: fadeIn 0.7s;
+}
