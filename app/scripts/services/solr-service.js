@@ -545,22 +545,24 @@ angular.module('searchApp')
         // add in the named filters
         for (f in SolrService.query.filters) {
             var j = SolrService.query.filterUnion[f];
-            fq.push(f + ':("' + SolrService.query.filters[f].join('" ' + j + ' "') + '")');
+            if (!_.isEmpty(SolrService.query.filters[f])) fq.push(f + ':("' + SolrService.query.filters[f].join('" ' + j + ' "') + '")');
         }
 
         // add in the date range filters
         var dfq = [];
         for (f in SolrService.query.dateFilters) {
             var v = SolrService.query.dateFilters[f];
-            if (v.existenceFromField !== undefined && v.existenceToField !== undefined) {
-                var query;
-                var query = '(exist_from:[' + conf.datasetStart + ' TO ' + v.to + ']';
-                query += ' AND ';
-                query += 'exist_to:[' + v.from + ' TO ' + conf.datasetEnd + '])';
-                dfq.push(query);
-            } else {
-                var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';
-                dfq.push(query);
+            if (! _.isEmpty(v)) {
+                if (v.existenceFromField !== undefined && v.existenceToField !== undefined) {
+                    var query;
+                    var query = '(exist_from:[' + conf.datasetStart + ' TO ' + v.to + ']';
+                    query += ' AND ';
+                    query += 'exist_to:[' + v.from + ' TO ' + conf.datasetEnd + '])';
+                    dfq.push(query);
+                } else {
+                    var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';
+                    dfq.push(query);
+                }
             }
 
         }
@@ -593,32 +595,6 @@ angular.module('searchApp')
 
         // tell all the filters to reset
         $rootScope.$broadcast('reset-all-filters');
-    }
-
-    /*
-     * @ngdoc function
-     * @name SolrService.service:clearFilter
-     */
-    function clearFilter(facet) {
-        delete SolrService.filters[facet];
-        
-        // update the search
-        search(0, true);
-    }
-
-    /**
-     * @ngdoc function
-     * @name SolrService.service:toggleDetails
-     * @description
-     *   Toggle's detail view
-     */
-    function toggleDetails() {
-        SolrService.hideDetails = !SolrService.hideDetails;
-        if (SolrService.hideDetails === true) {
-            $rootScope.$broadcast('hide-search-results-details');
-        } else {
-            $rootScope.$broadcast('show-search-results-details');
-        }
     }
 
     /**
@@ -701,9 +677,7 @@ angular.module('searchApp')
         filterQuery: filterQuery,
         getFilterObject: getFilterObject,
         filterDateQuery: filterDateQuery,
-        clearFilter: clearFilter,
         reset: reset,
-        toggleDetails: toggleDetails,
         reSort: reSort,
         compileDateFacets: compileDateFacets,
     };

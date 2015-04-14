@@ -18,7 +18,11 @@
             </div>
         </span>
 
-        <div><a href="" ng-click="showMore()">show more</a></div>
+        <div>
+            <a href="" ng-click="showMore()">show more</a>
+            &nbsp;&dash;&nbsp;
+            <a href="" aria-label="Reset" ng-click="clearAll()">clear all</a>
+        </div>
         <hr/>
     </div>
 
@@ -51,11 +55,10 @@
         </div>
         <div class="row">
             <hr/>
-            <div class="col-sm-2 col-md-2 col-lg-1">
-                <a href="" aria-label="Close" ng-click="close()">close<a>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-1">
-                <a href="" aria-label="Reset" ng-click="clearAll()">clear all<a>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <a href="" aria-label="Close" ng-click="close()">close</a>
+                &nbsp;&dash;&nbsp;
+                <a href="" aria-label="Reset" ng-click="clearAll()">clear all</a>
             </div>
         </div>
     </div>
