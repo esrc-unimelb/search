@@ -27,7 +27,7 @@ angular.module('searchApp')
               }
               */
           } else {
-              $scope.t = 130;
+              $scope.t = 120;
           }
 
           $scope.topbarStyle = {
