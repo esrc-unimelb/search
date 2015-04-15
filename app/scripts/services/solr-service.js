@@ -79,6 +79,7 @@ angular.module('searchApp')
             // use external configuration
             // when loading an external configuration, ignore site if in route params
             site = configuration.site;
+
         } else {
             // use application internal configuration
             configuration = conf;
@@ -100,6 +101,12 @@ angular.module('searchApp')
             var q = SolrService.loadData();
             if (q) { 
                 initAppFromSavedData();
+                if (SolrService.query.site !== configuration.site) {
+                    initialiseQueryObject(configuration, configuration.site);
+                    $log.info("Site stored in saved data doesn't match incoming config.")
+                    initCurrentInstance;
+                }
+
             } else {
                 $log.info("Unable to initialise from saved data.")
                 initCurrentInstance();
@@ -152,8 +159,8 @@ angular.module('searchApp')
      * @name initAppFromSavedData
      */
     function initAppFromSavedData() {
-        var data = SolrService.loadData();
         $log.info('Initialising app from saved data');
+        var data = SolrService.loadData();
         SolrService.query = data.query;
     }
 
