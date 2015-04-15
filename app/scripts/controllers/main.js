@@ -91,10 +91,15 @@ angular.module('searchApp')
           $rootScope.$broadcast('close-all-filters');
       }
       $scope.search = function() {
-        if ($scope.ready) SolrService.search();
+          if ($scope.ready) { 
+              SolrService.search();
+          }
+          $scope.tabs = [ true, false ];
       }
 
       // get the party started
       SolrService.init();
+      $scope.tabs = [ true, false ];
+
 
   }]);

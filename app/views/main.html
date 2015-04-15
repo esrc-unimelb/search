@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
             <tabset>
-                <tab heading="Search the data" select="search()">
+                <tab heading="Search the data" select="search()" active="tabs[0]">
                     <div class="row">
                         <div class="col-sm-4 col-md-4 col-lg-3">
                             <div class="col-sm-12 text-center">
@@ -84,9 +84,10 @@
                         </div>
                     </div>
                 </tab>
-                <tab heading="Controls" select="">
+                <tab heading="Controls" select="" active="tabs[1]">
                     <search-controls></search-controls>
-                    
+                    <hr/>
+                    <button class="btn btn-sm btn-default" ng-click="search()">Update Search</button>
                 </tab>
             </tabset>
         </div>

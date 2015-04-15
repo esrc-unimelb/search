@@ -47,14 +47,14 @@
         <a href="" ng-click="deselectAll()" ng-if="selectNoneToggle">select none</a>
     </div>
 </div>
-<span ng-repeat="(k, v) in searchFields">
-    <div class="row">
+<div class="row">
+    <span ng-repeat="(k, v) in searchFields">
         <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="checkbox">
-                    <label>
-                      <input type="checkbox" ng-click="updateSearchLimit(v.fieldName)" ng-checked="v.checked"> {{v.displayName}}
-                    </label>
-                </div>
+            <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-click="updateSearchLimit(v.fieldName)" ng-checked="v.checked"> {{v.displayName}}
+                </label>
+            </div>
         </div>
-    </div>
-</span>
+    </span>
+</div>
