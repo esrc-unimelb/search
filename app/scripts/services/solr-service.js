@@ -90,18 +90,8 @@ angular.module('searchApp')
 
         // now actually configure this instance
         SolrService.configuration = configuration;
-        SolrService.query.site = site;
-        SolrService.query.solr = configuration[conf.deployment] + '/' + site + '/select';
-        SolrService.query.searchFields = configuration.searchFields;
-        SolrService.query.searchWhat = _.keys(SolrService.query.searchFields);
-        SolrService.query.searchType = configuration.searchType;
-        SolrService.query.searchTypeKeywordUnion = configuration.searchTypeKeywordUnion;
-        SolrService.query.term = '*';
-        SolrService.query.filters = {};
-        SolrService.query.dateFilters = {};
-        SolrService.query.filterUnion = {};
-        SolrService.query.facets = {};
-        SolrService.query.dateFacets = {};
+        SolrService.site = site;
+        initialiseQueryObject(configuration, site);
         $log.debug('Searching: ' + SolrService.query.site);
         //$log.debug('Query object at initialisation', SolrService.query);
 
@@ -128,6 +118,24 @@ angular.module('searchApp')
         }, 500);
        
         return true;
+    }
+
+    function initialiseQueryObject(configuration, site) {
+        if (!configuration) configuration = SolrService.configuration;
+        if (!site) site = SolrService.site;
+        SolrService.query = {};
+        SolrService.query.site = site;
+        SolrService.query.solr = configuration[conf.deployment] + '/' + site + '/select';
+        SolrService.query.searchFields = configuration.searchFields;
+        SolrService.query.searchWhat = _.keys(SolrService.query.searchFields);
+        SolrService.query.searchType = configuration.searchType;
+        SolrService.query.searchTypeKeywordUnion = configuration.searchTypeKeywordUnion;
+        SolrService.query.term = '*';
+        SolrService.query.filters = {};
+        SolrService.query.dateFilters = {};
+        SolrService.query.filterUnion = {};
+        SolrService.query.facets = {};
+        SolrService.query.dateFacets = {};
     }
 
     /*
@@ -599,13 +607,10 @@ angular.module('searchApp')
         // ditch any saved configuration
         sessionStorage.removeItem('cq');
 
-        //
-        SolrService.query.sort = 'name_sort asc';
-        SolrService.query.filters = {};
-        SolrService.query.dateFilters = {};
-        
-        // update the search
-        SolrService.query.term = '*';
+        // reinitialise the query object
+        initialiseQueryObject();
+
+        // kick off a search
         search();
 
         // tell all the filters to reset

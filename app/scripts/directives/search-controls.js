@@ -28,8 +28,11 @@ angular.module('searchApp')
 
               scope.selectAllToggle = false;
               scope.selectNoneToggle = true;
-
           });
+
+          scope.$on('reset-all-filters', function() {
+              scope.selectAll();
+          })
 
           // keyword or phrase search ?
           scope.setSearchType = function(type) {
