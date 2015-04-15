@@ -251,7 +251,7 @@ angular.module('searchApp')
             'params': {
                 'q': q,
                 'start': start,
-                'rows': '10',
+                'rows': SolrService.rows,
                 'wt': 'json',
                 'json.wrf': 'JSON_CALLBACK',
                 'fq': fq,
@@ -682,7 +682,7 @@ angular.module('searchApp')
         results: {},
 
         // suitable defaults
-        rows: 10,
+        rows: 12,
         facetLimit: 45,
         sort: undefined,
         hideDetails: false,
