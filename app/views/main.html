@@ -55,8 +55,17 @@
                                 <small><a href="" class="" ng-click="closeAllFilters()">close all</a></small>
                             </div>
 
+
+                            <!-- FACET WIDGETS-->
+                            <div class="col-sm-12"><hr style="margin: 5px 0px;" /></div>
+                            <span ng-repeat='widget in facetWidgets'>
+                                <div class="col-sm-12">
+                                    <facet-widget facet-field="{{widget.facetField}}" label="{{widget.label}}" join="{{widget.join}}" />
+                                </div>
+                            </span>
+
                             <!-- DATE FACET WIDGETS -->
-                            <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
+                            <div class="col-sm-12"><hr style="margin: 5px 0px;" /></div>
                             <span ng-repeat="widget in dateFacetWidgets">
                                 <div class="col-sm-12">
                                     <date-facet-widget facet-field="{{widget.facetField}}"
@@ -70,14 +79,7 @@
                                     </date-facet-widget>  
                                 </div>
                             </span>
-                            <div class="col-sm-12"><hr style="border-color: #003268;" /></div>
 
-                            <!-- FACET WIDGETS-->
-                            <span ng-repeat='widget in facetWidgets'>
-                                <div class="col-sm-12">
-                                    <facet-widget facet-field="{{widget.facetField}}" label="{{widget.label}}" join="{{widget.join}}" />
-                                </div>
-                            </span>
                         </div>
                         <div class="col-sm-8 col-md-8 col-lg-9">
                             <search-results display-provenance="true"></search-results>

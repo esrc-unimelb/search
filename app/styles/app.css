@@ -2,7 +2,7 @@
  * boxes.
  */
 .result-border {
-    border: 1px solid gray; 
+    border: 1px solid #ccc; 
     border-radius:4px; 
     padding:0.5em; 
     margin:0.5em;

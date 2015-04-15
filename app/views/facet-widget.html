@@ -32,12 +32,15 @@
     <div ng-if="!smallList" class="facet-largeList" ng-style="overlay">
         <div class="row">
             <div class="col-sm-11 col-md-11 col-lg-11">
-                <h5>{{label}}</h5>
+                <h4 class="section-heading">{{label}}</h4>
             </div>
             <div class="col-sm-1 col-md-1 col-lg-1">
                 <button type="button" class="close btn-sm" aria-label="Close" ng-click="close()">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <hr style="margin: 5px 0px;"/>
             </div>
         </div>
 
@@ -56,7 +59,7 @@
             </div>
         </div>
         <div class="row">
-            <hr/>
+            <hr style="margin: 5px 0px;"/>
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <a href="" aria-label="Close" ng-click="close()">close</a>
                 &nbsp;&dash;&nbsp;
