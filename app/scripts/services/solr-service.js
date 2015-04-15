@@ -196,6 +196,8 @@ angular.module('searchApp')
                 searchFields.push({ 'name': SolrService.query.searchFields[k].fieldName, 'weight': SolrService.query.searchFields[k].weight });
         });
 
+        // term can never, ever, be empty...
+        if (_.isEmpty(SolrService.query.term)) SolrService.query.term = '*';
         var what = SolrService.query.term, 
             q    = [];
         // are we doing a wildcard search? or a single term search fuzzy search?
