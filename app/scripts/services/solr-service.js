@@ -505,7 +505,7 @@ angular.module('searchApp')
         //$log.debug('S:solr-service, filterQuery, filters', SolrService.query.filters);
 
         // update the search
-        search(0, true);
+        search();
     }
 
     /**
@@ -516,7 +516,7 @@ angular.module('searchApp')
      *  a search.
      * @param {string} facet
      */
-    function filterDateQuery(facetField, existenceFromField, existenceToField, facetLabel) {
+    function filterDateQuery(facetField, existenceFromField, existenceToField, facetLabel, dontSearch) {
         var facetLowerBound, facetUpperBound, df, marker;
         facetLowerBound = facetLabel.split(' - ')[0];
         facetUpperBound = facetLabel.split(' - ')[1];
@@ -542,7 +542,7 @@ angular.module('searchApp')
         //$log.debug('S:solr-service, filterDateQuery, dateFilters', SolrService.query.dateFilters);
 
         // update the search
-        search(0, true);
+        if (!dontSearch) search();
     }
 
     /**
@@ -606,7 +606,7 @@ angular.module('searchApp')
         
         // update the search
         SolrService.query.term = '*';
-        search(0, true);
+        search();
 
         // tell all the filters to reset
         $rootScope.$broadcast('reset-all-filters');
@@ -621,7 +621,7 @@ angular.module('searchApp')
      */
     function reSort(by) {
         SolrService.query.sort = by;
-        search(0);
+        search();
     }
 
     /**

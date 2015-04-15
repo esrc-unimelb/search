@@ -12,7 +12,7 @@
         <span ng-repeat="result in smallFacetList">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" ng-click="facet(result.name)" ng-checked="{{result.checked}}">{{result.name}}&nbsp;
+                    <input type="checkbox" ng-click="facet(result.name)" ng-checked="result.checked">{{result.name}}&nbsp;
                     <span ng-show="{{result.count}}"><em>({{result.count}})</em></span>
                 </label>
             </div>
@@ -45,7 +45,7 @@
                     <span ng-if="result.name">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" ng-click="facet(result.name)" ng-checked="{{result.checked}}">{{result.name}}&nbsp;
+                                <input type="checkbox" ng-click="facet(result.name)" ng-checked="result.checked">{{result.name}}&nbsp;
                                 <span ng-show="{{result.count}}"><em>({{result.count}})</em></span>
                             </label>
                         </div>

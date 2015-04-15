@@ -68,8 +68,19 @@ angular.module('searchApp')
           });
 
           // apply the clicked facet
-          scope.facet = function(facetLabel) {
-              SolrService.filterDateQuery(scope.facetField, scope.existenceFromField, scope.existenceToField, facetLabel);
+          scope.facet = function(facetLabel, dontSearch) {
+              var f = _.findWhere(scope.facets, { 'label': facetLabel });
+              f.checked = true;
+              SolrService.filterDateQuery(scope.facetField, scope.existenceFromField, scope.existenceToField, facetLabel, dontSearch);
+          }
+
+          // clear all selected
+          scope.clearAll = function() {
+              _.each(_.where(scope.facets, { 'checked': true }), function(d) {
+                  scope.facet(d.label, true);
+                  _.findWhere(scope.facets, { 'label': d.label }).checked = false;
+              });
+              SolrService.search();
           }
 
           // initialise the widget 
