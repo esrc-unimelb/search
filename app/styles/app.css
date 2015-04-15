@@ -35,3 +35,10 @@ a:active  { color: #24658A; }
 .provenance.ng-hide-remove {
         animation: fadeIn 0.7s;
 }
+
+.section-heading {
+    color: #3d4343; 
+    font-weight: 300; 
+    text-rendering: optimizelegibility;
+    margin: 10px 0px;
+}
