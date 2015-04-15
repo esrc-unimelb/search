@@ -519,8 +519,8 @@ angular.module('searchApp')
             marker = facetField + '-' + facetLabel.replace(' - ', '_');
         }
 
-        if (_.has(SolrService.dateFilters, marker)) {
-            delete SolrService.dateFilters[marker];
+        if (_.has(SolrService.query.dateFilters, marker)) {
+            delete SolrService.query.dateFilters[marker];
         } else {
             df = {
                 'from': facetLowerBound + '-01-01T00:00:00Z',
@@ -532,7 +532,7 @@ angular.module('searchApp')
             };
             SolrService.query.dateFilters[marker] = df;
         }
-        //$log.debug('S:solr-service, filterDateQuery, dateFilters', SolrService.dateFilters);
+        //$log.debug('S:solr-service, filterDateQuery, dateFilters', SolrService.query.dateFilters);
 
         // update the search
         search(0, true);
