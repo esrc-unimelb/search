@@ -78,10 +78,21 @@ angular.module('searchApp')
 
             // show the expanded panel
             scope.showMore = function() {
+                // configure the width of the overlay based on the window size
+                //  allowing enough room for the columns we want inside it. This means,
+                //  the width has to be big enough to fit the columns at that window size
+                var w;
+                if ($window.innerWidth > 767 && $window.innerWidth < 991) {
+                    w = '715px'; 
+                } else if ($window.innerWidth > 992 && $window.innerWidth < 1199) {
+                    w = '970px'; 
+                } else if ($window.innerWidth > 1200) {
+                    w = '1215px'; 
+                }
                 scope.smallList = false;
                 scope.overlay = {
                     'position': 'relative',
-                    'width': $window.innerWidth - 60,
+                    'width': w,
                     'z-index': '20',
                     'background-color': 'white',
                     'border': '1px solid grey',
