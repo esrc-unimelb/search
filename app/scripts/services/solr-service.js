@@ -191,8 +191,9 @@ angular.module('searchApp')
      */
     function getQuery(start) {
         var searchFields = [];
-        angular.forEach(SolrService.query.searchWhat, function(v,k) {
-            searchFields.push({ 'name': SolrService.query.searchFields[v].fieldName, 'weight': SolrService.query.searchFields[v].weight });
+        angular.forEach(SolrService.query.searchFields, function(v,k) {
+            if (_.contains(SolrService.query.searchWhat, v.fieldName)) 
+                searchFields.push({ 'name': SolrService.query.searchFields[k].fieldName, 'weight': SolrService.query.searchFields[k].weight });
         });
 
         var what = SolrService.query.term, 
@@ -290,6 +291,7 @@ angular.module('searchApp')
 
         // get the query object
         var q = getQuery(start);
+        $log.debug(q);
         
         $http.jsonp(SolrService.query.solr, q).then(function(d) {
             // if we don't get a hit and there aren't any filters in play, try suggest and fuzzy seearch
@@ -298,9 +300,10 @@ angular.module('searchApp')
             //  result and we'll end up in an infinite search loop
 
             if (d.data.response.numFound === 0 && _.isEmpty(SolrService.query.filters)) {
+                /*
                 // no matches - do a spell check and run a fuzzy search 
                 //  ONLY_IF it's a single word search term
-                if (SolrService.query.split(' ').length === 1) {
+                if (SolrService.query.term.split(' ').length === 1) {
                     suggest(SolrService.query.term);
                     if (SolrService.query.term !== '*') {
                         if (SolrService.query.term.substr(-1,1) !== '~') {
@@ -313,6 +316,8 @@ angular.module('searchApp')
                     saveData(undefined);
 
                 }
+                */
+                saveData(d);
             } else {
                 // all good - results found
                 saveData(d);

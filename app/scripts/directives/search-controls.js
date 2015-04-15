@@ -64,14 +64,14 @@ angular.module('searchApp')
           //  if what is in the list - remove it
           //  if not in list - add it
           scope.updateSearchLimit = function(what) {
-              if (scope.searchFields[what].checked) {
+              if (_.contains(SolrService.query.searchWhat, what)) {
                   // true - ie it's selected - deselect it
-                  SolrService.searchWhat.splice(SolrService.searchWhat.indexOf(what), 1);
-                  scope.searchFields[what].checked = false;
+                  SolrService.query.searchWhat = _.without(SolrService.query.searchWhat, what);
+                  scope.searchFields[what].checked = false
               } else {
-                  // false - ie it's deselected - select it
-                  SolrService.searchWhat.push(what);
-                  scope.searchFields[what].checked = true;
+                  SolrService.query.searchWhat.push(what);
+                  scope.searchFields[what].checked = true; 
+
               }
 
               // figure out the toggle situation
@@ -80,19 +80,15 @@ angular.module('searchApp')
 
           // search all listed fields
           scope.selectAll = function() {
-              _.each(scope.searchFields, function(d,i) { scope.searchFields[i].checked = true; });
-
-              // figure out the toggle situation
-              scope.toggles();
+              SolrService.query.searchWhat = [];
+              _.each(scope.searchFields, function(d) { scope.updateSearchLimit(d.fieldName); });
           }
 
           // search none of the listed fields (this amounts
           //  to a blank search)
           scope.deselectAll = function() {
-              _.each(scope.searchFields, function(d,i) { scope.searchFields[i].checked = false; });
-
-              // figure out the toggle situation
-              scope.toggles();
+              SolrService.query.searchWhat = _.keys(SolrService.query.searchFields);
+              _.each(scope.searchFields, function(d) { scope.updateSearchLimit(d.fieldName); });
           }
 
           scope.toggles = function() {
