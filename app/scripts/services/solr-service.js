@@ -86,7 +86,11 @@ angular.module('searchApp')
 
             // if site is defined in the route params, use it in preference
             //  to the site defined in the internal configuration
-            site = $routeParams.site ? $routeParams.site : configuration.site;
+            if ($routeParams.site === undefined || $routeParams.site === 'embed') {
+                site = configuration.site;
+            } else {
+                site = $routeParams.site;
+            }
         }
 
         // now actually configure this instance

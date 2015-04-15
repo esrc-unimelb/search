@@ -27,7 +27,16 @@ angular.module('searchApp')
               }
               */
           } else {
-              $scope.t = 145;
+
+              if (!_.isEmpty($location.path())) {
+                  if ($location.path() === '/embed') {
+                      $scope.removeHeader = true;
+                      $scope.t = 60;
+                  } else {
+                      $scope.removeHeader = false;
+                      $scope.t = 145;
+                  }
+              }
           }
 
           $scope.topbarStyle = {

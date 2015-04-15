@@ -12,16 +12,21 @@ angular.module('searchApp', [
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
-        reloadOnSearch: false 
-      })
-      .when('/view', {
-        templateUrl: 'views/image-view.html',
-        controller: 'ImageViewCtrl'
+        reloadOnSearch: false,
       })
       .when('/:site', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
-        reloadOnSearch: false
+        reloadOnSearch: false,
+      })
+      .when('/embed', {
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl',
+        reloadOnSearch: false,
+      })
+      .when('/view', {
+        templateUrl: 'views/image-view.html',
+        controller: 'ImageViewCtrl'
       })
       .otherwise({
         redirectTo: '/'
