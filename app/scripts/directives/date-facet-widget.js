@@ -35,13 +35,21 @@ angular.module('searchApp')
 
           scope.$on(scope.facetField + '_' + scope.id + '-facet-data-ready', function() {
               var data = SolrService.query.dateFacets[scope.facetField + '_' + scope.id];
+              
               scope.facets = _.map(data, function(d) {
+                  var label = d.rangeStart + ' - ' + d.rangeEnd;
+                  var match = _.findWhere(SolrService.query.dateFilters, { 'label': label });
+                  var checked = false; 
+                  if (match) { 
+                      checked = true;
+                      scope.ic = false;
+                  }
                   return {
                       'start': d.rangeStart,
                       'end': d.rangeEnd,
                       'label': d.rangeStart + ' - ' + d.rangeEnd,
                       'count': d.count,
-                      'checked': false
+                      'checked': checked
                   }
               });
           });

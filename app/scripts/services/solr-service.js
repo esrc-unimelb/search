@@ -189,7 +189,7 @@ angular.module('searchApp')
      * @description
      *  Construct the actual query object - the workhorse
      */
-    function getQuery(start) {
+    function getQuery(start, nofilters) {
         var searchFields = [];
         angular.forEach(SolrService.query.searchFields, function(v,k) {
             if (_.contains(SolrService.query.searchWhat, v.fieldName)) 
@@ -220,9 +220,14 @@ angular.module('searchApp')
          }
         q = q.join(' OR ');
 
-        // add in the facet query filters - if any...
-        var fq = getFilterObject().join(' AND ');
-        if (_.isEmpty(fq)) fq = '';
+        // when compiling the data facets for the date widget,
+        //  we don't want the saved filters applied so that we get
+        //  all of the date facets
+        if (!nofilters) {
+            // add in the facet query filters - if any...
+            var fq = getFilterObject().join(' AND ');
+            if (_.isEmpty(fq)) fq = '';
+        }
 
         // set the sort order: wildcard sort ascending, everything else: by score
         if (_.isEmpty(SolrService.query.sort)) {
@@ -630,7 +635,7 @@ angular.module('searchApp')
         $rootScope.$broadcast('reset-date-facets');
 
         var a, b;
-        a = getQuery(0);
+        a = getQuery(0, true);
         a.params.rows = 0;
         a.params.facet = true;
         a.params['facet.range'] = facetField;
