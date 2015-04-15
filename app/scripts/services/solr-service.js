@@ -197,7 +197,7 @@ angular.module('searchApp')
         });
 
         var what = SolrService.query.term, 
-            q = [];
+            q    = [];
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
            angular.forEach(searchFields, function(v, k) {
@@ -223,10 +223,12 @@ angular.module('searchApp')
         if (_.isEmpty(fq)) fq = '';
 
         // set the sort order: wildcard sort ascending, everything else: by score
-        if (what === '*') {
-            SolrService.query.sort = 'name_sort asc';
-        } else {
-            SolrService.query.sort = 'score desc';
+        if (_.isEmpty(SolrService.query.sort)) {
+            if (what === '*') {
+                SolrService.query.sort = 'name_sort asc';
+            } else {
+                SolrService.query.sort = 'score desc';
+            }
         }
 
         var query = {
