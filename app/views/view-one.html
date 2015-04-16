@@ -1,40 +1,40 @@
-<div style="position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: -1000; background-color: #282829;"></div>
 
-<div ng-style="imageViewPanel">
-    <img class="img-thumbnail"
-         src="{{data.fullsize}}"
-         style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 100%; max-height: 100%; width: auto; height: auto; z-index: 0;"
-         />
-</div>
+<!-- the clickable, cover the background panel -->
+<div ng-if="showImage" class="background-overlay" ng-click="close()"></div>
 
-<!-- cog to show details pane when hidden -->
-<div ng-style="showInfoPanelStyle" ng-show="showDetails">
-    <div class="row">
-        <div class="col-sm-10 col-md-10 col-lg-10"></div>
-        <div class="col-sm-2 col-md-2 col-lg-2 dropup">
-            <a href="" ng-click="showDetails = !showDetails">Show Item Information <span class="caret"></span></a>
-        </div>
+<!-- the actual content container -->
+<div ng-if="showImage" class="view-one" 
+    style="position: fixed; left: 5%; top: 2%; height: 90%; width: 90%; z-index: 20; background-color: #aec6cf; border-radius: 4px; box-shadow: 5px 5px 4px #888888;">
+
+    <!-- the image container -->
+    <div style="position: relative; top: 2%; left: 0; height: 80%; width: 100%">
+        <a href="{{imageData.id}}">
+            <img class="img-thumbnail"
+                 src="{{imageData.fullsize}}"
+                 style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 100%; max-height: 100%; width: auto; height: auto;"
+                 />
+        </a>
     </div>
-</div>
 
-<!-- details pane and backing opaque white panel -->
-<div ng-style="infoPanelBackStyle" ng-hide="showDetails"></div>
-<div ng-style="infoPanelFrontStyle" ng-hide="showDetails">
-    <div class="row">
-        <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="padding-left: 30px;">
-            <a href="" ng-click="back()">&larr; Back to search results</a>
-        </div>
-        <div class="col-sm-8 col-md-8 col-lg-8 text-center">
-            <div class="">
-                <a ng-hide="hidePreviousPager" href="" ng-click="previous()"><span class="glyphicon glyphicon-step-backward"></span></a>
-                &nbsp;&nbsp;
-                <h5 style="display: inline;"><a href="{{data.id}}">{{data.name}}, {{data.site_name}}</a></h5>
-                &nbsp;&nbsp;
-                <a ng-hide="hideNextPager" href="" ng-click="next()"><span class="glyphicon glyphicon-step-forward"></span></a>
+    <!-- the image details container -->
+    <div style="position: relative; top: 3%; left: 0; height: 15%; width: 100%;" >
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                <h4 class="section-heading">{{imageData.name}}</h4>
+                <small>by</small> {{imageData.creator}} ({{imageData.date}})
             </div>
         </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <a href="" ng-click="showDetails = !showDetails">Hide Item Information <span class="caret"></span></a>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8 text-center">
+                {{imageData.rights}}
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8 text-center">
+                <a href="{{imageData.id}}">view resource</a>
+                &nbsp;&dash;&nbsp;
+                <a href="" ng-click="close()">close</a>
+            </div>
+        </div>
+     </div>
 </div>

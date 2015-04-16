@@ -9,6 +9,7 @@ angular.module('searchApp')
           'docs': '='
       },
       link: function postLink(scope, element, attrs) {
+          scope.showImage = false;
           scope.$watch('docs', function() {
               var images = _.map(scope.docs, function(d) { d.isImage = ImageService.isImage(d.fullsize); return d });
               scope.images = [];
@@ -19,11 +20,7 @@ angular.module('searchApp')
           }, true);
 
           scope.view = function(data) {
-            if (data.isImage) {
-                ImageService.push(data);
-            } else {
-                $window.location = data.fullsize;
-            }
+              scope.imageData = data;
           }
 
       }

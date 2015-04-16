@@ -1,6 +1,9 @@
+<!-- overlay when image selected -->
+<view-one image-data="imageData"></view-one>
+
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <hr/>
+        <hr style="margin: 10px 0px;" />
     </div>
 </div>
 
@@ -18,8 +21,6 @@
                                 <p class="text-center">{{image.sequenceNo+1}}. {{image.name}}</p>
                                 <p class="text-center">
                                     <small>
-                                        <a href="" ng-click="view(image)">view image</a>
-                                        &nbsp;&dash;&nbsp;
                                         <a href="{{image.id}}">view page</a>
                                         &nbsp;&dash;&nbsp;
                                         <a href="" ng-click="showDetails = !showDetails">

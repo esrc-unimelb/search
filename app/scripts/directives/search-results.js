@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchResults', [ '$rootScope', '$window', 'SolrService', function ($rootScope, $window, SolrService) {
+  .directive('searchResults', [ '$rootScope', '$window', '$timeout', 'SolrService', 
+        function ($rootScope, $window, $timeout, SolrService) {
     return {
       templateUrl: 'views/search-results.html',
       restrict: 'E',
@@ -19,15 +20,15 @@ angular.module('searchApp')
           scope.$watch(function() { return SolrService.results.dateStamp;}, function() {
               // data updated - do fancy things
 
+              // save the data in scope
+              scope.results = SolrService.results;
+
               // but if any of the results has undefined for the thumbnail - ditch it
               var thumbs = _.groupBy(SolrService.results.docs, function(d) { return d.thumbnail; });
               scope.gridView = _.has(thumbs, 'undefined') ? false : true;
 
               // grab the filter object
               scope.filters = SolrService.getFilterObject();
-
-              // save the data in scope
-              scope.results = SolrService.results;
 
               // figure out what to do with pagination
               scope.togglePageControls();

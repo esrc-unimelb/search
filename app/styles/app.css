@@ -33,7 +33,10 @@ a:active  { color: #24658A; }
         animation: fadeIn 0.7s;
 }
 .provenance.ng-hide-remove {
-        animation: fadeIn 0.7s;
+        animation: fadeIn 0.5s;
+}
+.view-one.ng-enter {
+        animation: fadeIn 0.5s;
 }
 
 .section-heading {
@@ -41,4 +44,15 @@ a:active  { color: #24658A; }
     font-weight: 300; 
     text-rendering: optimizelegibility;
     margin: 10px 0px;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: #ccc;
+    opacity: 0.8;
 }
