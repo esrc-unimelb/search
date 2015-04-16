@@ -15,21 +15,6 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
           scope.searchType = {};
-
-          scope.$on('app-ready', function() {
-              // get the search fields from the SolrService
-              scope.searchFields = SolrService.query.searchFields;
-              _.each(scope.searchFields, function(d, i) {
-                  scope.searchFields[i].checked = true;
-              });
-
-              // set the search type based on the conf in solr service
-              scope.setSearchType(SolrService.query.searchType);
-
-              scope.selectAllToggle = false;
-              scope.selectNoneToggle = true;
-          });
-
           scope.$on('reset-all-filters', function() {
               scope.selectAll();
           })
@@ -112,6 +97,20 @@ angular.module('searchApp')
                   scope.selectNoneToggle = true;
               }
           }
+
+
+          // get the search fields from the SolrService
+          scope.searchFields = SolrService.query.searchFields;
+          _.each(scope.searchFields, function(d, i) {
+              scope.searchFields[i].checked = true;
+          });
+
+          // set the search type based on the conf in solr service
+          scope.setSearchType(SolrService.query.searchType);
+
+          scope.selectAllToggle = false;
+          scope.selectNoneToggle = true;
+
 
       }
     };

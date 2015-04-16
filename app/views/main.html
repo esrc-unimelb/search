@@ -87,9 +87,11 @@
                     </div>
                 </tab>
                 <tab heading="Controls" select="" active="tabs[1]">
-                    <search-controls></search-controls>
-                    <hr/>
-                    <button class="btn btn-sm btn-default" ng-click="search()">Update Search</button>
+                    <span ng-if="ready">
+                        <search-controls></search-controls>
+                        <hr/>
+                        <button class="btn btn-sm btn-default" ng-click="search()">Update Search</button>
+                    </span>
                 </tab>
             </tabset>
         </div>
