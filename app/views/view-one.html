@@ -21,10 +21,16 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 text-center">
                 <h4 class="section-heading">{{imageData.name}}</h4>
-                <small>by</small> {{imageData.creator}} ({{imageData.date}})
+
+                <span ng-if="imageData.creator">
+                    <small>by</small> {{imageData.creator}}
+                </span>
+                <span ng-if="imageData.date">
+                    ({{imageData.date}})
+                </span>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-if="imageData.rights">
             <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8 text-center">
                 {{imageData.rights}}
             </div>
