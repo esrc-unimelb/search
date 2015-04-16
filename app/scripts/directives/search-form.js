@@ -28,7 +28,7 @@ angular.module('searchApp')
               // args:
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
-              if (scope.searchBox === '') scope.searchBox = '*';
+              if (_.isEmpty(scope.searchBox)) scope.searchBox = '*';
               SolrService.query.term = scope.searchBox;
               SolrService.search(0, true);
           };
