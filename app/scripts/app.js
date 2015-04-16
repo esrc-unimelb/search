@@ -7,7 +7,7 @@ angular.module('searchApp', [
   'ngAnimate',
   'ui.bootstrap'
 ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -31,4 +31,8 @@ angular.module('searchApp', [
       .otherwise({
         redirectTo: '/'
       });
+
+      // enable html5 mode
+      $locationProvider.html5Mode(true).hashPrefix('!');
+
   });
