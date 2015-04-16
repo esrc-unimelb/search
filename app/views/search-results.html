@@ -44,10 +44,10 @@
     <div class="row" style="padding-bottom: 20px;">
         <!-- results panel -->
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <span ng-show="gridView">
-                <grid-view ng-model="results.docs"></grid-view>
+            <span ng-if="gridView">
+                <grid-view docs="results.docs"></grid-view>
             </span>
-            <span ng-show="!gridView">
+            <span ng-if="!gridView">
                 <div ng-repeat="doc in results.docs" class="row result-border">
                     <generic-result-display ng-model="doc"></generic-result-display>
                 </div>
