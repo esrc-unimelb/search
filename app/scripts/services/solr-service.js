@@ -18,7 +18,7 @@ angular.module('searchApp')
 
     // when the route changes, if we're not already initting
     //  wipe any saved state and kick off an init
-    $rootScope.$on('$locationChangeStart', function(e, n, o) {
+/*    $rootScope.$on('$locationChangeStart', function(e, n, o) {
         if (SolrService.appInit) {
             SolrService.appInit = false;
         } else {
@@ -28,6 +28,7 @@ angular.module('searchApp')
         //if (sessionStorage.getItem('preventReload')) e.preventDefault();
         //sessionStorage.removeItem('preventReload');
     });
+*/
 
     /** 
     * @ngdoc function 
