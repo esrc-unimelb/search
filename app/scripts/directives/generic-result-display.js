@@ -20,6 +20,7 @@ angular.module('searchApp')
           'data': '=ngModel',
       },
       link: function postLink(scope, element, attrs) {
+          scope.showImage = false;
           scope.showProvenance = false;
 
           // determine the source url to use for the record
@@ -36,8 +37,6 @@ angular.module('searchApp')
           }
 
           scope.view = function() {
-              // pop the image data into the service
-              ImageService.push(scope.data);
           }
       }
     };
