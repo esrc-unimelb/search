@@ -19,7 +19,8 @@ angular.module('searchApp')
     // when the route changes, if we're not already initting
     //  wipe any saved state and kick off an init
     $rootScope.$on('$locationChangeStart', function(e, n, o) {
-        if (SolrService.appInit) {
+        if (SolrService.appInit || $location.hash() === 'view') {
+            // do nothing
             SolrService.appInit = false;
         } else {
             SolrService.appInit = false;
