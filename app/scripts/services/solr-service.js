@@ -19,13 +19,18 @@ angular.module('searchApp')
     // when the route changes, if we're not already initting
     //  wipe any saved state and kick off an init
     $rootScope.$on('$locationChangeStart', function(e, n, o) {
-        if (SolrService.appInit || $location.hash() === 'view') {
-            // do nothing
-            SolrService.appInit = false;
+        if (SolrService.appInit || n.match('#view')) {
+            // if application initialising or we're loading a view
+            // --> do nothing
+        } else if (!n.match('#view') && o.match('#view')) {
+            // if we're unloading a view and going back
+            // --> also do nothing
         } else {
-            SolrService.appInit = false;
+            // otherwise initialise the app
             SolrService.init();
         }
+        // and remove the initialisation flag if set
+        SolrService.appInit = false;
     });
 
     /** 
