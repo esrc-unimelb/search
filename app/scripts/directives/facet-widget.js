@@ -95,8 +95,8 @@ angular.module('searchApp')
                     'width': w,
                     'z-index': '20',
                     'background-color': 'white',
-                    'border': '1px solid grey',
-                    'border-radius': '8px',
+                    'border': '1px solid #ccc',
+                    'box-shadow': '5px 5px 4px #888888',
                     'padding': '15px'
                 }
                 scope.underlay = {
