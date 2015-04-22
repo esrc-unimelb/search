@@ -37,8 +37,12 @@ angular.module('searchApp')
           }
 
           // is this an entity that can be visualised by connex?
-          if (scope.data.data_type === 'OHRM' && scope.data.main_type === undefined) {
-              if (_.has(SolrService.configuration.connexSites, scope.data.site_code)) scope.networkView = true;
+          if (scope.data.data_type === 'OHRM') { 
+            if (scope.data.main_type === undefined) {
+              if (_.has(SolrService.configuration.connexSites, scope.data.site_code)) { 
+                if (scope.data.type !== 'Text') scope.networkView = true;
+              }
+            }
           }
 
           scope.viewImageSet = function() {
