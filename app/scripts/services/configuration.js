@@ -8,6 +8,7 @@
  */
 angular.module('searchApp')
   .constant('Configuration', {
+      "debug":                    true,
       "production":               "https://solr.esrc.unimelb.edu.au",
       "testing":                  "https://data.esrc.info/solr",
       "deployment":               "production",
