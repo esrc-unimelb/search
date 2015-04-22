@@ -12,6 +12,8 @@ angular.module('searchApp')
       "production":               "https://solr.esrc.unimelb.edu.au",
       "testing":                  "https://data.esrc.info/solr",
       "deployment":               "production",
+      "connex":                   "https://connex.esrc.unimelb.edu.au/#/entity",
+      "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
       "site":                     "ESRC",
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",

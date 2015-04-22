@@ -74,6 +74,7 @@ angular.module('searchApp')
         $log.info('######### APPLICATION INITIALISED');
         $log.info('#########');
 
+
         var site;
         if (configuration != undefined) {
             // use external configuration
@@ -118,6 +119,9 @@ angular.module('searchApp')
         $log.debug('Searching: ' + SolrService.query.site);
         $log.debug('Query object at initialisation', SolrService.query);
         $log.debug('Configuration object at initialisation', SolrService.configuration);
+
+        // get the sites in connex
+        getConnexSites();
 
         // Broadcast ready to go
         $timeout(function() {
@@ -694,6 +698,21 @@ angular.module('searchApp')
 
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:getConnexSites
+     * @description
+     *    Get the list of site enabled in connex.
+     *
+    */
+    function getConnexSites() {
+        $http.get(SolrService.configuration.connexBackend).then(function(resp) {
+            SolrService.configuration.connexSites = resp.data.sites;
+        },
+        function() {
+            SolrService.configuration.connexSites = [];
+        });
+    }
 
     var SolrService = {
         // the query object - all bits of the query are stored here

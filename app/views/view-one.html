@@ -4,7 +4,7 @@
 
 <!-- the actual content container -->
 <div ng-if="showImage" class="view-one" 
-    style="position: fixed; left: 5%; top: 2%; height: 90%; width: 90%; z-index: 20; background-color: #aec6cf; border-radius: 4px; box-shadow: 5px 5px 4px #888888;">
+    style="position: fixed; left: 5%; top: 2%; height: 90%; width: 90%; z-index: 20; background-color: #aec6cf; box-shadow: 5px 5px 4px #888888;">
 
     <!-- the image container -->
     <div style="position: relative; top: 2%; left: 0; height: 80%; width: 100%">
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="row" ng-if="imageData.rights">
-            <div class="col-sm-offset-2 col-sm-8 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6 text-center">
+            <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8 text-center">
                 {{imageData.rights}}
             </div>
         </div>

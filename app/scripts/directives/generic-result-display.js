@@ -11,7 +11,7 @@
  * @param {expression} data - The result data.
  */
 angular.module('searchApp')
-  .directive('genericResultDisplay', [ '$log', function ($log) {
+  .directive('genericResultDisplay', [ '$log', 'SolrService', function ($log, SolrService) {
     return {
       templateUrl: 'views/generic-result-display.html',
       restrict: 'E',
@@ -20,6 +20,8 @@ angular.module('searchApp')
       },
       link: function postLink(scope, element, attrs) {
           scope.showProvenance = false;
+          scope.networkView = false;
+          scope.imageSet = false;
 
           // determine the source url to use for the record
           if (scope.data.display_url !== undefined) {
@@ -34,8 +36,16 @@ angular.module('searchApp')
             scope.imageCount = scope.data.small_images.length;
           }
 
-          scope.viewSet = function() {
+          // is this an entity that can be visualised by connex?
+          if (scope.data.data_type === 'OHRM' && scope.data.main_type === undefined) {
+              if (_.has(SolrService.configuration.connexSites, scope.data.site_code)) scope.networkView = true;
+          }
+
+          scope.viewImageSet = function() {
               scope.imageSetData = scope.data;
+          }
+          scope.viewNetwork = function() {
+              scope.networkData = scope.data;
           }
       }
     };
