@@ -11,8 +11,7 @@
  * @param {expression} data - The result data.
  */
 angular.module('searchApp')
-  .directive('genericResultDisplay', [ '$rootScope', '$location', 'SolrService', 'ImageService', 
-    function ($rootScope, $location, SolrService, ImageService) {
+  .directive('genericResultDisplay', [ '$log', function ($log) {
     return {
       templateUrl: 'views/generic-result-display.html',
       restrict: 'E',
@@ -20,7 +19,6 @@ angular.module('searchApp')
           'data': '=ngModel',
       },
       link: function postLink(scope, element, attrs) {
-          scope.showImage = false;
           scope.showProvenance = false;
 
           // determine the source url to use for the record
@@ -36,7 +34,8 @@ angular.module('searchApp')
             scope.imageCount = scope.data.small_images.length;
           }
 
-          scope.view = function() {
+          scope.viewSet = function() {
+              scope.imageSetData = scope.data;
           }
       }
     };
