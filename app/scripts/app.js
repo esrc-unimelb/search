@@ -14,11 +14,11 @@ angular.module('searchApp', [
         controller: 'MainCtrl',
         reloadOnSearch: false,
       })
-//      .when('/:site', {
-//        templateUrl: 'views/main.html',
-//        controller: 'MainCtrl',
-//        reloadOnSearch: false,
-//      })
+      .when('/:site', {
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl',
+        reloadOnSearch: false,
+      })
       .when('/embed', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',

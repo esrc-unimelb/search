@@ -18,17 +18,14 @@ angular.module('searchApp')
 
     // when the route changes, if we're not already initting
     //  wipe any saved state and kick off an init
-/*    $rootScope.$on('$locationChangeStart', function(e, n, o) {
+    $rootScope.$on('$locationChangeStart', function(e, n, o) {
         if (SolrService.appInit) {
             SolrService.appInit = false;
         } else {
             SolrService.appInit = false;
             SolrService.init();
         }
-        //if (sessionStorage.getItem('preventReload')) e.preventDefault();
-        //sessionStorage.removeItem('preventReload');
     });
-*/
 
     /** 
     * @ngdoc function 
@@ -47,6 +44,7 @@ angular.module('searchApp')
     *
     */
     function init() {
+
         // do we need to load an external config or use the app in built configuration?
         var params = $location.search();
         if (params.config) {
@@ -87,41 +85,38 @@ angular.module('searchApp')
 
             // if site is defined in the route params, use it in preference
             //  to the site defined in the internal configuration
-            if ($routeParams.site === undefined || $routeParams.site === 'embed') {
-                site = configuration.site;
-            } else {
-                site = $routeParams.site;
-            }
+            site = configuration.site;
+            if ($routeParams.site !== undefined && $routeParams.site !== 'embed') site = $routeParams.site;
         }
 
-        // now actually configure this instance
-        SolrService.configuration = configuration;
-        SolrService.site = site;
-        initialiseQueryObject(configuration, site);
-        $log.debug('Searching: ' + SolrService.query.site);
-        //$log.debug('Query object at initialisation', SolrService.query);
 
         // url search parameters override saved queries
         if (_.isEmpty($location.search())) {
             var q = SolrService.loadData();
             if (q) { 
-                initAppFromSavedData();
-                if (SolrService.query.site !== configuration.site) {
-                    initialiseQueryObject(configuration, configuration.site);
+                var savedData = initAppFromSavedData();
+                if (savedData.configuration.site === site) {
+                    SolrService.query = savedData.query;
+                    SolrService.configuration = savedData.configuration;
+                    SolrService.site = savedData.configuration.site;
+                } else {
                     $log.info("Site stored in saved data doesn't match incoming config.")
-                    initCurrentInstance;
+                    sessionStorage.removeItem('cq');
+                    initCurrentInstance(configuration, site);
                 }
 
             } else {
                 $log.info("Unable to initialise from saved data.")
-                initCurrentInstance();
+                initCurrentInstance(configuration, site);
             }
         } else {
-            sessionStorage.removeItem('cq');
-            
             // initialise the application
-            initCurrentInstance();
+            initCurrentInstance(configuration, site);
         } 
+
+        $log.debug('Searching: ' + SolrService.query.site);
+        $log.debug('Query object at initialisation', SolrService.query);
+        $log.debug('Configuration object at initialisation', SolrService.configuration);
 
         // Broadcast ready to go
         $timeout(function() {
@@ -133,15 +128,16 @@ angular.module('searchApp')
     }
 
     function initialiseQueryObject(configuration, site) {
-        if (!configuration) configuration = SolrService.configuration;
-        if (!site) site = SolrService.site;
+        if (configuration) SolrService.configuration = angular.copy(configuration);
+        if (site) SolrService.configuration.site = site;
+
         SolrService.query = {};
-        SolrService.query.site = site;
-        SolrService.query.solr = configuration[conf.deployment] + '/' + site + '/select';
-        SolrService.query.searchFields = configuration.searchFields;
+        SolrService.query.site = SolrService.configuration.site;
+        SolrService.query.solr = SolrService.configuration[conf.deployment] + '/' + SolrService.configuration.site + '/select';
+        SolrService.query.searchFields = SolrService.configuration.searchFields;
         SolrService.query.searchWhat = _.keys(SolrService.query.searchFields);
-        SolrService.query.searchType = configuration.searchType;
-        SolrService.query.searchTypeKeywordUnion = configuration.searchTypeKeywordUnion;
+        SolrService.query.searchType = SolrService.configuration.searchType;
+        SolrService.query.searchTypeKeywordUnion = SolrService.configuration.searchTypeKeywordUnion;
         SolrService.query.term = '*';
         SolrService.query.filters = {};
         SolrService.query.dateFilters = {};
@@ -165,16 +161,18 @@ angular.module('searchApp')
      */
     function initAppFromSavedData() {
         $log.info('Initialising app from saved data');
-        var data = SolrService.loadData();
-        SolrService.query = data.query;
+        return SolrService.loadData();
     }
 
     /**
      * @ngdoc function
      * @name initCurrentInstance
      */
-    function initCurrentInstance() {
+    function initCurrentInstance(configuration, site) {
         $log.info('Bootstrapping app');
+
+        // now actually initialise this instance
+        initialiseQueryObject(configuration, site);
 
         // set a flag to say we're currently initting
         SolrService.appInit = true;
@@ -186,21 +184,29 @@ angular.module('searchApp')
 
         // strip terms and config if set in the url
         if (params.q) delete params.q;
-        if (params.config) delete params.config;
+        if (params.config) {
+            var config = params.config;
+            delete params.config;
+        }
 
         // set the various facets defined in the URI
         angular.forEach(params, function(v,k) {
             if (typeof(v) === 'object') {
                 for (var i=0; i < v.length ; i++) {
-                    SolrService.query.filterQuery(k, v[i], true);
+                    SolrService.filterQuery(k, v[i], true);
                 }
             } else {
-                SolrService.query.filterQuery(k, v, true);
+                SolrService.filterQuery(k, v, true);
             }
         });
 
         // wipe the location params
-        $location.search({}).replace();
+        if (config) {
+            $location.search({'config': config}).replace();
+        } else {
+            $location.search({}).replace();
+        }
+
     }
 
     /**
@@ -284,9 +290,10 @@ angular.module('searchApp')
         var currentQuery = {
             'date': Date.now(),
             'query': SolrService.query,
+            'configuration': SolrService.configuration
         }
         $log.debug('Storing the current query: ' + currentQuery.date);
-        //$log.debug(currentQuery);
+        $log.debug(currentQuery);
         sessionStorage.setItem('cq', angular.toJson(currentQuery));
     }
 
@@ -714,4 +721,4 @@ angular.module('searchApp')
         compileDateFacets: compileDateFacets,
     };
     return SolrService;
-  }]);
+  }])
