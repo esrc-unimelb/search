@@ -55,7 +55,8 @@ angular.module('searchApp')
         var params = $location.search();
         if (params.config) {
             // if a config file is referenced in the url; load it
-            $http.get(params.config).then(function(resp) {
+            var curl = 'site_configs/' + params.config + '.js';
+            $http.get(curl).then(function(resp) {
                 // got it - save it and use it
                 $log.info('Loading external configuration.');
                 return go(resp.data);
