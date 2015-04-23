@@ -73,6 +73,7 @@
 		container: '',								//Set container element of image (id of container)
 		
 		on_IMAGE_LOAD: '',							//To Call external function immediatly after image loaded
+		on_ZOOM_PAN_START: '',						//To Call external function immediately before zoom, pan 
 		on_ZOOM_PAN_UPDATE: '',						//To Call external function for each zoom, pan animation frame
 		on_ZOOM_PAN_COMPLETE: '',					//To Call external function whenever zoom, pan animation completes
 		on_LANDMARK_STATE_CHANGE: '',				//To Call external function whenever the zoom leval crosses global "data-show-at-zoom" value
@@ -153,6 +154,7 @@
 		this.h_max = op.max_HEIGHT;
 		
 		this.onLOAD = op.on_IMAGE_LOAD;
+		this.onSTART = op.on_ZOOM_PAN_START;
 		this.onUPDATE = op.on_ZOOM_PAN_UPDATE;
 		this.onZOOM_PAN = op.on_ZOOM_PAN_COMPLETE;
 		this.onLANDMARK = op.on_LANDMARK_STATE_CHANGE;
@@ -1557,6 +1559,13 @@
 			self.cFlag._nd = true;
 			self.ani_end = false;
 			
+            if (!self.started || self.started === undefined) {
+                if (self.onSTART ) {
+                    self.started = true;
+                    self.onSTART ();
+                }
+            }
+
 			//Zoom In
 			if (self.cFlag._zi) {
 				if (!self._wheel && !self.zoom_single) {

@@ -1,6 +1,6 @@
 /**
  * angular-strap
- * @version v2.1.4 - 2014-11-26
+ * @version v2.2.1 - 2015-03-10
  * @link http://mgcrea.github.io/angular-strap
  * @author Olivier Louvignes (olivier@mg-crea.com)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -47,6 +47,11 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
           options.container = 'body';
         }
 
+        // store $id to identify the triggering element in events
+        // give priority to options.id, otherwise, try to use
+        // element id if defined
+        $modal.$id = options.id || options.element && options.element.attr('id') || '';
+
         // Support scope as string options
         forEach(['title', 'content'], function(key) {
           if(options[key]) scope[key] = $sce.trustAsHtml(options[key]);
@@ -68,6 +73,8 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
             $modal.toggle();
           });
         };
+        // Publish isShown as a protected var on scope
+        $modal.$isShown = scope.$isShown = false;
 
         // Support contentTemplate option
         if(options.contentTemplate) {
@@ -86,6 +93,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
         // Fetch, compile then initialize modal
         var modalLinker, modalElement;
         var backdropElement = angular.element('<div class="' + options.prefixClass + '-backdrop"/>');
+        backdropElement.css({position:'fixed', top:'0px', left:'0px', bottom:'0px', right:'0px', 'z-index': 1038});
         $modal.$promise.then(function(template) {
           if(angular.isObject(template)) template = template.data;
           if(options.html) template = template.replace(htmlReplaceRegExp, 'ng-bind-html="');
@@ -123,11 +131,8 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
         };
 
         $modal.show = function() {
-          if(scope.$isShown) return;
+          if($modal.$isShown) return;
 
-          if(scope.$emit(options.prefixEvent + '.show.before', $modal).defaultPrevented) {
-            return;
-          }
           var parent, after;
           if(angular.isElement(options.container)) {
             parent = options.container;
@@ -144,6 +149,10 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
 
           // Fetch a cloned element linked from template
           modalElement = $modal.$element = modalLinker(scope, function(clonedElement, scope) {});
+
+          if(scope.$emit(options.prefixEvent + '.show.before', $modal).defaultPrevented) {
+            return;
+          }
 
           // Set the initial positioning.
           modalElement.css({display: 'block'}).addClass(options.placement);
@@ -182,6 +191,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
           if(options.backdrop) {
             modalElement.on('click', hideOnBackdropClick);
             backdropElement.on('click', hideOnBackdropClick);
+            backdropElement.on('wheel', preventEventDefault);
           }
           if(options.keyboard) {
             modalElement.on('keyup', $modal.$onKeyUp);
@@ -193,7 +203,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
         }
 
         $modal.hide = function() {
-          if(!scope.$isShown) return;
+          if(!$modal.$isShown) return;
 
           if(scope.$emit(options.prefixEvent + '.hide.before', $modal).defaultPrevented) {
             return;
@@ -213,6 +223,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
           if(options.backdrop) {
             modalElement.off('click', hideOnBackdropClick);
             backdropElement.off('click', hideOnBackdropClick);
+            backdropElement.off('wheel', preventEventDefault);
           }
           if(options.keyboard) {
             modalElement.off('keyup', $modal.$onKeyUp);
@@ -229,7 +240,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
 
         $modal.toggle = function() {
 
-          scope.$isShown ? $modal.hide() : $modal.show();
+          $modal.$isShown ? $modal.hide() : $modal.show();
 
         };
 
@@ -241,7 +252,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
 
         $modal.$onKeyUp = function(evt) {
 
-          if (evt.which === 27 && scope.$isShown) {
+          if (evt.which === 27 && $modal.$isShown) {
             $modal.hide();
             evt.stopPropagation();
           }
@@ -253,6 +264,10 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
         function hideOnBackdropClick(evt) {
           if(evt.target !== evt.currentTarget) return;
           options.backdrop === 'static' ? $modal.focus() : $modal.hide();
+        }
+
+        function preventEventDefault(evt) {
+          evt.preventDefault();
         }
 
         return $modal;
@@ -272,13 +287,8 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
       var fetchPromises = {};
       function fetchTemplate(template) {
         if(fetchPromises[template]) return fetchPromises[template];
-        return (fetchPromises[template] = $q.when($templateCache.get(template) || $http.get(template))
-        .then(function(res) {
-          if(angular.isObject(res)) {
-            $templateCache.put(template, res.data);
-            return res.data;
-          }
-          return res;
+        return (fetchPromises[template] = $http.get(template, {cache: $templateCache}).then(function(res) {
+          return res.data;
         }));
       }
 
@@ -297,9 +307,19 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
 
         // Directive options
         var options = {scope: scope, element: element, show: false};
-        angular.forEach(['template', 'contentTemplate', 'placement', 'backdrop', 'keyboard', 'html', 'container', 'animation'], function(key) {
+        angular.forEach(['template', 'contentTemplate', 'placement', 'container', 'animation', 'id'], function(key) {
           if(angular.isDefined(attr[key])) options[key] = attr[key];
         });
+
+        // use string regex match for boolean values
+        var falseValueRegExp = /^(false|0|)$/;
+        angular.forEach(['keyboard', 'html'], function(key) {
+          if(angular.isDefined(attr[key])) options[key] = !falseValueRegExp.test(attr[key]);
+        });
+
+        if(angular.isDefined(attr.backdrop)) {
+          options.backdrop = falseValueRegExp.test(attr.backdrop) ? false : attr.backdrop;
+        }
 
         // Support scope as data-attrs
         angular.forEach(['title', 'content'], function(key) {
