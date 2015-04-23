@@ -1,8 +1,15 @@
 <div ng-if="showNetwork" class="background-overlay" ng-click="close()"></div>
 
 <div ng-if="showNetwork" class="view-one"
-    style="position: fixed; left: 2%; top: 2%; height: 96%; width: 96%; z-index: 20; border-radius: 4px; box-shadow: 5px 5px 4px #888888;">
+    style="position: fixed; left: 2%; top: 2%; height: 96%; width: 96%; z-index: 20; border-radius: 4px; box-shadow: 5px 5px 4px #888888; background-color: white;">
 
-    <iframe src="{{link}}" style='border:0; width: 100%; height: 100%;' seamless='true' ></iframe>
+    <iframe src="{{link}}" style='border:0; width: 100%; height: 97%;' seamless='true' ></iframe>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+            <a href="{{link}}" target="_blank">open network in new window</a>
+            &nbsp;&dash;&nbsp;
+            <a href="" ng-click="close()">close</a>
+        </div>
+    </div>
 </div>
 
