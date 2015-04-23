@@ -28,8 +28,19 @@ angular.module('searchApp')
               // args:
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
+
+              // ensure the search box has something in it and then set it in the solrservice
               if (_.isEmpty(scope.searchBox)) scope.searchBox = '*';
               SolrService.query.term = scope.searchBox;
+
+              // if the search box is not wildcard, set the solr service to sort descending
+              if (SolrService.query.term === '*') {
+                  SolrService.query.sort = 'name_sort asc';
+              } else {
+                  SolrService.query.sort = 'score desc';
+              }
+
+              // kick off the search
               SolrService.search(0, true);
           };
 
