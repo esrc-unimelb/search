@@ -22,15 +22,17 @@ angular.module('searchApp')
         if (SolrService.appInit || n.match('#view')) {
             // if application initialising or we're loading a view
             // --> do nothing
+            // and remove the initialisation flag if set
+            SolrService.appInit = false;
         } else if (!n.match('#view') && o.match('#view')) {
             // if we're unloading a view and going back
             // --> also do nothing
+            // and remove the initialisation flag if set
+            SolrService.appInit = false;
         } else {
             // otherwise initialise the app
             SolrService.init();
         }
-        // and remove the initialisation flag if set
-        SolrService.appInit = false;
     });
 
     /** 
@@ -50,7 +52,6 @@ angular.module('searchApp')
     *
     */
     function init() {
-
         // do we need to load an external config or use the app in built configuration?
         var params = $location.search();
         if (params.config) {
