@@ -24,6 +24,13 @@ angular.module('searchApp')
               scope.searchBox = '*';
           });
 
+          // the suggester can also trigger a search so we need to listen on
+          //  search results updated and ensure the search box has the updated
+          //  query term.
+          scope.$on('search-results-updated', function() {
+              scope.searchBox = SolrService.query.term;
+          });
+
           scope.search = function() {
               // args:
               // - start: 0 (record to start at)

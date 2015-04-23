@@ -54,7 +54,8 @@ angular.module('searchApp')
           })
 
           scope.setSuggestion = function(suggestion) {
-              SolrService.search(suggestion, 0, true);
+              SolrService.query.term = suggestion;
+              SolrService.search(0, true);
           }
 
           scope.nextPage = function() {

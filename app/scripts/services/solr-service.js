@@ -218,7 +218,6 @@ angular.module('searchApp')
         } else {
             $location.search({}).replace();
         }
-
     }
 
     /**
@@ -347,15 +346,15 @@ angular.module('searchApp')
             // Note: when filters are in play we can't re-run search as the set might return no
             //  result and we'll end up in an infinite search loop
 
-            if (d.data.response.numFound === 0 && _.isEmpty(SolrService.query.filters)) {
-                /*
+            if (d.data.response.numFound === 0 && _.isEmpty(SolrService.query.filters) && _.isEmpty(SolrService.query.dateFilters)) {
                 // no matches - do a spell check and run a fuzzy search 
                 //  ONLY_IF it's a single word search term
                 if (SolrService.query.term.split(' ').length === 1) {
                     suggest(SolrService.query.term);
                     if (SolrService.query.term !== '*') {
                         if (SolrService.query.term.substr(-1,1) !== '~') {
-                            search(SolrService.query.term + '~', 0, false);
+                            SolrService.query.term = SolrService.query.term + '~';
+                            search(0, false);
                         }
                     }
                 } else {
@@ -364,8 +363,6 @@ angular.module('searchApp')
                     saveData(undefined);
 
                 }
-                */
-                saveData(d);
             } else {
                 // all good - results found
                 saveData(d);
@@ -386,7 +383,7 @@ angular.module('searchApp')
     function suggest(what) {
         var q;
         q = {
-            'url': SolrService.solr,
+            'url': SolrService.query.solr,
             'params': {
                 'q': 'name:' + what,
                 'rows': 0,
@@ -398,7 +395,7 @@ angular.module('searchApp')
         //$log.debug('Suggest: ');
         //$log.debug(q);
 
-        $http.jsonp(SolrService.solr, q).then(function(d) {
+        $http.jsonp(SolrService.query.solr, q).then(function(d) {
             SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
             $rootScope.$broadcast('search-suggestion-available');
         });
