@@ -1,8 +1,11 @@
 {
-      "production":               "https://solr.esrc.unimelb.edu.au",
-      "testing":                  "https://data.esrc.info/solr",
-      "deployment":               "production",
       "site":                     "EOAS",
+      "deployment":               "production",
+      "debug":                    false;
+      "testing":                  "https://data.esrc.info/solr",
+      "production":               "https://solr.esrc.unimelb.edu.au",
+      "connex":                   "https://connex.esrc.unimelb.edu.au/#/entity",
+      "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",
       "datasetStart":             "1600-01-01T00:00:00Z",
