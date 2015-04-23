@@ -1,5 +1,5 @@
 {
-      "site":                     "EOAS",
+      "site":                     "SAUL",
       "deployment":               "production",
       "debug":                    false,
       "testing":                  "https://data.esrc.info/solr",
@@ -8,7 +8,7 @@
       "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",
-      "datasetStart":             "1600-01-01T00:00:00Z",
+      "datasetStart":             "1700-01-01T00:00:00Z",
       "datasetEnd":               "2014-12-31T23:59:59Z",
 
       "searchFields": {
@@ -20,8 +20,7 @@
 
       "facetWidgets": [
           { "facetField": "type",       "label": "Entity Type",     "join": "OR" },
-          { "facetField": "function",   "label": "Entity Function", "join": "AND" },
-          { "facetField": "repository", "label": "Repository",      "join": "OR" }
+          { "facetField": "function",   "label": "Entity Function", "join": "AND" }
       ],
 
       "dateFacetWidgets": [
