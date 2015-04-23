@@ -24,6 +24,10 @@ angular.module('searchApp', [
         controller: 'MainCtrl',
         reloadOnSearch: false,
       })
+      .when('/bad/device-or-browser', {
+        templateUrl: 'views/uhoh.html',
+        controller: '',
+      })
 //      .when('/view', {
 //        templateUrl: 'views/image-view.html',
 //        controller: 'ImageViewCtrl'
