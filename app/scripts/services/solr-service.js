@@ -97,9 +97,9 @@ angular.module('searchApp')
             if ($routeParams.site !== undefined && $routeParams.site !== 'embed') site = $routeParams.site;
         }
 
-
         // url search parameters override saved queries
-        if (_.isEmpty($location.search())) {
+        //  although: if the search param is config - try to load saved data first
+        if (_.isEmpty($location.search()) || _.has($location.search(), 'config')) {
             var q = SolrService.loadData();
             if (q) { 
                 var savedData = initAppFromSavedData();
