@@ -2,6 +2,7 @@
     <div class="col-sm-12 col-md-12 col-lg-12">
         {{data.sequenceNo + 1}}.&nbsp;
         <span class="glyphicon glyphicon-book"></span> Publication - {{data.type}}</span>
+        <span class="pull-right">{{data.site_name}} {{data.state_long}}</span>
     </div>
 </div>
 <div class="row">
@@ -19,7 +20,6 @@
         </span>
     </div>
 </div>
-<br/>
 <span ng-switch on="data.pub_type">
 
     <!-- render a Newspaper Article -->
@@ -37,15 +37,7 @@
                 <strong class="pull-right">In</strong>
             </div>
             <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.in | valueOrDash}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <strong class="pull-right">Imprint</strong>
-            </div>
-            <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.imprint | valueOrDash}}
+                {{data.in | valueOrDash}}<span ng-if="data.in">;</span> {{data.imprint | valueOrDash}}
             </div>
         </div>
         <div class="row">
@@ -73,15 +65,7 @@
                 <strong class="pull-right">In</strong>
             </div>
             <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.in | valueOrDash}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <strong class="pull-right">Imprint</strong>
-            </div>
-            <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.imprint | valueOrDash}}
+                {{data.in | valueOrDash}}<span ng-if="data.in">;</span> {{data.imprint | valueOrDash}}
             </div>
         </div>
         <div class="row">
@@ -109,15 +93,7 @@
                 <strong class="pull-right">In</strong>
             </div>
             <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.in | valueOrDash}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <strong class="pull-right">Imprint</strong>
-            </div>
-            <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.imprint | valueOrDash}}
+                {{data.in | valueOrDash}}<span ng-if="data.in">;</span> {{data.imprint | valueOrDash}}
             </div>
         </div>
         <div class="row">
@@ -285,15 +261,7 @@
                 <strong class="pull-right">In</strong>
             </div>
             <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.in | valueOrDash}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <strong class="pull-right">Imprint</strong>
-            </div>
-            <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.imprint | valueOrDash}}
+                {{data.imprint | valueOrDash}}<span ng-if="data.in">;</span> {{data.in | valueOrDash}}
             </div>
         </div>
         <div class="row">
@@ -321,15 +289,7 @@
                 <strong class="pull-right">In</strong>
             </div>
             <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.in | valueOrDash}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <strong class="pull-right">Imprint</strong>
-            </div>
-            <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.imprint | valueOrDash}}
+                {{data.imprint | valueOrDash}}<span ng-if="data.in">;</span> {{data.in | valueOrDash}}
             </div>
         </div>
         <div class="row">
@@ -461,15 +421,7 @@
                 <strong class="pull-right">In</strong>
             </div>
             <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.in | valueOrDash}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <strong class="pull-right">Imprint</strong>
-            </div>
-            <div class="col-sm-10 col-md-10 col-lg-10">
-                {{data.imprint | valueOrDash}}
+                {{data.imprint | valueOrDash}}<span ng-if="data.in">;</span> {{data.in | valueOrDash}}
             </div>
         </div>
         <div class="row">

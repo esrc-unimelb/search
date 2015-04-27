@@ -21,22 +21,30 @@
             </span>
         </div>
         <div class="col-sm-2 col-md-2 col-lg-2">
+            <a class="btn btn-default" href="http://www.findandconnect.gov.au/help/new-search/">Search Tips</a>
+            <!--
             <button class="btn btn-default btn-sm" ng-click="showFilters = !showFilters">
                 <span ng-hide="showFilters">View Filters</span>
                 <span ng-show="showFilters">Hide Filters</span>
             </button>
+            -->
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
+            <div class="notice">
+                Some people may find content on this website distressing. <a href="/content-warning/">Read more</a>
+            </div>
         </div>
     </div>
 
+    <!-- filters and controls 
     <div class="row well" ng-show="showFilters" style="margin: 5px;">
-        <!-- filters and controls -->
         <span ng-if="filters.length === 0">No filters applied.</span>
         <span ng-if="filters.length > 0">Filters are combined with 'AND'.</span>
             <ul>
                 <li ng-repeat="filter in filters">{{filter | dateFilterPrettifier}}</li>
             </ul>
-        <!-- end filters and controls -->
     </div>
+    end filters and controls -->
 
     <div class="row" style="padding-bottom: 20px;">
         <!-- results panel -->

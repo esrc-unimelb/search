@@ -15,7 +15,8 @@
  *
  */
 angular.module('searchApp')
-  .directive('facetWidget', [ 'SolrService', 'Configuration', function (SolrService, conf) {
+  .directive('facetWidget', [ 'SolrService', 'Configuration', '$location', '$anchorScroll', 
+        function (SolrService, conf, $location, $anchorScroll) {
     return {
         templateUrl: 'views/facet-widget.html',
         restrict: 'E',
@@ -167,6 +168,11 @@ angular.module('searchApp')
         
             scope.facet = function(facet) {
                 SolrService.filterQuery(scope.facetField, facet);
+                var o = $location.hash();
+                $location.hash('top_' + scope.facetField);
+                $anchorScroll();
+                $location.hash(o);
+
             };
 
             scope.pageForward = function() {
