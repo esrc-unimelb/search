@@ -6,6 +6,7 @@
       "production":               "https://solr.esrc.unimelb.edu.au",
       "connex":                   "https://connex.esrc.unimelb.edu.au/#/entity",
       "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
+      "disableConnex":            "true",
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",
       "datasetStart":             "1600-01-01T00:00:00Z",
@@ -26,15 +27,18 @@
 
       "dateFacetWidgets": [
           { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "1", 
-            "label": "1700 - 1800", "start": "1700", "end": "1799", "interval": "10" },
+            "label": "1600 - 1699", "start": "1600", "end": "1699", "interval": "10" },
 
           { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "2", 
-            "label": "1800 - 1900", "start": "1800", "end": "1899", "interval": "10" },
+            "label": "1700 - 1800", "start": "1700", "end": "1799", "interval": "10" },
 
           { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "3", 
-            "label": "1900 - 2000", "start": "1900", "end": "1999", "interval": "10" },
+            "label": "1800 - 1900", "start": "1800", "end": "1899", "interval": "10" },
 
           { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "4", 
+            "label": "1900 - 2000", "start": "1900", "end": "1999", "interval": "10" },
+
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "5", 
             "label": "2000 - present day", "start": "2000", "interval": "5" }
 
       ]

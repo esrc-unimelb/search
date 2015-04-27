@@ -1,11 +1,12 @@
 {
-      "site":                     "SAUL",
+      "site":                     "MODC",
       "deployment":               "production",
       "debug":                    false,
       "testing":                  "https://data.esrc.info/solr",
       "production":               "https://solr.esrc.unimelb.edu.au",
       "connex":                   "https://connex.esrc.unimelb.edu.au/#/entity",
       "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
+      "disableConnex":            "true",
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",
       "datasetStart":             "1900-01-01T00:00:00Z",
@@ -19,19 +20,13 @@
       },
 
       "facetWidgets": [
-          { "facetField": "type",       "label": "Entity Type",     "join": "OR" },
-          { "facetField": "function",   "label": "Poll Topic", "join": "AND" }
+          { "facetField": "type",       "label": "Entity Type",         "join": "OR" },
+          { "facetField": "function",   "label": "Traits and Keywords", "join": "AND" }
       ],
 
       "dateFacetWidgets": [
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "1",
-            "label": "1800 - 1899", "start": "1800", "end": "1899", "interval": "50" },
-
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "2",
-            "label": "1900 - 1969", "start": "1900", "end": "1969", "interval": "10" },
-
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "3",
-            "label": "1970 - present day", "start": "1970", "interval": "5" }
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "1", 
+            "label": "1900 - present day", "start": "1900", "interval": "5" }
 
       ]
 

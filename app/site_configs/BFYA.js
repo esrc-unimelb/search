@@ -1,5 +1,5 @@
 {
-      "site":                     "SAUL",
+      "site":                     "BFYA",
       "deployment":               "production",
       "debug":                    false,
       "testing":                  "https://data.esrc.info/solr",
@@ -19,19 +19,12 @@
       },
 
       "facetWidgets": [
-          { "facetField": "type",       "label": "Entity Type",     "join": "OR" },
-          { "facetField": "function",   "label": "Poll Topic", "join": "AND" }
+          { "facetField": "type",       "label": "Entity Type",     "join": "OR" }
       ],
 
       "dateFacetWidgets": [
           { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "1",
-            "label": "1800 - 1899", "start": "1800", "end": "1899", "interval": "50" },
-
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "2",
-            "label": "1900 - 1969", "start": "1900", "end": "1969", "interval": "10" },
-
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "3",
-            "label": "1970 - present day", "start": "1970", "interval": "5" }
+            "label": "1900 - present day", "start": "1900", "interval": "10" }
 
       ]
 

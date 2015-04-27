@@ -14,6 +14,7 @@ angular.module('searchApp')
       "deployment":               "production",
       "connex":                   "https://connex.esrc.unimelb.edu.au/#/entity",
       "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
+      "disableConnex":            "true",
       "site":                     "ESRC",
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",
