@@ -1,6 +1,6 @@
 <form role="form">
     <div class="input-group">
-        <input type="text" class="form-control" ng-model="searchBox" autofocus>
+        <input type="text" class="form-control" ng-model="searchBox" autofocus onfocus="this.select();">
         <span class="input-group-btn">
             <button class="btn btn-default" ng-click="search()">Search</button>
         </span>
