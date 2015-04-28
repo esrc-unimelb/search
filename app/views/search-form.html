@@ -1,9 +1,14 @@
 <form role="form">
-    <div class="input-group">
-        <input type="text" class="form-control" ng-model="searchBox" autofocus onfocus="this.select();">
-        <span class="input-group-btn">
-            <button class="btn btn-default" ng-click="search()">Search</button>
-        </span>
+    <div class="row" style="padding: 5px;">
+        <div class="col-sm-6 col-md-6 col-lg-8">
+            <input type="text" class="form-control" ng-model="searchBox" autofocus onfocus="this.select();">
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-2">
+            <button class="btn btn-default btn-block" ng-click="search()">Search</button>
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-2">
+            <button class="btn btn-default btn-block" ng-click="reset()">Reset</button>
+        </div>
     </div>
     <!-- <p class="help-block">{{help}}</p> -->
 </form>

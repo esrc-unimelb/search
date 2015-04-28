@@ -12,7 +12,7 @@ angular.module('searchApp')
       testing:                  'https://data.esrc.info/solr',
       loglevel:                 'DEBUG',
       deployment:               'production',
-      allowedRouteParams:       [ 'q','type', 'function' ],
+      allowedRouteParams:       [ 'q','resource_type', 'type', 'function' ],
       site:                     'FACP',
       keywordSearchOperator:    'OR',
       datasetStart:             '1788-01-01T00:00:00Z',

@@ -23,7 +23,7 @@ angular.module('searchApp')
                 $window.location.replace('/basic-search');
               }
           } else {
-              $scope.t = 135;
+              $scope.t = 144;
           }
 
           // left (lpw) and right (rpw) panel widths
@@ -42,24 +42,18 @@ angular.module('searchApp')
               'z-index':  '10000',
               'padding':  '0px 10px'
           }
-          $scope.sidebarStyle = {
-              'position':         'absolute',
-              'top':              $scope.t + 'px',
-              'left':             '0px',
-              'width':            $scope.lpw + 'px',
-              'height':           $scope.h -$scope.t + 'px',
-              'overflow-y':       'scroll',
-              'padding':          '5px 15px',
-              'background-color': '#efefea'
+          $scope.contentPanelStyle = {
+              'position': 'fixed',
+              'top':      $scope.t + 'px',
+              'width': $window.innerWidth - 15 + 'px'
           }
-          $scope.bodypanelStyle = {
-              'position':     'absolute',
-              'top':          $scope.t + 'px',
-              'left':         $scope.lpw + 'px',
-              'width':        $scope.rpw + 'px',
-              'height':       $scope.h - $scope.t + 'px',
-              'overflow-y':   'scroll',
-              'padding':      '0px 15px'
+          $scope.sideBarStyle = {
+              'height':           $window.innerHeight - $scope.t - 15 + 'px',
+              'overflow-y':       'scroll',
+          }
+          $scope.resultsPanelStyle = {
+              'height':           $window.innerHeight - $scope.t + 'px',
+              'overflow-y':       'scroll',
           }
       }
       sizeThePanels();

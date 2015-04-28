@@ -162,32 +162,27 @@ angular.module('searchApp')
         SolrService.appInit = true;
         log.info('Bootstrapping app');
 
+        var params = angular.copy($location.search());
+
         // if there's a term in the URL - set it
-        if ($routeParams.q !== undefined) {
-            SolrService.term = $routeParams.q;
-        } else {
-            SolrService.term = '*';
-        }
+        SolrService.term = params.q !== undefined ? params.q : '*';
+
+        // strip terms and config if set in the url
+        if (params.q) delete params.q;
 
         // set the various facets defined in the URI
-        angular.forEach($routeParams, function(v,k) {
-            if (conf.allowedRouteParams.indexOf(k) !== -1 && k !== 'q') {
-                if (typeof(v) === 'object') {
-                    for (var i=0; i < v.length ; i++) {
-                        SolrService.filterQuery(k, v[i], true);
-                    }
-                } else {
-                    SolrService.filterQuery(k, v, true);
+        angular.forEach(params, function(v,k) {
+            if (typeof(v) === 'object') {
+                for (var i=0; i < v.length ; i++) {
+                    SolrService.filterQuery(k, v[i], true);
                 }
-                //SolrService.updateFacetCount(k);
+            } else {
+                SolrService.filterQuery(k, v, true);
             }
         });
 
-        angular.forEach($routeParams, function(v,k) {
-            if (conf.allowedRouteParams.indexOf(k) !== -1) {
-                $location.search(k, null);
-            }
-        })
+        // wipe the location params
+        $location.search({}).replace();
 
         $timeout(function() {
             // broadcast the fact that we've initialised from a previous
