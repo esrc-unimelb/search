@@ -666,6 +666,17 @@ angular.module('searchApp')
 
     /*
      * @ngdoc function
+     * @name SolrService.service:reset
+     * @description
+     *  Reset everything
+     */
+    function reset() {
+        SolrService.term = '*';
+        SolrService.clearAllFilters();
+    }
+
+    /*
+     * @ngdoc function
      * @name SolrService.service:clearFilter
      */
     function clearFilter(facet) {
@@ -806,6 +817,7 @@ angular.module('searchApp')
         filterDateQuery: filterDateQuery,
         clearFilter: clearFilter,
         clearAllFilters: clearAllFilters,
+        reset: reset,
         toggleDetails: toggleDetails,
         reSort: reSort,
         dateOuterBounds: dateOuterBounds,

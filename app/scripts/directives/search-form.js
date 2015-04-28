@@ -61,6 +61,10 @@ angular.module('searchApp')
               SolrService.search(scope.searchBox, 0, true);
           };
 
+          scope.reset = function() {
+              SolrService.reset();
+          }
+
           scope.setSearchType = function(type) {
               SolrService.searchType = type;
               if (SolrService.searchType === 'phrase') {
