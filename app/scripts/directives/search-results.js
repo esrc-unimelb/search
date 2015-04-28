@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchResults', [ '$rootScope', '$window', '$timeout', 'SolrService', 
-        function ($rootScope, $window, $timeout, SolrService) {
+  .directive('searchResults', [ '$rootScope', '$window', '$timeout', '$location', '$anchorScroll', 'SolrService', 
+        function ($rootScope, $window, $timeout, $location, $anchorScroll, SolrService) {
     return {
       templateUrl: 'views/search-results.html',
       restrict: 'E',
@@ -32,6 +32,12 @@ angular.module('searchApp')
 
               // figure out what to do with pagination
               scope.togglePageControls();
+
+              // scroll to the top
+              var o = $location.hash();
+              $location.hash('resultsTop');
+              $anchorScroll();
+              $location.hash(o);
 
           }, true);
 
