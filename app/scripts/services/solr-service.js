@@ -144,7 +144,6 @@ angular.module('searchApp')
         SolrService.term = data.term;
         SolrService.searchType = data.searchType;
         SolrService.sort = data.sort;
-        SolrService.rows = data.nResults;
 
         // broadcast the fact that we've initialised from a previous
         //  saved state so that the search form can update itself
@@ -238,7 +237,6 @@ angular.module('searchApp')
             { 'name': 'text', 'weight': '10' },
             { 'name': 'description', 'weight': '1' },
         ]
-
 
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
@@ -435,24 +433,17 @@ angular.module('searchApp')
                 'docs': []
             };
         } else {
-            var docs, i;
-            if (SolrService.results.docs === undefined) {
-                docs = d.data.response.docs;
-            } else {
-                docs = SolrService.results.docs;
-                for (i=0; i < d.data.response.docs.length; i++) {
-                    docs.push(d.data.response.docs[i]);
-                }
-            }
-            for (i=0; i < docs.length; i++) {
-                docs[i].sequenceNo = i;
-            }
+            var docs = [], start;
+            start = parseInt(d.data.responseHeader.params.start);
+            angular.forEach(d.data.response.docs, function(d, i) { d.sequenceNo = i + start; docs.push(d); });
             SolrService.results = {
+                'dateStamp': ( new Date() ).getTime(),
                 'term': SolrService.term,
                 'total': d.data.response.numFound,
-                'start': parseInt(d.data.responseHeader.params.start),
+                'start': start,
                 'docs': docs
             };
+
         }
         
         // update all facet counts
@@ -466,13 +457,29 @@ angular.module('searchApp')
 
     /**
      * @ngdoc function
+     * @name SolrService.service:previousPage
+     * @description
+     *  Get the next set of results.
+     */
+    function previousPage() {
+        var start = SolrService.results.start - SolrService.rows;
+        SolrService.start = start;
+        if (start < 0 || SolrService.start < 0) {
+            SolrService.start = 0;
+            start = 0;
+        }
+        search(SolrService.term, start);
+    }
+
+    /**
+     * @ngdoc function
      * @name SolrService.service:nextPage
      * @description
      *  Get the next set of results.
      */
     function nextPage() {
-        //var start = SolrService.results.start + SolrService.rows;
-        var start = SolrService.results.docs.length;
+        var start = SolrService.results.start + SolrService.rows;
+        SolrService.start = start;
         search(SolrService.term, start);
     }
 
@@ -799,8 +806,7 @@ angular.module('searchApp')
         dateFilters: {},
         searchType: 'phrase',
         term: '*',
-        rows: 12,
-        defaultRows: 12,
+        rows: 10,
         sort: undefined,
         resultSort: undefined,
         hideDetails: false,

@@ -10,7 +10,7 @@
         <div class="col-sm-2 col-md-2 col-lg-2"></div>
     </div>
 </div>
-<div ng-if="results">
+<div ng-if="results" id="topSearchResults">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
@@ -58,22 +58,29 @@
             </div>
             end filters and controls -->
 
-            <div class="row" style="padding-bottom: 20px;">
+            <div class="row">
                 <!-- results panel -->
                 <div class="col-sm-12 col-md-12 col-lg-12">
+                    <!--
                     <span ng-if="gridView">
                         <grid-view ng-model="results.docs"></grid-view>
                     </span>
-                    <span ng-if="!gridView">
-                        <div ng-repeat="doc in results.docs" class="row result-border">
-                            <generic-result-display ng-model="doc" display-provenance="{{displayProvenance}}"></generic-result-display>
-                        </div>
-                    </span>
-                    <button type="button" class="btn btn-sm btn-success btn-block" ng-click="loadNextPage()" ng-if="results && results.docs.length < results.total" style="height: 50px;">
-                        load more results
-                    </button>
+                    -->
+                    <div ng-repeat="doc in results.docs" class="row result-border">
+                        <generic-result-display ng-model="doc" display-provenance="{{displayProvenance}}"></generic-result-display>
+                    </div>
                 </div>
                 <!-- end results panel -->
+            </div>
+            <div class="row" style="padding-bottom: 15px;">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <button type="button" class="btn btn-sm btn-default" ng-click="previousPage()" ng-disabled="disablePrevious">
+                        <span class="glyphicon glyphicon-arrow-left"></span> previous page
+                    </button>
+                    <button type="button" class="btn btn-sm btn-default" ng-click="nextPage()" ng-disabled="disableNext">
+                        next page <span class="glyphicon glyphicon-arrow-right"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

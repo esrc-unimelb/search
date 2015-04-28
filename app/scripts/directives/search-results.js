@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('searchApp')
-  .directive('searchResults', [ '$rootScope', '$window', 'SolrService', function ($rootScope, $window, SolrService) {
+  .directive('searchResults', [ '$rootScope', '$window', '$location', '$anchorScroll', 'SolrService', 
+        function ($rootScope, $window, $location, $anchorScroll, SolrService) {
     return {
       templateUrl: 'views/search-results.html',
       restrict: 'E',
@@ -18,16 +19,17 @@ angular.module('searchApp')
 
           /* handle data updates */
           scope.$on('search-results-updated', function() {
-              /*
-              scope.gridView = true;
-              angular.forEach(SolrService.results.docs, function(v, k) {
-                  if (v.thumbnail === undefined) {
-                      scope.gridView = false;
-                  }
-              })
-              */
               scope.results = SolrService.results;
               scope.filters = SolrService.getFilterObject();
+
+              // figure out what to do with pagination
+              scope.togglePageControls();
+
+              // scroll to the top of the results list
+              var o = $location.hash();
+              $location.hash('topSearchResults');
+              $anchorScroll()
+              $location.hash(o);
           });
 
           // handle suggestions
@@ -52,9 +54,25 @@ angular.module('searchApp')
               SolrService.search(suggestion, 0, true);
           };
 
-          scope.loadNextPage = function() {
+          scope.nextPage = function() {
               SolrService.nextPage();
-          };
+          }
+          scope.previousPage = function() {
+              SolrService.previousPage();
+          }
+          scope.togglePageControls = function() {
+              if (SolrService.results.start === 0) {
+                  scope.disablePrevious = true;
+              } else {
+                  scope.disablePrevious = false;
+              }
+
+              if (SolrService.results.start + SolrService.rows >= scope.results.total) {
+                  scope.disableNext = true;
+              } else {
+                  scope.disableNext = false;
+              }
+          }
 
           scope.clearAllFilters = function() {
             SolrService.clearAllFilters();

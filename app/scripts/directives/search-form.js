@@ -25,9 +25,6 @@ angular.module('searchApp')
                   scope.setSearchType(scope.searchType);
               }
 
-              if (SolrService.rows !== SolrService.defaultRows) {
-                  SolrService.rows = SolrService.defaultRows;
-              }
           });
 
           scope.$on('search-results-updated', function() {
