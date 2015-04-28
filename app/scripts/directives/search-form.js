@@ -21,9 +21,9 @@ angular.module('searchApp')
               //   set on the directive as it means we'rer restoring
               //   state
               if (SolrService.searchType !== scope.searchType) {
-                  scope.setSearchType(SolrService.searchType);
+                  scope.setSearchType(SolrService.searchType, false);
               } else {
-                  scope.setSearchType(scope.searchType);
+                  scope.setSearchType(scope.searchType, false);
               }
               scope.search(scope.start);
 
@@ -63,7 +63,7 @@ angular.module('searchApp')
               SolrService.reset();
           }
 
-          scope.setSearchType = function(type) {
+          scope.setSearchType = function(type, search) {
               SolrService.searchType = type;
               if (SolrService.searchType === 'phrase') {
                   scope.keywordSearch = false;
@@ -72,6 +72,7 @@ angular.module('searchApp')
                   scope.phraseSearch = false;
                   scope.keywordSearch = true;
               }
+              if (search !== false) scope.search();
           }
 
           // let's get this party started!!
