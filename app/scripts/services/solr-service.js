@@ -449,9 +449,9 @@ angular.module('searchApp')
      */
     function previousPage() {
         var start = SolrService.results.start - SolrService.rows;
-        SolrService.start = start;
-        if (start < 0 || SolrService.start < 0) {
-            SolrService.start = 0;
+        SolrService.query.start = start;
+        if (start < 0 || SolrService.query.start < 0) {
+            SolrService.query.start = 0;
             start = 0;
         }
         search(start);
@@ -465,7 +465,7 @@ angular.module('searchApp')
      */
     function nextPage() {
         var start = SolrService.results.start + SolrService.rows;
-        SolrService.start = start;
+        SolrService.query.start = start;
         search(start);
     }
 

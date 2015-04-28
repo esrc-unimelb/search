@@ -16,7 +16,7 @@ angular.module('searchApp')
           // handle the app being bootstrapped
           scope.$on('app-ready', function() {
               scope.searchBox = SolrService.query.term;
-              scope.search();
+              scope.search(SolrService.query.start);
           });
 
           // handle the update call
@@ -31,7 +31,7 @@ angular.module('searchApp')
               scope.searchBox = SolrService.query.term;
           });
 
-          scope.search = function() {
+          scope.search = function(start) {
               // args:
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
@@ -47,8 +47,11 @@ angular.module('searchApp')
                   SolrService.query.sort = 'score desc';
               }
 
+              // if start not undefined, set it to zero
+              if (start === undefined) start = 0;
+
               // kick off the search
-              SolrService.search(0, true);
+              SolrService.search(start, true);
           };
 
           scope.reset = function() {
