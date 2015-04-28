@@ -15,6 +15,7 @@ angular.module('searchApp')
           // handle the app being bootstrapped
           scope.$on('app-ready', function() {
               scope.searchBox = SolrService.term;
+              scope.start = SolrService.start;
 
               // the search type stored in the service overrides that
               //   set on the directive as it means we'rer restoring
@@ -24,6 +25,7 @@ angular.module('searchApp')
               } else {
                   scope.setSearchType(scope.searchType);
               }
+              scope.search(scope.start);
 
           });
 
@@ -46,16 +48,15 @@ angular.module('searchApp')
               }
           }
 
-          scope.search = function() {
-              if (scope.searchBox === '') {
-                  scope.searchBox = '*';
-              }
+          scope.search = function(start) {
+              if (scope.searchBox === '') scope.searchBox = '*';
+              if (start === undefined) start = 0;
 
               // args:
               // - what: scope.searchBox (the search term
               // - start: 0 (record to start at)
               // - ditchSuggestion: true
-              SolrService.search(scope.searchBox, 0, true);
+              SolrService.search(scope.searchBox, start, true);
           };
 
           scope.reset = function() {
@@ -71,7 +72,6 @@ angular.module('searchApp')
                   scope.phraseSearch = false;
                   scope.keywordSearch = true;
               }
-              scope.search();
           }
 
           // let's get this party started!!

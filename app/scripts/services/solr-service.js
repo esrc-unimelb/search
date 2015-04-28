@@ -136,6 +136,7 @@ angular.module('searchApp')
      */
     function initAppFromSavedData() {
         var data = SolrService.loadData();
+        console.log('***', data);
         SolrService.appInit = true;
         log.info('Initialising app from saved data');
         SolrService.q = data.q;
@@ -144,6 +145,7 @@ angular.module('searchApp')
         SolrService.term = data.term;
         SolrService.searchType = data.searchType;
         SolrService.sort = data.sort;
+        SolrService.start = data.start;
 
         // broadcast the fact that we've initialised from a previous
         //  saved state so that the search form can update itself
@@ -310,7 +312,7 @@ angular.module('searchApp')
             'searchType': SolrService.searchType,
             'sort': SolrService.sort,
             'site': SolrService.site,
-            'nResults': SolrService.results.docs.length
+            'start': SolrService.start,
         }
         log.debug('Storing the current query: ' + currentQuery.date);
         sessionStorage.setItem('cq', angular.toJson(currentQuery));
