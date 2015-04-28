@@ -63,7 +63,7 @@ a.tel:active { color: #9F1C20; }
     /* font-weight: bold; */
     text-decoration: none;
     background-color: #D0E9F0;
-    background-image: url(//www.findandconnect.gov.au/assets/img/question.png);
+    background-image: url(/assets/img/question.png);
     background-repeat: no-repeat;
     background-position: 0 50%;
 }
