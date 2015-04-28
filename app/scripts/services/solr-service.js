@@ -136,7 +136,6 @@ angular.module('searchApp')
      */
     function initAppFromSavedData() {
         var data = SolrService.loadData();
-        console.log('***', data);
         SolrService.appInit = true;
         log.info('Initialising app from saved data');
         SolrService.q = data.q;
