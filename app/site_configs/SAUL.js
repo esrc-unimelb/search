@@ -7,6 +7,7 @@
       "connex":                   "https://connex.esrc.unimelb.edu.au/#/entity",
       "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
       "searchType":               "keyword",
+      "disableConnex":            "false",
       "searchTypeKeywordUnion":   "AND",
       "datasetStart":             "1900-01-01T00:00:00Z",
       "datasetEnd":               "2015-12-31T23:59:59Z",

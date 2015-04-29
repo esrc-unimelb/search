@@ -6,7 +6,7 @@
       "production":               "https://solr.esrc.unimelb.edu.au",
       "connex":                   "https://connex.esrc.unimelb.edu.au/#/entity",
       "connexBackend":            "https://cnex.esrc.unimelb.edu.au",
-      "disableConnex":            "true",
+      "disableConnex":            "false",
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",
       "datasetStart":             "1900-01-01T00:00:00Z",
