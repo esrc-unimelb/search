@@ -40,7 +40,9 @@ angular.module('searchApp')
           if (scope.data.data_type === 'OHRM') { 
             if (scope.data.main_type === undefined) {
               if (_.has(SolrService.configuration.connexSites, scope.data.site_code)) { 
-                if (scope.data.type !== 'Text') scope.networkView = true;
+                  if (!SolrService.configuration.disableConnex) {
+                    if (scope.data.type !== 'Text') scope.networkView = true;
+                  }
               }
             }
           }
