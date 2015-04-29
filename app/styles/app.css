@@ -55,7 +55,6 @@ a.tel:active { color: #9F1C20; }
 .question
 {
     display: block;
-    max-width: 300px;
     margin: 0 0;
     padding: 15px 10px 15px 56px;
     color: #000 !important;
