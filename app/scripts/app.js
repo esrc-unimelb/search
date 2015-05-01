@@ -9,12 +9,7 @@ angular.module('searchApp', [
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        reloadOnSearch: false,
-      })
-      .when('/:site', {
+      .when('/:site?', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         reloadOnSearch: false,
