@@ -33,9 +33,11 @@ angular.module('searchApp')
               // figure out what to do with pagination
               scope.togglePageControls();
 
-              // scroll to the top
+              // scroll to the top of the results
               var o = $location.hash();
               $location.hash('resultsTop');
+              $anchorScroll();
+              $location.hash('appTop');
               $anchorScroll();
               $location.hash(o);
 
