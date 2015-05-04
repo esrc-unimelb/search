@@ -1,5 +1,5 @@
 {
-      "site":                     "CTAC",
+      "site":                     "CTACPUBLIC",
       "deployment":               "production",
       "debug":                    false,
       "testing":                  "https://data.esrc.info/solr",
