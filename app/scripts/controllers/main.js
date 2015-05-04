@@ -23,10 +23,10 @@ angular.module('searchApp')
               if (!_.isEmpty($location.path())) {
                   if ($location.path() === '/embed') {
                       $scope.removeHeader = true;
-                      $scope.t = 60;
+                      $scope.top = 60;
                   } else {
                       $scope.removeHeader = false;
-                      $scope.t = 145;
+                      $scope.top = 145;
                   }
               }
           }
@@ -41,10 +41,10 @@ angular.module('searchApp')
           }
           $scope.bodypanelStyle = {
               'position':     'absolute',
-              'top':          $scope.t + 'px',
+              'top':          $scope.top + 'px',
               'left':         '0px',
               'width':        '100%',
-              'height':       $scope.h - $scope.t + 'px',
+              'height':       $scope.h - $scope.top + 'px',
               'overflow-y':   'scroll',
               'padding':      '0px 15px'
           }
