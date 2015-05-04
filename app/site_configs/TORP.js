@@ -28,8 +28,8 @@
           { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "1", 
             "label": "1601 - 1700", "start": "1601", "end": "1700", "interval": "10" },
           { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "2", 
-            "label": "1701 - 1800", "start": "1701", "end": "1800", "interval": "10" }
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "2", 
+            "label": "1701 - 1800", "start": "1701", "end": "1800", "interval": "10" },
+          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "3", 
             "label": "1801 - 1950", "start": "1801", "end": "1950", "interval": "10" }
 
       ]
