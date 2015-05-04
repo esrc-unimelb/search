@@ -23,10 +23,6 @@ angular.module('searchApp', [
         templateUrl: 'views/basic-search.html',
         controller: 'BasicSearchCtrl',
       })
-//      .when('/view', {
-//        templateUrl: 'views/image-view.html',
-//        controller: 'ImageViewCtrl'
-//      })
       .otherwise({
         redirectTo: '/'
       });
