@@ -1,5 +1,5 @@
 {
-      "site":                     "TORP",
+      "site":                     "XAHI_theses",
       "deployment":               "production",
       "debug":                    false,
       "testing":                  "https://data.esrc.info/solr",
@@ -9,8 +9,8 @@
       "disableConnex":            true,
       "searchType":               "keyword",
       "searchTypeKeywordUnion":   "AND",
-      "datasetStart":             "1650-01-01T00:00:00Z",
-      "datasetEnd":               "1930-12-31T23:59:59Z",
+      "datasetStart":             "1860-01-01T00:00:00Z",
+      "datasetEnd":               "2015-12-31T23:59:59Z",
 
       "searchFields": {
           "name":        { "fieldName": "name",           "displayName": "Entity Name",           "weight": "100" },
@@ -20,18 +20,10 @@
       },
 
       "facetWidgets": [
-          { "facetField": "type",       "label": "Entity Type",     "join": "OR" },
-          { "facetField": "function",   "label": "Entity Function", "join": "AND" }
+          { "facetField": "type",       "label": "Entity Type",     "join": "OR" }
       ],
 
       "dateFacetWidgets": [
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "1", 
-            "label": "1601 - 1700", "start": "1601", "end": "1700", "interval": "10" },
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "2", 
-            "label": "1701 - 1800", "start": "1701", "end": "1800", "interval": "10" },
-          { "facetField": "exist_from", "existenceFromField": "exist_from", "existenceToField": "exist_to", "id": "3", 
-            "label": "1801 - 1950", "start": "1801", "end": "1950", "interval": "10" }
-
       ]
 
 }
