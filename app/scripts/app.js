@@ -19,10 +19,6 @@ angular.module('searchApp', [
         controller: 'MainCtrl',
         reloadOnSearch: false,
       })
-      .when('/basic/search', {
-        templateUrl: 'views/basic-search.html',
-        controller: 'BasicSearchCtrl',
-      })
       .otherwise({
         redirectTo: '/'
       });
