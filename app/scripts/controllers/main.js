@@ -36,7 +36,7 @@ angular.module('searchApp')
               'top':      '0px',
               'left':     '0px',
               'width':    '100%',
-              'z-index':  '10000',
+              'z-index':  '5',
               'padding':  '0px 10px'
           }
           $scope.bodypanelStyle = {
