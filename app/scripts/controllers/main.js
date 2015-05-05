@@ -17,7 +17,7 @@ angular.module('searchApp')
           $scope.h = $window.innerHeight;
 
           if ($scope.w < 760) {
-              $window.location.assign('#/bad/device-or-browser');
+              $window.location.assign('/basic-search.html');
           } else {
 
               if (!_.isEmpty($location.path())) {
