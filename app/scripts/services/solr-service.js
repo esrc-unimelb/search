@@ -98,6 +98,13 @@ angular.module('searchApp')
             if ($routeParams.site !== undefined && $routeParams.site !== 'embed') site = $routeParams.site;
         }
 
+        // location.search is not empty and provided there is more than config defined
+        var search = angular.copy($location.search());
+        if (_.has(search, 'config')) delete search.config;
+        if (!_.isEmpty(search)) { 
+            sessionStorage.removeItem('cq');
+        }
+
         // url search parameters override saved queries
         //  although: if the search param is config - try to load saved data first
         if (_.isEmpty($location.search()) || _.has($location.search(), 'config')) {
