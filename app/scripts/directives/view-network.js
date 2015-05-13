@@ -1,25 +1,36 @@
 'use strict';
 
+/**
+ * @ngdoc directive
+ * @name searchApp.directive:viewNetwork
+ * @description
+ * # viewNetwork
+ */
 angular.module('searchApp')
-  .directive('viewOne', [ '$location', '$window', function ($location, $window) {
+  .directive('viewNetwork', [ '$log', '$location', '$window', '$sce', 'SolrService', 
+        function ($log, $location, $window, $sce, SolrService) {
     return {
-      templateUrl: 'views/view-one.html',
+      templateUrl: 'views/view-network.html',
       restrict: 'E',
       scope: {
-          imageData: '=',
+          networkData: '=',
       },
       link: function postLink(scope, element, attrs) {
           // as the directive is injected on page load
           //   ensure the content doesn't get loaded
-          scope.showImage = false;
+          scope.showNetwork = false;
 
           // when the parent scope has set the data to show
           //  that is - an image has been clicked
           //  show the content
-          scope.$watch('imageData', function() {
-              if (!_.isEmpty(scope.imageData)) {
+          scope.$watch('networkData', function() {
+              if (!_.isEmpty(scope.networkData)) {
+                // console.log('***', scope.networkData);
                 $location.hash('view');
-                scope.showImage = true;
+                scope.showNetwork = true;
+                //scope.link = https://connex.esrc.unimelb.edu.au/#/entity/ASMP/E000162?link=false
+                scope.link = $sce.trustAsResourceUrl(SolrService.configuration.connex + '/' + scope.networkData.site_code + '/' + 
+                    scope.networkData.record_id + '?link=false')
               }
           }, true);
 
@@ -29,8 +40,8 @@ angular.module('searchApp')
           //  has pressed the back button.
           scope.$on('$locationChangeStart', function(e, n, o) {
               if (!n.match('#view')) {
-                  scope.imageData = null;
-                  scope.showImage = false;
+                  scope.networkData = null;
+                  scope.showNetwork = false;
               }
           });
 
@@ -38,7 +49,6 @@ angular.module('searchApp')
           scope.close = function() {
               $window.history.back();
           }
-
       }
     };
   }]);

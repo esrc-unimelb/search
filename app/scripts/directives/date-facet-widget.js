@@ -16,13 +16,11 @@ angular.module('searchApp')
           interval: '@',
           isCollapsed: '@',
           alwaysOpen: '@',
-          showPaginationControls: '@',
       },
       link: function postLink(scope, element, attrs) {
           // configure defaults for those optional attributes if not defined
           scope.ao = scope.alwaysOpen === undefined                         ? false : angular.fromJson(scope.alwaysOpen);
           scope.ic = scope.isCollapsed === undefined                       ? true  : angular.fromJson(scope.isCollapsed);
-          scope.sp = scope.showPaginationControls === undefined ? true  : angular.fromJson(scope.showPaginationControls);
 
           if (scope.start === undefined) {
               $log.error('start not defined. Need to pass in a year from which to start the facetting.');
@@ -33,32 +31,27 @@ angular.module('searchApp')
           if (scope.id === undefined) {
               $log.error('id not defined. Need to pass in an id for the range facetting.');
           }
-
-
-          scope.$on('app-ready', function() {
-              if (scope.end === undefined) {
-                  scope.end = new Date().getFullYear();
-              }
-              SolrService.compileDateFacets(scope.facetField, scope.id, scope.start, scope.end, scope.interval);
-          })
-          scope.$on('update-date-facets', function() {
-              SolrService.compileDateFacets(scope.facetField, scope.id, scope.start, scope.end, scope.interval);
-          })
-
-          scope.facets = []; 
-
-          scope.$on('reset-date-facets', function() {
-              scope.facets = [];
-          });
+          scope.facetRangeEnd = _.isEmpty(scope.end) ? new Date().getFullYear() : scope.end;
 
           scope.$on(scope.facetField + '_' + scope.id + '-facet-data-ready', function() {
-              var a = SolrService.dateFacets[scope.facetField + '_' + scope.id];
-              updateFacets(a);
-              updateSelections();
-          });
-
-          scope.$on('reset-all-filters', function() {
-              updateSelections();
+              var data = SolrService.query.dateFacets[scope.facetField + '_' + scope.id];
+              
+              scope.facets = _.map(data, function(d) {
+                  var label = d.rangeStart + ' - ' + d.rangeEnd;
+                  var match = _.findWhere(SolrService.query.dateFilters, { 'label': label });
+                  var checked = false; 
+                  if (match) { 
+                      checked = true;
+                      scope.ic = false;
+                  }
+                  return {
+                      'start': d.rangeStart,
+                      'end': d.rangeEnd,
+                      'label': d.rangeStart + ' - ' + d.rangeEnd,
+                      'count': d.count,
+                      'checked': checked
+                  }
+              });
           });
 
           // handle open / close broadcasts
@@ -67,47 +60,31 @@ angular.module('searchApp')
           })
           scope.$on('close-all-filters', function() {
               scope.ic = true;
-         })
+          })
 
-          var updateFacets = function(data) {
-              scope.facets = [];
-              var d;
-              angular.forEach(data, function(v, k) {
-                  d = {
-                      'start': v.rangeStart,
-                      'end': v.rangeEnd, 
-                      'label': v.rangeStart + ' - ' + v.rangeEnd,
-                      'count': v.count,
-                      'checked': false
-                  }
-                  scope.facets.push(d);
-              })
-          }
-          var updateSelections = function() {
-              var selected = [];
-              var marker = scope.existenceFromField + '-' + scope.existenceToField + '-';
-              angular.forEach(SolrService.dateFilters, function(v,k) {
-                  if (v.existenceFromField === scope.existenceFromField && v.existenceToField === scope.existenceToField && v.facetField === scope.facetField) {
-                    selected.push(v.label);
-                  }
-              })
-              angular.forEach(scope.facets, function(v, k) {
-                  if (selected.indexOf(v.label) !== -1) {
-                      scope.facets[k].checked = true;
-                      if (scope.startup === undefined) {
-                          scope.ic = false;
-                          scope.startup = false;
-                      }
-                  } else {
-                      scope.facets[k].checked = false;
-                  }
-              })
-          };
+          // on reset, reinit the widget
+          scope.$on('reset-all-filters', function() {
+              SolrService.compileDateFacets(scope.facetField, scope.id, scope.start, scope.facetRangeEnd, scope.interval);
+          });
 
-          scope.toggleFacet = function(facetLabel) {
-              SolrService.filterDateQuery(scope.facetField, scope.existenceFromField, scope.existenceToField, facetLabel);
-              updateSelections();
+          // apply the clicked facet
+          scope.facet = function(facetLabel, dontSearch) {
+              var f = _.findWhere(scope.facets, { 'label': facetLabel });
+              f.checked = true;
+              SolrService.filterDateQuery(scope.facetField, scope.existenceFromField, scope.existenceToField, facetLabel, dontSearch);
           }
+
+          // clear all selected
+          scope.clearAll = function() {
+              _.each(_.where(scope.facets, { 'checked': true }), function(d) {
+                  scope.facet(d.label, true);
+                  _.findWhere(scope.facets, { 'label': d.label }).checked = false;
+              });
+              SolrService.search();
+          }
+
+          // initialise the widget 
+          SolrService.compileDateFacets(scope.facetField, scope.id, scope.start, scope.facetRangeEnd, scope.interval);
 
       }
     };

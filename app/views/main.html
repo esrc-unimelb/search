@@ -1,85 +1,99 @@
-<span ng-controller="MainCtrl">
-    <!-- background white div between the scrolling results pane and the header controls -->
-    
-    <!-- header controls -->
-    <div ng-style="topbarStyle">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <br/>
-                <label ng-if="site_name">Using: {{site_name}}</label>
-            </div>
+<div ng-style="topbarStyle" id="appTop">
+    <div class="row" style="background-color: #003268;" ng-if="!removeHeader">
+        <div class="col-sm-10 col-md-11 col-lg-offset-2 col-lg-7">
+            <a ng-if="returnToSiteLink" href="{{site_url}}" style="color:white; font-weight: 300;">Return to site</a>
         </div>
-        <div class="row" style="border-bottom: solid; border-width: 1px; border-color: gray; padding: 5px;">
-            <div class="col-sm-3 col-md-3 col-lg-3">
-               <sort-results></sort-results> 
-            </div>
-            <div class="col-sm-6 col-md-7 col-lg-7">
-                    <search-form 
-                        help='Normally this would be site / context specific help in this bit...'
-                        search-type="keyword"
-                        >
-                    </search-form>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <span ng-hide="detailsActive">
-                    <button class="btn btn-default btn-sm" ng-click="toggleDetails()">
-                        <span class="glyphicon glyphicon-align-justify"></span>
-                        Summary View
-                    </button>
-                </span>
-                <span ng-show="detailsActive">
-                    <button class="btn btn-default btn-sm" ng-click="toggleDetails()">
-                        <span class="glyphicon glyphicon-th-list"></span>
-                        Show Details 
-                    </button>
-                </span>
-            </div>
+        <div class="col-sm-2 col-md-1 col-lg-1">
+            <!--<a href="http://www.esrc.unimelb.edu.au/search-help/" style="color:white; font-weight: 300;">Help</a>-->
+            <a href="http://www.esrc.unimelb.edu.au/search-about/" style="color:white; font-weight: 300;">About</a>
         </div>
     </div>
-
-    <!-- side bar: fixed to left -->
-    <div ng-style="sidebarStyle">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <p class="help-block">(Search not working? Try <a href='/basic-search'>basic search</a>.)</a></p>
+    <div class="row" style="background-color: #efefea;" ng-if="!removeHeader">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                <h3 style="color: #3d4343; text-shadow: 1px -1px 2px #595959; font-weight: 300; text-rendering: optimizelegibility; margin: 5px 0px;">Search the datasets</h3>
             </div>
-            <div class="col-sm-12 text-center">
-                <h4 style="color: #3d4343; font-size: 18px; font-weight: normal; margin: 10px 0px; padding: 0; text-shadow: 1px -1px 2px #595959; line-height: 1.1;">
-                    Refine Search
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                <h4 style="color: #24658A; font-weight: 300; text-rendering: optimizelegibility; margin: 5px 0px;">
+                    <a href="http://www.esrc.unimelb.edu.au" style="color: #24658A;">eScholarship Research Centre</a>, 
+                    <a href="http://www.lib.unimelb.edu.au" target="_blank" style="color: #24658A;" >The University of Melbourne Library</a>
                 </h4>
             </div>
-            <div class="col-sm-12 text-center">
-                <div class="btn-group">
-                    <button class="btn btn-sm btn-default" ng-click="clearAllFilters()">Clear all</button>
-                    <button class="btn btn-sm btn-default" ng-click="openAllFilters()">Open all</button>
-                    <button class="btn btn-sm btn-default" ng-click="closeAllFilters()">Close all</button>
-                </div>
-                <hr/>
-            </div>
-            <div class="col-sm-12">
-                <date-facet-widget facet-field="exist_from" existence-from-field='exist_from' existence-to-field='exist_to' id="1" label="Date" start="1600" interval="50"></date-facet-widget>
-            </div>
-            <div class="col-sm-12">
-                <facet-widget facet-field="type" label="Entity Type"></facet-widget>
-            </div>
-            <div class="col-sm-12">
-                <facet-widget facet-field="function" label="Entity Function" join="AND"></facet-widget>
-                <!-- <facet-widget facet-field="state_long" label="Region"></facet-widget><br/> -->
-            </div>
-            <div class="col-sm-12">
-                <span ng-if="!site_name"><facet-widget facet-field="site_name" label="Data Source"></facet-widget></span>
-            </div>
-            <div class="col-sm-12">
-                <facet-widget facet-field="repository" label="Repository"></facet-widget>
-            </div>
+    </div>
+
+    <!-- header controls -->
+    <div class="row" style="background-color: #3d4343; padding: 5px 5px;">
+        <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
+                <search-form 
+                    help='Normally this would be site / context specific help in this bit...'
+                    search-type="keyword"
+                    >
+                </search-form>
         </div>
     </div>
-    <!-- side bar: fixed to right -->
-    <div ng-style="bodypanelStyle">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <search-results display-provenance="true"></search-results>
-            </div>
+</div>
+
+<!-- side bar: fixed to right -->
+<div ng-style="bodypanelStyle">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
+            <tabset>
+                <tab heading="Search the data" select="search()" active="tabs[0]">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <div class="col-sm-12 text-center">
+                                <h4 class="section-heading">
+                                    Refine Search
+                                </h4>
+                                <hr style="margin: 5px 0px 10px 0px;" />
+                            </div>
+                            <div class="col-sm-12">
+                                <button class="btn btn-sm btn-default btn-block" ng-click="clearAllFilters()">clear all</button>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <small><a href="" class="" ng-click="openAllFilters()">open all</a></small>
+                                &nbsp;&dash;&nbsp;
+                                <small><a href="" class="" ng-click="closeAllFilters()">close all</a></small>
+                            </div>
+
+
+                            <!-- FACET WIDGETS-->
+                            <div class="col-sm-12"><hr style="margin: 5px 0px;" /></div>
+                            <span ng-repeat='widget in facetWidgets'>
+                                <div class="col-sm-12">
+                                    <facet-widget facet-field="{{widget.facetField}}" label="{{widget.label}}" join="{{widget.join}}" />
+                                </div>
+                            </span>
+
+                            <!-- DATE FACET WIDGETS -->
+                            <div class="col-sm-12"><hr style="margin: 5px 0px;" /></div>
+                            <span ng-repeat="widget in dateFacetWidgets">
+                                <div class="col-sm-12">
+                                    <date-facet-widget facet-field="{{widget.facetField}}"
+                                                       existence-from-field="{{widget.existenceFromField}}"
+                                                       existence-to-field="{{widget.existenceToField}}"
+                                                       id="{{widget.id}}"
+                                                       label="{{widget.label}}"
+                                                       start="{{widget.start}}"
+                                                       end="{{widget.end}}"
+                                                       interval="{{widget.interval}}">
+                                    </date-facet-widget>  
+                                </div>
+                            </span>
+
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <search-results display-provenance="true"></search-results>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Controls" select="" active="tabs[1]">
+                    <span ng-if="ready">
+                        <search-controls></search-controls>
+                        <hr/>
+                        <button class="btn btn-sm btn-default" ng-click="search()">Update Search</button>
+                    </span>
+                </tab>
+            </tabset>
         </div>
-   </div>
-</span>
+    </div>
+</div>

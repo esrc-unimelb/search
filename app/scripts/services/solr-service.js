@@ -8,41 +8,30 @@
  *
  * @requires $rootScope
  * @requires $http
- * @requires LoggerService
  * @requires Configuration
  *
  */
 angular.module('searchApp')
-  .factory('SolrService', [ '$rootScope', '$http', '$routeParams', '$route', '$location', '$timeout', '$window', 'LoggerService', 'Configuration',
-        function SolrService($rootScope, $http, $routeParams, $route, $location, $timeout, $window, log, conf) {
+  .factory('SolrService', [ '$rootScope', '$http', '$routeParams', '$route', '$location', '$timeout', '$window', '$log', 'Configuration',
+        function SolrService($rootScope, $http, $routeParams, $route, $location, $timeout, $window, $log, conf) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
-    var nLocationTerms = function() {
-        // we need to see if there are any location bits
-        var b = [];
-        angular.forEach($location.search(), function(k, v) {
-            b.push(k);
-        });
-        return b.length;
-    }
-
-    $rootScope.$on('$routeUpdate', function() {
-        if (!SolrService.appInit) {
-            // is the site now different to what it was? if so - do a full init
-            if ($routeParams.site !== SolrService.site || nLocationTerms() > 0) {
-                // purge any existing state data
-                sessionStorage.removeItem('cq');
-
-                init(SolrService.deployment, $routeParams.site);
-            } else {
-                // otherwise - are we just dealing with url changes
-                var savedQuery = sessionStorage.getItem('cq');
-                if (savedQuery !== null) {
-                    initAppFromSavedData(sessionStorage.getItem('cq'));
-                } else {
-                    init(SolrService.deployment, $routeParams.site);
-                }
-            }
+    // when the route changes, if we're not already initting
+    //  wipe any saved state and kick off an init
+    $rootScope.$on('$locationChangeStart', function(e, n, o) {
+        if (SolrService.appInit || n.match('#view')) {
+            // if application initialising or we're loading a view
+            // --> do nothing
+            // and remove the initialisation flag if set
+            SolrService.appInit = false;
+        } else if (!n.match('#view') && o.match('#view')) {
+            // if we're unloading a view and going back
+            // --> also do nothing
+            // and remove the initialisation flag if set
+            SolrService.appInit = false;
+        } else {
+            // otherwise initialise the app
+            SolrService.init();
         }
     });
 
@@ -63,49 +52,117 @@ angular.module('searchApp')
     *
     */
     function init() {
-        log.init(conf.loglevel);
-        log.info('############');
-        log.info('############ APPLICATION INITIALISED');
-        log.info('############');
-        SolrService.filters = {};
-        SolrService.dateFilters = {};
-        SolrService.results = {};
-        SolrService.facets = {};
-        SolrService.searchType = 'keyword';
+        // do we need to load an external config or use the app in built configuration?
+        var params = $location.search();
+        if (params.config) {
+            // if a config file is referenced in the url; load it
+            var curl = 'site_configs/' + params.config + '.js';
+            $http.get(curl).then(function(resp) {
+                // got it - save it and use it
+                $log.info('Loading external configuration.');
+                return go(resp.data);
+            },
+            function(resp) {
+                // Could't load external config - assuming the URL exists it's most likely
+                //  invalid JSON.
+                $log.error('Unable to load external configuration.');
+                $log.error('Check that the URL is valid and the content is valid JSON.');
+                $log.error(resp);
+            })
+        } else {
+            // no external config referenced; carry on with internal configuration
+            $log.info('No external configuration referenced. Using internal configuration.');
+            return go();
+        }
+    }
 
-        SolrService.deployment = conf[conf.deployment];
-        SolrService.site = conf.site;
-        SolrService.solr = SolrService.deployment + '/' + SolrService.site + '/select';
-        log.debug('Solr Service: ' + SolrService.solr);
-        log.debug('Site: ' + SolrService.site);
+    function go(configuration) {
+        $log.info('#########');
+        $log.info('######### APPLICATION INITIALISED');
+        $log.info('#########');
 
-        // init the date widget
-        //SolrService.dateOuterBounds();
 
-        // load the site data
-        loadSiteData()
+        var site;
+        if (configuration != undefined) {
+            // use external configuration
+            // when loading an external configuration, ignore site if in route params
+            site = configuration.site;
+
+        } else {
+            // use application internal configuration
+            configuration = conf;
+
+            // if site is defined in the route params, use it in preference
+            //  to the site defined in the internal configuration
+            site = configuration.site;
+            if ($routeParams.site !== undefined && $routeParams.site !== 'embed') site = $routeParams.site;
+        }
+
+        // location.search is not empty and provided there is more than config defined
+        var search = angular.copy($location.search());
+        if (_.has(search, 'config')) delete search.config;
+        if (!_.isEmpty(search)) { 
+            sessionStorage.removeItem('cq');
+        }
 
         // url search parameters override saved queries
-        if (nLocationTerms() > 0) {
-            sessionStorage.removeItem('cq');
+        //  although: if the search param is config - try to load saved data first
+        if (_.isEmpty($location.search()) || _.has($location.search(), 'config')) {
+            var q = SolrService.loadData();
+            if (q) { 
+                var savedData = initAppFromSavedData();
+                if (savedData.configuration.site === site) {
+                    SolrService.query = savedData.query;
+                    SolrService.configuration = savedData.configuration;
+                    SolrService.site = savedData.configuration.site;
+                } else {
+                    $log.info("Site stored in saved data doesn't match incoming config.")
+                    sessionStorage.removeItem('cq');
+                    initCurrentInstance(configuration, site);
+                }
+
+            } else {
+                $log.info("Unable to initialise from saved data.")
+                initCurrentInstance(configuration, site);
+            }
+        } else {
+            // initialise the application
+            initCurrentInstance(configuration, site);
         } 
 
-        // if the site changes - ditch the stored data
-        var savedQuery = SolrService.loadData()
-        if (savedQuery !== undefined && savedQuery.site !== SolrService.site) {
-            sessionStorage.removeItem('cq');
-        }
-        
-        // if a saved query exists - get it
-        var savedQuery = SolrService.loadData();
-        if (savedQuery !== undefined) {
-            initAppFromSavedData();
-        } else {
-            // init the app
-            initCurrentInstance();
-        }
-        
+        $log.debug('Searching: ' + SolrService.query.site);
+        $log.debug('Query object at initialisation', SolrService.query);
+        $log.debug('Configuration object at initialisation', SolrService.configuration);
+
+        // get the sites in connex
+        getConnexSites();
+
+        // Broadcast ready to go
+        $timeout(function() {
+            $log.info('Application bootstrapped');
+            $rootScope.$broadcast('app-ready');
+        }, 500);
+       
         return true;
+    }
+
+    function initialiseQueryObject(configuration, site) {
+        if (configuration) SolrService.configuration = angular.copy(configuration);
+        if (site) SolrService.configuration.site = site;
+
+        SolrService.query = {};
+        SolrService.query.site = SolrService.configuration.site;
+        SolrService.query.solr = SolrService.configuration[conf.deployment] + '/' + SolrService.configuration.site + '/select';
+        SolrService.query.searchFields = SolrService.configuration.searchFields;
+        SolrService.query.searchWhat = _.keys(SolrService.query.searchFields);
+        SolrService.query.searchType = SolrService.configuration.searchType;
+        SolrService.query.searchTypeKeywordUnion = SolrService.configuration.searchTypeKeywordUnion;
+        SolrService.query.term = '*';
+        SolrService.query.filters = {};
+        SolrService.query.dateFilters = {};
+        SolrService.query.filterUnion = {};
+        SolrService.query.facets = {};
+        SolrService.query.dateFacets = {};
     }
 
     /*
@@ -117,109 +174,56 @@ angular.module('searchApp')
         return angular.fromJson($rootScope.$eval(d));
     }
 
-    /*
-     * @ngdoc function
-     * @name loadData
-     */
-    function redirectToRoot() {
-        var d = loadData();
-        if (d.site === conf.site) {
-            $window.location = '#/';
-        } else {
-            $window.location = '#/' + d.site;
-        }
-    }
-
     /**
      * @ngdoc function
      * @name initAppFromSavedData
      */
     function initAppFromSavedData() {
-        var data = SolrService.loadData();
-        SolrService.appInit = true;
-        log.info('Initialising app from saved data');
-        SolrService.q = data.q;
-        SolrService.filters = data.filters,
-        SolrService.dateFilters = data.dateFilters,
-        SolrService.term = data.term;
-        SolrService.searchType = data.searchType;
-        SolrService.sort = data.sort;
-        SolrService.rows = data.nResults;
-
-        // broadcast the fact that we've initialised from a previous
-        //  saved state so that the search form can update itself
-        $timeout(function() {
-            $rootScope.$broadcast('app-ready');
-            SolrService.appInit = false;
-        }, 300);
+        $log.info('Initialising app from saved data');
+        return SolrService.loadData();
     }
 
     /**
      * @ngdoc function
      * @name initCurrentInstance
      */
-    function initCurrentInstance() {
+    function initCurrentInstance(configuration, site) {
+        $log.info('Bootstrapping app');
+
+        // now actually initialise this instance
+        initialiseQueryObject(configuration, site);
+
+        // set a flag to say we're currently initting
         SolrService.appInit = true;
-        log.info('Bootstrapping app');
+
+        var params = angular.copy($location.search());
 
         // if there's a term in the URL - set it
-        if ($routeParams.q !== undefined) {
-            SolrService.term = $routeParams.q;
-        } else {
-            SolrService.term = '*';
+        SolrService.query.term = params.q !== undefined ? params.q : '*';
+
+        // strip terms and config if set in the url
+        if (params.q) delete params.q;
+        if (params.config) {
+            var config = params.config;
+            delete params.config;
         }
 
         // set the various facets defined in the URI
-        angular.forEach($routeParams, function(v,k) {
-            if (conf.allowedRouteParams.indexOf(k) !== -1 && k !== 'q') {
-                if (typeof(v) === 'object') {
-                    for (var i=0; i < v.length ; i++) {
-                        SolrService.filterQuery(k, v[i], true);
-                    }
-                } else {
-                    SolrService.filterQuery(k, v, true);
+        angular.forEach(params, function(v,k) {
+            if (typeof(v) === 'object') {
+                for (var i=0; i < v.length ; i++) {
+                    SolrService.filterQuery(k, v[i], true);
                 }
-                //SolrService.updateFacetCount(k);
+            } else {
+                SolrService.filterQuery(k, v, true);
             }
         });
 
-        angular.forEach($routeParams, function(v,k) {
-            if (conf.allowedRouteParams.indexOf(k) !== -1) {
-                $location.search(k, null);
-            }
-        })
-
-        $timeout(function() {
-            // broadcast the fact that we've initialised from a previous
-            //  saved state so that the search form can update itself
-            $rootScope.$broadcast('app-ready');
-            SolrService.appInit = false;
-        }, 300);
-    }
-
-    /**
-     * @ngdoc function
-     * @name loadSiteData
-     * @description: 
-     *  Load a record and extract the site name and url
-     */
-    function loadSiteData() {
-        if (SolrService.site !== 'ESRC') {
-            var q = {
-                'url': SolrService.solr,
-                'params': {
-                    'q': '*:*',
-                    'rows': 1,
-                    'wt': 'json',
-                    'json.wrf': 'JSON_CALLBACK',
-                }
-            }
-            $http.jsonp(SolrService.solr, q).then(function(d) {
-                SolrService.site_name = d.data.response.docs[0].site_name;
-                SolrService.site_url = d.data.response.docs[0].site_url;
-                log.debug('Searching site: ' + SolrService.site_name);
-                $rootScope.$broadcast('site-name-retrieved');
-            });
+        // wipe the location params
+        if (config) {
+            $location.search({'config': config}).replace();
+        } else {
+            $location.search({}).replace();
         }
     }
 
@@ -229,60 +233,57 @@ angular.module('searchApp')
      * @description
      *  Construct the actual query object - the workhorse
      */
-    function getQuery(start) {
-        var q = [], sort;
+    function getQuery(start, nofilters) {
+        var searchFields = [];
+        angular.forEach(SolrService.query.searchFields, function(v,k) {
+            if (_.contains(SolrService.query.searchWhat, v.fieldName)) 
+                searchFields.push({ 'name': SolrService.query.searchFields[k].fieldName, 'weight': SolrService.query.searchFields[k].weight });
+        });
 
-        var what = SolrService.term;
-        var what = SolrService.term;
-        var searchFields = [
-            { 'name': 'name', 'weight': '100' },
-            { 'name': 'altname', 'weight': '50' },
-            { 'name': 'locality', 'weight': '30' },
-            { 'name': 'text', 'weight': '10' },
-            { 'name': 'description', 'weight': '1' },
-        ]
-
-
+        // term can never, ever, be empty...
+        if (_.isEmpty(SolrService.query.term)) SolrService.query.term = '*';
+        var what = SolrService.query.term, 
+            q    = [];
         // are we doing a wildcard search? or a single term search fuzzy search?
         if ( what === '*' || what.substr(-1,1) === '~') {
-            angular.forEach(searchFields, function(v, k) {
-                q.push(v.name + ':(' + what + ')^' + v.weight + ' ');
-            })
+           angular.forEach(searchFields, function(v, k) {
+               q.push(v.name + ':(' + what + ')^' + v.weight);
+           })
         } else {
-            if (SolrService.searchType === 'keyword') {
-                what = what.replace(/ /gi, ' ' + conf.keywordSearchOperator + ' ');
-                angular.forEach(searchFields, function(v, k) {
-                    q.push(v.name + ':(' + what + ')^' + v.weight + ' ');
-                })
+           if (SolrService.query.searchType === 'keyword') {
+              what = what.replace(/ /gi, ' ' + SolrService.query.searchTypeKeywordUnion + ' ');
+              angular.forEach(searchFields, function(v, k) {
+                  q.push(v.name + ':(' + what + ')^' + v.weight);
+              })
 
             } else {
                 angular.forEach(searchFields, function(v, k) {
-                    q.push(v.name + ':"' + what + '"^' + v.weight + ' ');
+                    q.push(v.name + ':"' + what + '"^' + v.weight);
                 })
-            }
-        }
+             }
+         }
         q = q.join(' OR ');
 
-        // add in the facet query filters - if any...
-        var fq = getFilterObject().join(' AND ');
-        if (fq === undefined) {
-            fq = '';
+        // when compiling the data facets for the date widget,
+        //  we don't want the saved filters applied so that we get
+        //  all of the date facets
+        if (!nofilters) {
+            // add in the facet query filters - if any...
+            var fq = getFilterObject().join(' AND ');
+            if (_.isEmpty(fq)) fq = '';
         }
 
         // set the sort order: wildcard sort ascending, everything else: by score
-        if (SolrService.sort === undefined) {
+        if (_.isEmpty(SolrService.query.sort)) {
             if (what === '*') {
-                sort = 'name_sort asc';
+                SolrService.query.sort = 'name_sort asc';
             } else {
-                sort = 'score desc';
+                SolrService.query.sort = 'score desc';
             }
-        } else {
-            sort = SolrService.sort;
         }
-        SolrService.resultSort = sort;
 
-        q = {
-            'url': SolrService.solr,
+        var query = {
+            'url': SolrService.query.solr,
             'params': {
                 'q': q,
                 'start': start,
@@ -290,12 +291,28 @@ angular.module('searchApp')
                 'wt': 'json',
                 'json.wrf': 'JSON_CALLBACK',
                 'fq': fq,
-                'sort': sort
-
+                'sort': SolrService.query.sort
             },
         };
-        SolrService.q = q;
-        return SolrService.q;
+        return query;
+    }
+
+    /**
+     * @ngdoc function
+     * @name saveCurrentSearch
+     * @description
+     *  Save the current search to the browser's session storage
+     */
+    function saveCurrentSearch() {
+        // store the current query object in the url for later use
+        var currentQuery = {
+            'date': Date.now(),
+            'query': SolrService.query,
+            'configuration': SolrService.configuration
+        }
+        $log.debug('Storing the current query: ' + currentQuery.date);
+        $log.debug(currentQuery);
+        sessionStorage.setItem('cq', angular.toJson(currentQuery));
     }
 
     /**
@@ -337,7 +354,7 @@ angular.module('searchApp')
      * @param {boolean} ditchuggestion - Whether to delete the spelling 
      *  suggestion.
      */
-    function search(what, start, ditchSuggestion, saveSearch) {
+    function search(start, ditchSuggestion, saveSearch) {
         // should we remove the suggestion
         //   the only time this should be true is when the method is called
         //   from basic-search. Pretty much all other times it will be false
@@ -347,38 +364,34 @@ angular.module('searchApp')
             $rootScope.$broadcast('search-suggestion-removed');
         }
 
-        // if what has changed - reset the data object
-        if (what !== SolrService.term || start === 0) {
-            SolrService.results.docs = [];
-            SolrService.results.start = 0;
-        }
-
-        // store the term for use in other places
-        SolrService.term = what;
+        if (start === undefined) { start = 0; }
 
         // get the query object
         var q = getQuery(start);
-        log.debug(q);
+        $log.debug(q);
         
-        $http.jsonp(SolrService.solr, q).then(function(d) {
+        $http.jsonp(SolrService.query.solr, q).then(function(d) {
             // if we don't get a hit and there aren't any filters in play, try suggest and fuzzy seearch
             // 
             // Note: when filters are in play we can't re-run search as the set might return no
             //  result and we'll end up in an infinite search loop
 
-            if (d.data.response.numFound === 0 && Object.keys(SolrService.filters).length === 0) {
+            if (d.data.response.numFound === 0 && _.isEmpty(SolrService.query.filters) && _.isEmpty(SolrService.query.dateFilters)) {
                 // no matches - do a spell check and run a fuzzy search 
                 //  ONLY_IF it's a single word search term
-                if (what.split(' ').length === 1) {
-                    suggest(SolrService.term);
-                    if (what !== '*') {
-                        if (what.substr(-1,1) !== '~') {
-                            search(what + '~', 0, false);
+                if (SolrService.query.term.split(' ').length === 1) {
+                    suggest(SolrService.query.term);
+                    if (SolrService.query.term !== '*') {
+                        if (SolrService.query.term.substr(-1,1) !== '~') {
+                            SolrService.query.term = SolrService.query.term + '~';
+                            search(0, false);
                         }
                     }
                 } else {
+
                     // a phrase; wipe the results - can't do anything sensible
                     saveData(undefined);
+
                 }
             } else {
                 // all good - results found
@@ -400,7 +413,7 @@ angular.module('searchApp')
     function suggest(what) {
         var q;
         q = {
-            'url': SolrService.solr,
+            'url': SolrService.query.solr,
             'params': {
                 'q': 'name:' + what,
                 'rows': 0,
@@ -409,10 +422,10 @@ angular.module('searchApp')
             }
         };
 
-        log.debug('Suggest: ');
-        log.debug(q);
+        //$log.debug('Suggest: ');
+        //$log.debug(q);
 
-        $http.jsonp(SolrService.solr, q).then(function(d) {
+        $http.jsonp(SolrService.query.solr, q).then(function(d) {
             SolrService.suggestion =  d.data.spellcheck.suggestions[1].suggestion[0];
             $rootScope.$broadcast('search-suggestion-available');
         });
@@ -433,38 +446,45 @@ angular.module('searchApp')
     function saveData(d) {
         if (d === undefined) {
             SolrService.results = {
-                'term': SolrService.term,
+                'term': SolrService.query.term,
                 'total': 0,
                 'docs': []
             };
         } else {
-            var docs, i;
-            if (SolrService.results.docs === undefined) {
-                docs = d.data.response.docs;
-            } else {
-                docs = SolrService.results.docs;
-                for (i=0; i < d.data.response.docs.length; i++) {
-                    docs.push(d.data.response.docs[i]);
-                }
-            }
-            for (i=0; i < docs.length; i++) {
-                docs[i].sequenceNo = i;
-            }
+            var docs = [], start;
+            start = parseInt(d.data.responseHeader.params.start);
+            docs = _.map(d.data.response.docs, function(d, i) { d.sequenceNo = i + start; return d; });
             SolrService.results = {
-                'term': SolrService.term,
+                'dateStamp': ( new Date() ).getTime(),
+                'term': SolrService.query.term,
                 'total': d.data.response.numFound,
-                'start': parseInt(d.data.responseHeader.params.start),
+                'start': start,
                 'docs': docs
             };
         }
         
         // update all facet counts
-        updateAllFacetCounts();
-        //compileDateFacets();
+        $rootScope.$broadcast('update-all-facets');
         saveCurrentSearch();
 
         // notify the result widget that it's time to update
         $rootScope.$broadcast('search-results-updated');
+    }
+
+    /**
+     * @ngdoc function
+     * @name SolrService.service:previousPage
+     * @description
+     *  Get the next set of results.
+     */
+    function previousPage() {
+        var start = SolrService.results.start - SolrService.rows;
+        SolrService.query.start = start;
+        if (start < 0 || SolrService.query.start < 0) {
+            SolrService.query.start = 0;
+            start = 0;
+        }
+        search(start);
     }
 
     /**
@@ -474,9 +494,9 @@ angular.module('searchApp')
      *  Get the next set of results.
      */
     function nextPage() {
-        //var start = SolrService.results.start + SolrService.rows;
-        var start = SolrService.results.docs.length;
-        search(SolrService.term, start);
+        var start = SolrService.results.start + SolrService.rows;
+        SolrService.query.start = start;
+        search(start);
     }
 
     /**
@@ -500,20 +520,21 @@ angular.module('searchApp')
         var q = getQuery(0);
         q.params.facet = true;
         q.params['facet.field'] = facet;
-        q.params['facet.limit'] = limit;
-        q.params['facet.sort'] = sortBy;
-        q.params['facet.offset'] = offset;
+        q.params['facet.limit'] = SolrService.facetLimit;
         q.params.rows = 0;
-        //log.debug(q);
-        $http.jsonp(SolrService.solr, q).then(function(d) {
-            angular.forEach(d.data.facet_counts.facet_fields, function(v, k) {
-                var f = [];
+        //$log.debug(q);
+        $http.jsonp(SolrService.query.solr, q).then(function(d) {
+            var f = [];
+            _.each(d.data.facet_counts.facet_fields, function(v, k) {
                 for (var i = 0; i < v.length; i += 2) {
-                    f.push([ v[i], v[i+1], false ]);
+                    f.push({
+                        'name': v[i],
+                        'count': v[i+1]
+                    })
                 }
-                SolrService.facets[k] = f;
-                $rootScope.$broadcast(k+'-facets-updated');
             });
+            SolrService.query.facets[facet] = f;
+            $rootScope.$broadcast(facet+'-facets-updated');
         });
     }
 
@@ -530,7 +551,7 @@ angular.module('searchApp')
         //    SolrService.updateFacetCount(k);
         //});
         $rootScope.$broadcast('update-all-facets');
-        $rootScope.$broadcast('update-date-facets');
+        //$rootScope.$broadcast('update-date-facets');
     }
 
     /**
@@ -547,28 +568,20 @@ angular.module('searchApp')
         // iterate over the facets and 
         //  - add it if it's not there 
         //  - remove it if it is
-        //
-        // initially - the object will be empty
-        if (SolrService.filters[facetField] === undefined) {
-            SolrService.filters[facetField] = [ facet ];
-        } else {
-            // not on subsequent runs / events
-            if (SolrService.filters[facetField].indexOf(facet) === -1) {
-                SolrService.filters[facetField].push(facet);
-            } else {
-                var idxof = SolrService.filters[facetField].indexOf(facet);
-                SolrService.filters[facetField].splice(idxof, 1);
-                if (SolrService.filters[facetField].length === 0) {
-                    delete SolrService.filters[facetField];
-                }
-            }
-        }
 
-        if (dontSearch !== true) {
-            SolrService.results.docs = [];
-            SolrService.results.start = 0;
-            search(SolrService.term, 0, true);
+        // ensure there's a key for this facetField in the filters object
+        if (! _.has(SolrService.query.filters, facetField)) SolrService.query.filters[facetField] = [];
+
+        // now determine whether the actual facet needs to be pushed in or spliced out
+        if (_.contains(SolrService.query.filters[facetField], facet)) {
+            SolrService.query.filters[facetField] = _.without(SolrService.query.filters[facetField], facet);
+        } else {
+            SolrService.query.filters[facetField].push(facet);
         }
+        //$log.debug('S:solr-service, filterQuery, filters', SolrService.query.filters);
+
+        // update the search
+        search();
     }
 
     /**
@@ -579,7 +592,7 @@ angular.module('searchApp')
      *  a search.
      * @param {string} facet
      */
-    function filterDateQuery(facetField, existenceFromField, existenceToField, facetLabel) {
+    function filterDateQuery(facetField, existenceFromField, existenceToField, facetLabel, dontSearch) {
         var facetLowerBound, facetUpperBound, df, marker;
         facetLowerBound = facetLabel.split(' - ')[0];
         facetUpperBound = facetLabel.split(' - ')[1];
@@ -589,7 +602,9 @@ angular.module('searchApp')
             marker = facetField + '-' + facetLabel.replace(' - ', '_');
         }
 
-        if (! SolrService.dateFilters[marker]) {
+        if (_.has(SolrService.query.dateFilters, marker)) {
+            delete SolrService.query.dateFilters[marker];
+        } else {
             df = {
                 'from': facetLowerBound + '-01-01T00:00:00Z',
                 'to': facetUpperBound + '-12-31T23:59:59Z',
@@ -598,14 +613,12 @@ angular.module('searchApp')
                 'existenceFromField': existenceFromField,
                 'existenceToField': existenceToField,
             };
-            SolrService.dateFilters[marker] = df;
-        } else {
-            delete SolrService.dateFilters[marker];
+            SolrService.query.dateFilters[marker] = df;
         }
+        //$log.debug('S:solr-service, filterDateQuery, dateFilters', SolrService.query.dateFilters);
 
-        SolrService.results.docs = [];
-        SolrService.results.start = 0;
-        search(SolrService.term, 0, true);
+        // update the search
+        if (!dontSearch) search();
     }
 
     /**
@@ -620,24 +633,26 @@ angular.module('searchApp')
         var f;
         
         // add in the named filters
-        for (f in SolrService.filters) {
-            var j = SolrService.filterUnion[f];
-            fq.push(f + ':("' + SolrService.filters[f].join('" ' + j + ' "') + '")');
+        for (f in SolrService.query.filters) {
+            var j = SolrService.query.filterUnion[f];
+            if (!_.isEmpty(SolrService.query.filters[f])) fq.push(f + ':("' + SolrService.query.filters[f].join('" ' + j + ' "') + '")');
         }
 
         // add in the date range filters
         var dfq = [];
-        for (f in SolrService.dateFilters) {
-            var v = SolrService.dateFilters[f];
-            if (v.existenceFromField !== undefined && v.existenceToField !== undefined) {
-                var query;
-                var query = '(exist_from:[' + conf.datasetStart + ' TO ' + v.to + ']';
-                query += ' AND ';
-                query += 'exist_to:[' + v.from + ' TO ' + conf.datasetEnd + '])';
-                dfq.push(query);
-            } else {
-                var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';
-                dfq.push(query);
+        for (f in SolrService.query.dateFilters) {
+            var v = SolrService.query.dateFilters[f];
+            if (! _.isEmpty(v)) {
+                if (v.existenceFromField !== undefined && v.existenceToField !== undefined) {
+                    var query;
+                    var query = '(exist_from:[' + conf.datasetStart + ' TO ' + v.to + ']';
+                    query += ' AND ';
+                    query += 'exist_to:[' + v.from + ' TO ' + conf.datasetEnd + '])';
+                    dfq.push(query);
+                } else {
+                    var query = v.facetField + ':[' + v.from + ' TO ' + v.to + ']';
+                    dfq.push(query);
+                }
             }
 
         }
@@ -652,16 +667,19 @@ angular.module('searchApp')
 
     /**
      * @ngdoc function
-     * @name SolrService.service:clearAllFilters
+     * @name SolrService.service:reset
      * @description
      *   Removes all filters
      */
-    function clearAllFilters() {
-        SolrService.filters = {};
-        SolrService.dateFilters = {};
-        
-        // update the search
-        search(SolrService.term, 0, true);
+    function reset() {
+        // ditch any saved configuration
+        sessionStorage.removeItem('cq');
+
+        // reinitialise the query object
+        initialiseQueryObject();
+
+        // kick off a search
+        search();
 
         // tell all the filters to reset
         $rootScope.$broadcast('reset-all-filters');
@@ -680,74 +698,28 @@ angular.module('searchApp')
 
     /**
      * @ngdoc function
-     * @name SolrService.service:toggleDetails
-     * @description
-     *   Toggle's detail view
-     */
-    function toggleDetails() {
-        SolrService.hideDetails = !SolrService.hideDetails;
-        if (SolrService.hideDetails === true) {
-            $rootScope.$broadcast('hide-search-results-details');
-        } else {
-            $rootScope.$broadcast('show-search-results-details');
-        }
-    }
-
-    /**
-     * @ngdoc function
      * @name SolrService.service:reSort
      * @description
      *  Re-sort the result set - this triggers a re-search with
      *  the updated sort order.
      */
-    function reSort() {
-        search(SolrService.term, 0);
+    function reSort(by) {
+        SolrService.query.sort = by;
+        search();
     }
 
     /**
      * @ngdoc function
-     * @name SolrService.service:dateOuterBounds
+     * @name SolrService.service:compileDateFacets
      * @description
      *  Will determine the outer date bounds of the current context
      *   and store them within the object
      */
-    function dateOuterBounds() {
-        var q = {
-            'url': SolrService.solr,
-            'params': {
-                'q': '*:*',
-                'start': 0,
-                'rows': 1,
-                'wt': 'json',
-                'json.wrf': 'JSON_CALLBACK',
-                'sort': 'exist_from asc'
-            }
-        };
-        $http.jsonp(SolrService.solr, q).then(function(d) {
-            SolrService.dateStartBoundary = d.data.response.docs[0].exist_from;
-            var q = {
-                'url': SolrService.solr,
-                'params': {
-                    'q': '*:*',
-                    'start': 0,
-                    'rows': 1,
-                    'wt': 'json',
-                    'json.wrf': 'JSON_CALLBACK',
-                    'sort': 'exist_from desc'
-                }
-            };
-            $http.jsonp(SolrService.solr, q).then(function(d) {
-                SolrService.dateEndBoundary = d.data.response.docs[0].exist_to;
-                SolrService.compileDateFacets();
-            });
-        });
-    }
-
     function compileDateFacets(facetField, id, start, end, interval) {
         $rootScope.$broadcast('reset-date-facets');
 
         var a, b;
-        a = getQuery(0);
+        a = getQuery(0, true);
         a.params.rows = 0;
         a.params.facet = true;
         a.params['facet.range'] = facetField;
@@ -755,7 +727,7 @@ angular.module('searchApp')
         a.params['facet.range.end'] = end + '-12-31T23:59:59Z';
         a.params['facet.range.gap'] = '+' + interval + 'YEARS';
 
-        $http.jsonp(SolrService.solr, a).then(function(d) {
+        $http.jsonp(SolrService.query.solr, a).then(function(d) {
             var counts = d.data.facet_counts.facet_ranges[facetField].counts;
             var i, df;
             df = [];
@@ -775,44 +747,53 @@ angular.module('searchApp')
                 });
             }
             var marker = facetField + '_' + id;
-            SolrService.dateFacets[marker] = df; 
+            SolrService.query.dateFacets[marker] = df; 
             $rootScope.$broadcast(marker + '-facet-data-ready');
         });
 
     }
 
+    /**
+     * @ngdoc function
+     * @name SolrService.service:getConnexSites
+     * @description
+     *    Get the list of site enabled in connex.
+     *
+    */
+    function getConnexSites() {
+        $http.get(SolrService.configuration.connexBackend).then(function(resp) {
+            SolrService.configuration.connexSites = resp.data.sites;
+        },
+        function() {
+            SolrService.configuration.connexSites = [];
+        });
+    }
 
     var SolrService = {
+        // the query object - all bits of the query are stored here
+        query: {},
+
         results: {},
-        facets: {},
-        dateFacets: {},
-        filters: {},
-        filterUnion: {},
-        dateFilters: {},
-        searchType: 'phrase',
-        term: '*',
+
+        // suitable defaults
         rows: 12,
-        defaultRows: 12,
+        facetLimit: 45,
         sort: undefined,
-        resultSort: undefined,
         hideDetails: false,
 
         init: init,
-        redirectToRoot: redirectToRoot,
         loadData: loadData,
         search: search,
         saveData: saveData,
+        previousPage: previousPage,
         nextPage: nextPage,
         updateFacetCount: updateFacetCount,
         filterQuery: filterQuery,
         getFilterObject: getFilterObject,
         filterDateQuery: filterDateQuery,
-        clearFilter: clearFilter,
-        clearAllFilters: clearAllFilters,
-        toggleDetails: toggleDetails,
+        reset: reset,
         reSort: reSort,
-        dateOuterBounds: dateOuterBounds,
         compileDateFacets: compileDateFacets,
     };
     return SolrService;
-  }]);
+  }])

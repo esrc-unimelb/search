@@ -18,17 +18,13 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/app.css">
     <!-- endbuild -->
+
+    <!-- <base href="/"> -->
   </head>
   <body ng-app="searchApp">
-    <!--[if lte IE 8]>
-        <script type="text/javascript">
-            var site = window.location.hash.split('/')[1];
-            var newLocation;
-            if (site !== '') {
-              window.location.replace('/basic-search/#/' + site);
-            } else {
-              window.location.replace('/basic-search');
-            }
+    <!--[if lt IE 9]>
+        <script>
+            window.location.assign('/basic-search.html');
         </script>
     <![endif]-->
 
@@ -61,6 +57,12 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <script src="bower_components/smoothzoom/jquery.smoothZoom.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
@@ -91,6 +93,8 @@
         <script src="scripts/directives/smoothzoom.js"></script>
         <script src="scripts/directives/grid-view.js"></script>
         <script src="scripts/filters/valueordash.js"></script>
+        <script src="scripts/directives/search-controls.js"></script>
+        <script src="scripts/directives/view-network.js"></script>
         <!-- endbuild -->
 </body>
 </html>

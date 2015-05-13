@@ -2,8 +2,8 @@
  * boxes.
  */
 .result-border {
-    border: 1px solid gray; 
-    border-radius:8px; 
+    border: 1px solid #ccc; 
+    border-radius:4px; 
     padding:0.5em; 
     margin:0.5em;
 }
@@ -17,12 +17,54 @@
 }
 
 
-/* If you need to override link colouring 
-a:link    { color: ; }
-a:visited { color: ; }
-a:focus   { color: ; }
-a:hover   { color: ; }
-a:active  { color: ; }
-*/
+/* If you need to override link colouring  */
+a:link    { color: #24658A; }
+a:visited { color: #24658A; }
+a:focus   { color: #24658A; }
+a:hover   { color: #24658A; }
+a:active  { color: #24658A; }
 
 
+
+.facet.ng-hide-add {
+        animation: fadeOut 0.2s;
+}
+.facet.ng-hide-remove {
+        animation: fadeIn 0.5s;
+}
+.facet-largeList.ng-enter {
+        animation: fadeIn 0.5s;
+}
+.provenance.ng-hide-remove {
+        animation: fadeIn 0.5s;
+}
+.view-one.ng-enter {
+        animation: fadeIn 0.5s;
+}
+.view-one.ng-leave {
+        animation: fadeOut 0.5s;
+}
+
+.section-heading {
+    color: #3d4343; 
+    font-weight: 300; 
+    text-rendering: optimizelegibility;
+    margin: 10px 0px;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: #ccc;
+    opacity: 0.8;
+}
+
+.filmstrip-highlight-current {
+    border: 4px solid yellow;
+    border-radius: 8px;
+    display: inline-block;
+}

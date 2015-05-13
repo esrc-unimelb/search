@@ -1,11 +1,5 @@
 /* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
   word-wrap: break-word;
-}
-
-.facet.ng-hide-remove {
-    animation: fadeIn 0.5s;
 }
 

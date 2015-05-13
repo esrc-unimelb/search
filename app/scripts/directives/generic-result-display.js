@@ -11,24 +11,17 @@
  * @param {expression} data - The result data.
  */
 angular.module('searchApp')
-  .directive('genericResultDisplay', [ '$rootScope', '$location', 'SolrService', 'ImageService', 
-    function ($rootScope, $location, SolrService, ImageService) {
+  .directive('genericResultDisplay', [ '$log', 'SolrService', function ($log, SolrService) {
     return {
       templateUrl: 'views/generic-result-display.html',
       restrict: 'E',
       scope: {
           'data': '=ngModel',
-          'displayProvenance': '@'
       },
       link: function postLink(scope, element, attrs) {
-          scope.hideDetails = SolrService.hideDetails;
-
-          $rootScope.$on('hide-search-results-details', function() {
-              scope.hideDetails = true;
-          });
-          $rootScope.$on('show-search-results-details', function() {
-              scope.hideDetails = false;
-          });
+          scope.showProvenance = false;
+          scope.networkView = false;
+          scope.imageSet = false;
 
           // determine the source url to use for the record
           if (scope.data.display_url !== undefined) {
@@ -43,9 +36,22 @@ angular.module('searchApp')
             scope.imageCount = scope.data.small_images.length;
           }
 
-          scope.view = function() {
-              // pop the image data into the service
-              ImageService.push(scope.data);
+          // is this an entity that can be visualised by connex?
+          if (scope.data.data_type === 'OHRM') { 
+            if (scope.data.main_type === undefined) {
+              if (_.has(SolrService.configuration.connexSites, scope.data.site_code)) { 
+                  if (!SolrService.configuration.disableConnex) {
+                    if (scope.data.type !== 'Text') scope.networkView = true;
+                  }
+              }
+            }
+          }
+
+          scope.viewImageSet = function() {
+              scope.imageSetData = scope.data;
+          }
+          scope.viewNetwork = function() {
+              scope.networkData = scope.data;
           }
       }
     };

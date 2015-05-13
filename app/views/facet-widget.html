@@ -1,38 +1,70 @@
+<div ng-style="underlay" ng-if="!smallList" ng-click="close()"></div>
+
 <span ng-hide="ao">
     <a href="" ng-click="ic = !ic">
         <span ng-show="ic">{{label}}<span class="caret"></span></span>
-        <span ng-hide="ic" class="dropup">{{label}} filter<span class="caret"></span></span>
+        <span ng-show="!ic" class="dropup">{{label}} <span class="caret"></span></span>
     </a>
 </span>
 <div ng-hide="ic && !ao" class="facet">
-    <span ng-show="sp && pageSize > 16">
-        <nav>
-          <ul class="pagination pagination-sm" style="margin: 5px 0px 0px 0px;">
-            <li><button class="btn btn-sm btn-default" ng-click="pageBackward()"><span class="glyphicon glyphicon-chevron-left"></span></button></li>
-            <li><button class="btn btn-sm btn-default" ng-click="reset()"><span class="glyphicon glyphicon-refresh"></span></button></li>
-            <li><input type="number" class="form-control input-sm" style="width: 40%; display: inline;" value="{{pageSize}}" min="1" ng-model="pageSize" ng-change="updatePageSize()"/></li>
-            <li><button class="btn btn-sm btn-default" ng-click="pageForward()"><span class="glyphicon glyphicon-chevron-right"></span></button></li>
-          </ul>
-        </nav>
-    </span>
+    <!-- render the small list -->
+    <div ng-show="smallList">
+        <span ng-repeat="result in smallFacetList">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-click="facet(result.name)" ng-checked="result.checked">{{result.name}}&nbsp;
+                    <span ng-show="{{result.count}}"><em>({{result.count}})</em></span>
+                </label>
+            </div>
+        </span>
 
-    <span ng-repeat="result in facets track by $id(result)">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-click="facet(result[0])" ng-checked="{{result[2]}}">{{result[0]}}&nbsp;
-                <span ng-show="{{result[1]}}"><em>({{result[1]}})</em></span>
-            </label>
+        <div>
+            <a href="" ng-click="showMore()">show more</a>
+            &nbsp;&dash;&nbsp;
+            <a href="" aria-label="Reset" ng-click="clearAll()">clear all</a>
+            &nbsp;&dash;&nbsp;
+            <a href="" aria-label="Reset" ng-click="ic = !ic">close</a>
         </div>
-    </span>
+        <hr/>
+    </div>
 
-    <span ng-show="sp">
-        <nav>
-          <ul class="pagination pagination-sm" style="margin: 0px 0px 5px 0px;">
-            <li><button class="btn btn-sm btn-default" ng-click="pageBackward()"><span class="glyphicon glyphicon-chevron-left"></span></button></li>
-            <li><button class="btn btn-sm btn-default" ng-click="reset()"><span class="glyphicon glyphicon-refresh"></span></button></li>
-            <li><input type="number" class="form-control input-sm" style="width: 40%; display: inline;" value="{{pageSize}}" min="1" ng-model="pageSize" ng-change="updatePageSize()"/></li>
-            <li><button class="btn btn-sm btn-default" ng-click="pageForward()"><span class="glyphicon glyphicon-chevron-right"></span></button></li>
-          </ul>
-        </nav>
-    </span>
+    <!-- render the large list -->
+    <div ng-if="!smallList" class="facet-largeList" ng-style="overlay">
+        <div class="row">
+            <div class="col-sm-11 col-md-11 col-lg-11">
+                <h4 class="section-heading">{{label}}</h4>
+            </div>
+            <div class="col-sm-1 col-md-1 col-lg-1">
+                <button type="button" class="close btn-sm" aria-label="Close" ng-click="close()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <hr style="margin: 5px 0px;"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 col-md-4 col-lg-4" ng-repeat="set in largeFacetList">
+                <span ng-repeat="result in set">
+                    <span ng-if="result.name">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-click="facet(result.name)" ng-checked="result.checked">{{result.name}}&nbsp;
+                                <span ng-show="{{result.count}}"><em>({{result.count}})</em></span>
+                            </label>
+                        </div>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <hr style="margin: 5px 0px;"/>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <a href="" aria-label="Close" ng-click="close()">close</a>
+                &nbsp;&dash;&nbsp;
+                <a href="" aria-label="Reset" ng-click="clearAll()">clear all</a>
+            </div>
+        </div>
+    </div>
 </div>

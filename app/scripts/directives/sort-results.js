@@ -6,15 +6,14 @@ angular.module('searchApp')
       templateUrl: 'views/sort-results.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
-          scope.sortBy = SolrService.resultSort;
+          scope.sortBy = SolrService.query.sort;
 
-          $rootScope.$on('search-results-updated', function() {
-            scope.sortBy = SolrService.resultSort;
+          scope.$on('search-results-updated', function() {
+            scope.sortBy = SolrService.query.sort;
           });
 
           scope.sort = function() {
-              SolrService.sort = scope.sortBy;
-              SolrService.reSort();
+              SolrService.reSort(scope.sortBy);
           };
       }
     };

@@ -1,19 +1,14 @@
 <form role="form">
-    <div class="input-group">
-        <input type="text" class="form-control" ng-model="searchBox" autofocus>
-        <span class="input-group-btn">
-            <button class="btn btn-default" ng-click="search()">Search</button>
-        </span>
+    <div class="row" style="padding: 5px;">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <input type="text" class="form-control" ng-model="searchBox" autofocus onfocus="this.select();">
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <button class="btn btn-default btn-block" ng-click="search()">Search</button>
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">
+            <button class="btn btn-default btn-block" ng-click="reset()">Reset</button>
+        </div>
     </div>
     <!-- <p class="help-block">{{help}}</p> -->
 </form>
-<span style="padding: 5px 0px;">
-    <label class="radio-inline">
-        <input type="radio" ng-checked="keywordSearch" ng-click="setSearchType('keyword')" />
-        Keyword search
-    </label>
-    <label class="radio-inline">
-        <input type="radio" ng-checked="phraseSearch" ng-click="setSearchType('phrase')" />
-        Phrase search
-    </label>
-</span>
