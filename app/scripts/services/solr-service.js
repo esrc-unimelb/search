@@ -334,7 +334,7 @@ angular.module('searchApp')
             'site': SolrService.site,
             'nResults': SolrService.results.docs.length
         }
-        log.debug('Storing the current query: ' + currentQuery.date);
+        $log.debug('Storing the current query: ' + currentQuery.date);
         sessionStorage.setItem('cq', angular.toJson(currentQuery));
     }
 
