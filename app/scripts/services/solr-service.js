@@ -818,6 +818,7 @@ angular.module('searchApp')
         search: search,
         saveData: saveData,
         nextPage: nextPage,
+        previousPage: previousPage,
         updateFacetCount: updateFacetCount,
         filterQuery: filterQuery,
         getFilterObject: getFilterObject,
