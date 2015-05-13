@@ -16,8 +16,8 @@
     </span>
 
     <span ng-repeat="result in facets track by $id(result)">
-        <div class="checkbox">
-            <label>
+        <div class="checkbox" style="margin: 5px 0px;">
+            <label style="font-size: 16px;">
                 <input type="checkbox" ng-click="facet(result[0])" ng-checked="{{result[2]}}">{{result[0]}}&nbsp;
                 <span ng-show="{{result[1]}}"><em>({{result[1]}})</em></span>
             </label>
