@@ -21,7 +21,7 @@
 
       "facetWidgets": [
           { "facetField": "type",       "label": "Entity Type",     "join": "OR" },
-          { "facetField": "function",   "label": "Entity Function", "join": "AND" },
+          { "facetField": "function",   "label": "Entity Function", "join": "AND" }
       ],
 
       "dateFacetWidgets": [
